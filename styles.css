@@ -1,0 +1,60 @@
+/* Estilos personalizados */
+
+/* Fondo del cuerpo */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f0f4f8; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* Contenedor principal para simular el dispositivo móvil */
+.app-container {
+    width: 100%;
+    max-width: 420px; 
+    height: 90vh;
+    max-height: 850px;
+    margin: 20px auto; /* Centrado y con margen */
+    border-radius: 32px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    position: relative;
+    background-color: white; /* Color base de las pantallas */
+}
+
+/* Contenedor de cada pantalla */
+.screen {
+    display: none; /* Por defecto, todas las pantallas están ocultas, JS las mostrará */
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+    transition: opacity 0.3s ease-in-out; /* Transición para un efecto más suave */
+}
+
+/* Estilos específicos de la pantalla de Bienvenida */
+#welcome-screen {
+    background: linear-gradient(180deg, #1A73E8 0%, #0D47A1 100%);
+    color: white;
+}
+
+/* Estilos específicos de la cabecera Home */
+.home-header-bg {
+    background: linear-gradient(180deg, #1A73E8 0%, #3a8ee0 100%);
+}
+
+/* Estilo para las tarjetas del Home */
+.card-shadow {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card-shadow:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}

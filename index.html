@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App de Accesibilidad LESCO</title>
+    <!-- 1. Enlace al framework de estilizado Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 2. Enlace a nuestra hoja de estilos personalizada (Necesaria para las clases como .app-container, .screen, .card-shadow, etc.) -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="app-container">
+
+    <!-- 1. PANTALLA DE BIENVENIDA -->
+    <div id="welcome-screen" class="screen flex p-8">
+        <!-- Icono de cámara (simulación) -->
+        <div class="absolute top-6 right-6 text-2xl opacity-70">
+            <!-- Icono simulado de cámara -->
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+        </div>
+
+        <div class="flex flex-col items-center justify-center h-full w-full -mt-20">
+            <span class="text-7xl mb-6">👋</span>
+            <h1 class="text-5xl font-extrabold mb-1">Bienvenido</h1>
+            <p class="text-xl opacity-90 text-center">Accesibilidad para personas sordas</p>
+        </div>
+
+        <!-- Indicador de Deslizar (llama a la función JS) -->
+        <div class="text-center w-full pb-6 cursor-pointer" id="to-signup-button">
+            <p class="text-lg mb-2">Desliza para continuar</p>
+            <!-- Icono de flecha animado -->
+            <svg class="w-8 h-8 mx-auto animate-bounce mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
+            <small class="text-xs tracking-widest opacity-80">SWIPE UP</small>
+        </div>
+    </div>
+
+    <!-- 2. PANTALLA DE CREAR CUENTA -->
+    <div id="signup-screen" class="screen pt-10 px-6 hidden">
+        <h1 class="text-3xl font-bold text-blue-700 mb-1">Crear cuenta</h1>
+        <p class="text-gray-600 mb-6">Ingresa tus datos para continuar</p>
+
+        <form id="signup-form" class="space-y-4">
+            <!-- Campos de formulario... -->
+            <div>
+                <label for="nombre" class="text-sm font-medium text-gray-700 block mb-1">Nombre completo</label>
+                <input type="text" id="nombre" placeholder="Tu nombre completo" required class="w-full p-3 rounded-xl bg-gray-100 border-2 border-transparent focus:border-blue-500 focus:outline-none transition">
+            </div>
+            <div>
+                <label for="telefono" class="text-sm font-medium text-gray-700 block mb-1">Teléfono</label>
+                <input type="tel" id="telefono" placeholder="Tu número de teléfono" required class="w-full p-3 rounded-xl bg-gray-100 border-2 border-transparent focus:border-blue-500 focus:outline-none transition">
+            </div>
+            <div>
+                <label for="email" class="text-sm font-medium text-gray-700 block mb-1">Correo electrónico</label>
+                <input type="email" id="email" placeholder="tu.email@ejemplo.com" required class="w-full p-3 rounded-xl bg-gray-100 border-2 border-transparent focus:border-blue-500 focus:outline-none transition">
+            </div>
+            <div>
+                <label for="fecha" class="text-sm font-medium text-gray-700 block mb-1">Fecha de nacimiento</label>
+                <input type="date" id="fecha" required class="w-full p-3 rounded-xl bg-gray-100 border-2 border-transparent focus:border-blue-500 focus:outline-none transition">
+            </div>
+            <div>
+                <label for="emergencia" class="text-sm font-medium text-gray-700 block mb-1">Contacto de emergencia</label>
+                <input type="tel" id="emergencia" placeholder="Teléfono de contacto de emergencia" class="w-full p-3 rounded-xl bg-gray-100 border-2 border-transparent focus:border-blue-500 focus:outline-none transition">
+            </div>
+
+            <!-- Botones de Acción -->
+            <div class="pt-6 pb-12 space-y-3">
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-2xl shadow-lg transition duration-150 flex items-center justify-center">
+                    Crear cuenta 
+                    <svg class="w-6 h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                </button>
+                <button type="button" id="skip-signup-button" class="w-full bg-white text-gray-700 font-semibold py-3 rounded-2xl border border-gray-300 hover:bg-gray-50 transition duration-150 flex items-center justify-center">
+                    Omitir por el momento
+                    <svg class="w-6 h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- 3. PANTALLA PRINCIPAL (HOME) -->
+    <div id="home-screen" class="screen hidden">
+        <!-- Cabecera Home con degradado azul -->
+        <header class="home-header-bg p-6 pb-20 rounded-b-3xl shadow-md text-white">
+            <div class="flex justify-between items-center mb-6">
+                <div class="text-left">
+                    <h2 class="text-3xl font-bold">Hola, Ariana Araya Cordero</h2>
+                    <p class="text-lg opacity-90">¿Qué necesitas hoy?</p>
+                </div>
+                <div id="to-profile-button" class="w-12 h-12 bg-white text-blue-600 font-extrabold text-xl flex items-center justify-center rounded-full shadow-lg cursor-pointer">
+                    AA
+                </div>
+            </div>
+
+            <!-- Banner de Lenguaje de Señas Activo -->
+            <div class="bg-green-50 text-green-700 p-3 rounded-xl flex items-center justify-between shadow-inner cursor-pointer">
+                <span class="text-2xl mr-3">👋</span>
+                <span class="font-semibold flex-grow">Lenguaje de señas activo</span>
+                <!-- Icono de video simulado -->
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+            </div>
+        </header>
+
+        <!-- Contenido principal con las categorías -->
+        <main class="p-6 -mt-10 grid grid-cols-2 gap-4">
+
+            <!-- Card: Mensajes rápidos -->
+            <div id="to-quick-messages-button" class="card-shadow p-4 rounded-xl bg-blue-50/70 hover:bg-blue-100 cursor-pointer h-40 flex flex-col justify-between">
+                <div>
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center mb-2 shadow-sm">
+                        <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 4v-4z"></path></svg>
+                    </div>
+                    <p class="text-lg font-semibold text-blue-900">Mensajes rápidos</p>
+                </div>
+                <span class="text-xl self-end">👋</span>
+            </div>
+
+            <!-- Card: Emergencias -->
+            <div id="to-emergencies-button" class="card-shadow p-4 rounded-xl bg-red-50/70 hover:bg-red-100 cursor-pointer h-40 flex flex-col justify-between">
+                <div>
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center mb-2 shadow-sm">
+                        <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    </div>
+                    <p class="text-lg font-semibold text-red-900">Emergencias</p>
+                </div>
+                <span class="text-xl self-end">🚨</span>
+            </div>
+
+            <!-- Card: Traductor -->
+            <div id="to-translator-mode-button" class="card-shadow p-4 rounded-xl bg-green-50/70 hover:bg-green-100 cursor-pointer h-40 flex flex-col justify-between">
+                <div>
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center mb-2 shadow-sm">
+                        <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <p class="text-lg font-semibold text-green-900">Traductor señas-texto</p>
+                </div>
+                <span class="text-xl self-end">🤟</span>
+            </div>
+
+            <!-- Card: Historial -->
+            <div id="to-history-button" class="card-shadow p-4 rounded-xl bg-yellow-50/70 hover:bg-yellow-100 cursor-pointer h-40 flex flex-col justify-between">
+                <div>
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center mb-2 shadow-sm">
+                        <svg class="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <p class="text-lg font-semibold text-yellow-900">Historial</p>
+                </div>
+                <span class="text-xl self-end">📜</span>
+            </div>
+        </main>
+        
+        <!-- Tarjeta de Ayuda y Tutoriales (parte inferior) -->
+        <div id="to-help-button" class="mx-6 mb-8 mt-4 p-6 rounded-3xl cursor-pointer" style="background: linear-gradient(135deg, #74e9ff 0%, #00b3e6 100%);">
+            <div class="flex flex-col items-center text-white text-center">
+                <svg class="w-16 h-16 text-white mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.228 9.247a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5zM12 16.5a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM17.5 12h.01M17.5 16h.01M17.5 20h.01M17.5 4h.01M17.5 8h.01M12 3.5v.01M12 20.5v.01M4.5 12h.01M4.5 16h.01M4.5 20h.01M20.5 12h.01M20.5 16h.01M20.5 20h.01"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18.364 5.636l-1.414 1.414M5.636 18.364l1.414-1.414M18.364 18.364l-1.414-1.414M5.636 5.636l1.414 1.414"></path></svg>
+                <h3 class="text-2xl font-bold mb-1">Ayuda y tutoriales</h3>
+                <p class="text-base font-medium opacity-90">Videos en lenguaje de señas</p>
+                <span class="mt-2 text-2xl">🤟</span>
+            </div>
+        </div>
+    </div>
+
+        <!-- 4. PANTALLA DE MENSAJES RÁPIDOS (ACTUALIZADA) -->
+<div id="quick-messages-screen" class="screen bg-gray-50 pt-8 px-6 hidden">
+    <div class="flex items-center mb-6">
+        <button id="back-from-quick-messages" class="text-gray-600 mr-4">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+        </button>
+        <span class="text-gray-600 font-medium">Volver a Home</span>
+    </div>
+
+    <h1 class="text-3xl font-bold text-blue-700 mb-2">Mensajes rápidos</h1>
+    <p class="text-gray-600 mb-8">Selecciona una categoría</p>
+
+    <!-- GRID DE CATEGORÍAS -->
+    <div class="grid grid-cols-1 gap-4">
+
+        <!-- Emergencia -->
+        <div id="to-messages-emergencia" class="p-4 bg-white rounded-2xl shadow-lg cursor-pointer hover:bg-red-50 transition flex items-center justify-between border border-red-100">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mr-4">
+                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg text-red-800">Emergencia</h3>
+                    <p class="text-sm text-gray-600">Toca para ver mensajes</p>
+                </div>
+            </div>
+            <span class="text-xl">✌️</span>
+        </div>
+
+        <!-- Policía -->
+        <div id="to-messages-policia" class="p-4 bg-white rounded-2xl shadow-lg cursor-pointer hover:bg-blue-50 transition flex items-center justify-between border border-blue-100">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="current://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.24l-4.24-4.24a1 1 0 00-1.414 0L3 16.586V19a2 2 0 002 2h14a2 2 0 002-2v-4.414a1 1 0 00-.293-.707z"></path></svg>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg text-blue-800">Policía</h3>
+                    <p class="text-sm text-gray-600">Toca para ver mensajes</p>
+                </div>
+            </div>
+            <span class="text-xl">✌️</span>
+        </div>
+
+        <!-- Hospital -->
+        <div id="to-messages-hospital" class="p-4 bg-white rounded-2xl shadow-lg cursor-pointer hover:bg-green-50 transition flex items-center justify-between border border-green-100">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10m-4-7h20m-3 0h-2m2 0v2m0 4h2m-2-4v2m0 0H7m2 0v2m0 4h2m-2-4v2m0 0H9m2 0v2m0 4h2m-2-4v2m0 0H9m2 0v2"></path></svg>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg text-green-800">Hospital</h3>
+                    <p class="text-sm text-gray-600">Toca para ver mensajes</p>
+                </div>
+            </div>
+            <span class="text-xl">✌️</span>
+        </div>
+
+        <!-- Banco -->
+        <div id="to-messages-banco" class="p-4 bg-white rounded-2xl shadow-lg cursor-pointer hover:bg-yellow-50 transition flex items-center justify-between border border-yellow-100">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mr-4">
+                    <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5"/></svg>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg text-yellow-800">Banco</h3>
+                    <p class="text-sm text-gray-600">Toca para ver mensajes</p>
+                </div>
+            </div>
+            <span class="text-xl">✌️</span>
+        </div>
+
+        <!-- Generales -->
+        <div id="to-messages-generales" class="p-4 bg-white rounded-2xl shadow-lg cursor-pointer hover:bg-cyan-50 transition flex items-center justify-between border border-cyan-100">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-cyan-100 rounded-full flex items-center justify-center mr-4">
+                    <svg class="w-6 h-6 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5z"></path></svg>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg text-cyan-800">Mensajes generales</h3>
+                    <p class="text-sm text-gray-600">Toca para ver mensajes</p>
+                </div>
+            </div>
+            <span class="text-xl">✌️</span>
+        </div>
+
+    </div>
+</div>
+
+<!-- 🆕 PANTALLAS DE CADA CATEGORÍA -->
+
+<!-- Emergencia -->
+<div id="messages-emergencia-screen" class="screen bg-gray-50 p-6 hidden">
+
+    <button id="back-from-messages-emergencia" class="text-gray-600 mb-4 flex items-center">
+        ← <span class="ml-1">Volver</span>
+    </button>
+
+    <h1 class="text-3xl font-bold text-red-600 mb-1">Emergencia</h1>
+    <p class="text-gray-600 mb-6">Selecciona un mensaje</p>
+
+    <!-- Lista de mensajes -->
+    <div class="space-y-3">
+        <button class="msg-btn bg-red-500 text-white font-semibold p-3 w-full rounded-xl shadow">Necesito ayuda urgente</button>
+        <button class="msg-btn bg-red-100 text-red-700 p-3 w-full rounded-xl">Estoy en peligro</button>
+        <button class="msg-btn bg-red-100 text-red-700 p-3 w-full rounded-xl">Llamen a la ambulancia</button>
+        <button class="msg-btn bg-red-100 text-red-700 p-3 w-full rounded-xl">Necesito asistencia inmediata</button>
+    </div>
+
+    <!-- Mensaje seleccionado -->
+    <div class="mt-6 bg-red-100 p-4 rounded-xl text-gray-700">
+        <p><strong>Mensaje seleccionado:</strong></p>
+        <p id="selected-message-emergencia" class="mt-1 text-red-700">Necesito ayuda urgente</p>
+    </div>
+
+    <!-- Botón enviar -->
+    <button class="mt-6 w-full bg-red-500 text-white p-3 rounded-xl shadow-lg flex items-center justify-center space-x-2">
+        <span>✈️ Enviar mensaje</span>
+        <span>📷</span>
+    </button>
+
+    <!-- Ver en señas -->
+    <button class="mt-4 w-full bg-green-100 p-3 rounded-xl text-green-700 flex items-center justify-center space-x-2">
+        <span>🤟 Ver en señas</span>
+        <span>📷</span>
+    </button>
+
+</div>
+
+
+<!-- Policía -->
+<div id="messages-policia-screen" class="screen bg-gray-50 p-6 hidden">
+
+    <button id="back-from-messages-policia" class="text-gray-600 mb-4 flex items-center">
+        ← <span class="ml-1">Volver</span>
+    </button>
+
+    <h1 class="text-3xl font-bold text-blue-700 mb-1">Policía</h1>
+    <p class="text-gray-600 mb-6">Selecciona un mensaje</p>
+
+    <div class="space-y-3">
+        <button class="msg-btn bg-blue-600 text-white font-semibold p-3 w-full rounded-xl shadow">Soy una persona sorda</button>
+        <button class="msg-btn bg-blue-100 text-blue-700 p-3 w-full rounded-xl">Necesito un intérprete</button>
+        <button class="msg-btn bg-blue-100 text-blue-700 p-3 w-full rounded-xl">Por favor escriba</button>
+        <button class="msg-btn bg-blue-100 text-blue-700 p-3 w-full rounded-xl">Tengo una denuncia</button>
+    </div>
+
+    <div class="mt-6 bg-blue-100 p-4 rounded-xl text-gray-700">
+        <p><strong>Mensaje seleccionado:</strong></p>
+        <p id="selected-message-policia" class="mt-1 text-blue-700">Soy una persona sorda</p>
+    </div>
+
+    <button class="mt-6 w-full bg-blue-600 text-white p-3 rounded-xl shadow-lg flex items-center justify-center space-x-2">
+        <span>✈️ Enviar mensaje</span>
+        <span>📷</span>
+    </button>
+
+    <button class="mt-4 w-full bg-green-100 p-3 rounded-xl text-green-700 flex items-center justify-center space-x-2">
+        <span>🤟 Ver en señas</span>
+        <span>📷</span>
+    </button>
+
+</div>
+
+
+<!-- Hospital -->
+<div id="messages-hospital-screen" class="screen bg-gray-50 p-6 hidden">
+
+    <button id="back-from-messages-hospital" class="text-gray-600 mb-4 flex items-center">
+        ← <span class="ml-1">Volver</span>
+    </button>
+
+    <h1 class="text-3xl font-bold text-green-700 mb-1">Hospital</h1>
+    <p class="text-gray-600 mb-6">Selecciona un mensaje</p>
+
+    <div class="space-y-3">
+        <button class="msg-btn bg-green-600 text-white font-semibold p-3 w-full rounded-xl shadow">Soy sordo/a, necesito intérprete</button>
+        <button class="msg-btn bg-green-100 text-green-700 p-3 w-full rounded-xl">Necesito atención médica</button>
+        <button class="msg-btn bg-green-100 text-green-700 p-3 w-full rounded-xl">Tengo dolor</button>
+        <button class="msg-btn bg-green-100 text-green-700 p-3 w-full rounded-xl">Por favor escriba las instrucciones</button>
+    </div>
+
+    <div class="mt-6 bg-green-100 p-4 rounded-xl text-gray-700">
+        <p><strong>Mensaje seleccionado:</strong></p>
+        <p id="selected-message-hospital" class="mt-1 text-green-700">Soy sordo/a, necesito intérprete</p>
+    </div>
+
+    <button class="mt-6 w-full bg-green-600 text-white p-3 rounded-xl shadow-lg flex items-center justify-center space-x-2">
+        <span>✈️ Enviar mensaje</span>
+        <span>📷</span>
+    </button>
+
+    <button class="mt-4 w-full bg-green-100 p-3 rounded-xl text-green-700 flex items-center justify-center space-x-2">
+        <span>🤟 Ver en señas</span>
+        <span>📷</span>
+    </button>
+
+</div>
+
+<!-- Banco -->
+<div id="messages-banco-screen" class="screen bg-gray-50 p-6 hidden">
+
+    <button id="back-from-messages-banco" class="text-gray-600 mb-4 flex items-center">
+        ← <span class="ml-1">Volver</span>
+    </button>
+
+    <h1 class="text-3xl font-bold text-yellow-600 mb-1">Banco</h1>
+    <p class="text-gray-600 mb-6">Selecciona un mensaje</p>
+
+    <div class="space-y-3">
+        <button class="msg-btn bg-yellow-500 text-white font-semibold p-3 w-full rounded-xl shadow">Soy una persona sorda</button>
+        <button class="msg-btn bg-yellow-100 text-yellow-700 p-3 w-full rounded-xl">Necesito hacer un trámite</button>
+        <button class="msg-btn bg-yellow-100 text-yellow-700 p-3 w-full rounded-xl">Por favor escriba</button>
+        <button class="msg-btn bg-yellow-100 text-yellow-700 p-3 w-full rounded-xl">Necesito ayuda con mi cuenta</button>
+    </div>
+
+    <div class="mt-6 bg-yellow-100 p-4 rounded-xl text-gray-700">
+        <p><strong>Mensaje seleccionado:</strong></p>
+        <p id="selected-message-banco" class="mt-1 text-yellow-700">Soy una persona sorda</p>
+    </div>
+
+    <button class="mt-6 w-full bg-yellow-500 text-white p-3 rounded-xl shadow-lg flex items-center justify-center space-x-2">
+        <span>✈️ Enviar mensaje</span>
+        <span>📷</span>
+    </button>
+
+    <button class="mt-4 w-full bg-green-100 p-3 rounded-xl text-green-700 flex items-center justify-center space-x-2">
+        <span>🤟 Ver en señas</span>
+        <span>📷</span>
+    </button>
+
+</div>
+
+
+<!-- Generales -->
+<div id="messages-generales-screen" class="screen bg-gray-50 p-6 hidden">
+
+    <button id="back-from-messages-generales" class="text-gray-600 mb-4 flex items-center">
+        ← <span class="ml-1">Volver</span>
+    </button>
+
+    <h1 class="text-3xl font-bold text-cyan-600 mb-1">Mensajes generales</h1>
+    <p class="text-gray-600 mb-6">Selecciona un mensaje</p>
+
+    <div class="space-y-3">
+        <button class="msg-btn bg-cyan-500 text-white font-semibold p-3 w-full rounded-xl shadow">Hola, soy sordo/a</button>
+        <button class="msg-btn bg-cyan-100 text-cyan-700 p-3 w-full rounded-xl">¿Puede escribir por favor?</button>
+        <button class="msg-btn bg-cyan-100 text-cyan-700 p-3 w-full rounded-xl">Gracias</button>
+        <button class="msg-btn bg-cyan-100 text-cyan-700 p-3 w-full rounded-xl">¿Me puede ayudar?</button>
+    </div>
+
+    <div class="mt-6 bg-cyan-100 p-4 rounded-xl text-gray-700">
+        <p><strong>Mensaje seleccionado:</strong></p>
+        <p id="selected-message-generales" class="mt-1 text-cyan-700">Hola, soy sordo/a</p>
+    </div>
+
+    <button class="mt-6 w-full bg-cyan-500 text-white p-3 rounded-xl shadow-lg flex items-center justify-center space-x-2">
+        <span>✈️ Enviar mensaje</span>
+        <span>📷</span>
+    </button>
+
+    <button class="mt-4 w-full bg-green-100 p-3 rounded-xl text-green-700 flex items-center justify-center space-x-2">
+        <span>🤟 Ver en señas</span>
+        <span>📷</span>
+    </button>
+
+</div>
+
+
+
+    <!-- 5. PANTALLA DE EMERGENCIAS -->
+    <div id="emergencies-screen" class="screen bg-gray-50 pt-8 px-6 hidden">
+        <div class="flex items-center mb-6">
+            <button id="back-from-emergencies" class="text-gray-600 mr-4">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            </button>
+            <span class="text-gray-600 font-medium">Volver a Home</span>
+        </div>
+        <h1 class="text-3xl font-bold text-red-700 mb-2">Emergencias</h1>
+        <p class="text-gray-600 mb-8">Elige tu emergencia para conectarte rápidamente</p>
+
+        <!-- GRID de Botones de Emergencia -->
+        <div class="grid grid-cols-2 gap-4">
+            <!-- Botón 1: Policía -->
+            <div class="p-4 bg-white rounded-xl shadow-lg cursor-pointer h-40 flex flex-col justify-center items-center text-center bg-red-100 hover:bg-red-200 transition">
+                <span class="text-4xl mb-2">👮‍♀️</span>
+                <p class="font-bold text-red-800">Policía</p>
+                <small class="text-xs text-red-600">(911)</small>
+            </div>
+            <!-- Botón 2: Ambulancia / Cruz Roja -->
+            <div class="p-4 bg-white rounded-xl shadow-lg cursor-pointer h-40 flex flex-col justify-center items-center text-center bg-red-100 hover:bg-red-200 transition">
+                <span class="text-4xl mb-2">🚑</span>
+                <p class="font-bold text-red-800">Ambulancia</p>
+                <small class="text-xs text-red-600">(911)</small>
+            </div>
+            <!-- Botón 3: Bomberos -->
+            <div class="p-4 bg-white rounded-xl shadow-lg cursor-pointer h-40 flex flex-col justify-center items-center text-center bg-red-100 hover:bg-red-200 transition">
+                <span class="text-4xl mb-2">🚒</span>
+                <p class="font-bold text-red-800">Bomberos</p>
+                <small class="text-xs text-red-600">(911)</small>
+            </div>
+            <!-- Botón 4: Contacto de Emergencia Personal -->
+            <div class="p-4 bg-white rounded-xl shadow-lg cursor-pointer h-40 flex flex-col justify-center items-center text-center bg-red-100 hover:bg-red-200 transition">
+                <span class="text-4xl mb-2">👤</span>
+                <p class="font-bold text-red-800">Contacto Personal</p>
+                <small class="text-xs text-red-600">Mamá/Papá/Amigo</small>
+            </div>
+        </div>
+    </div>
+
+   <!-- 6. PANTALLA DE TRADUCTOR (Selector de modos) -->
+<div id="translator-screen" class="screen bg-gray-50 pt-8 px-6 hidden">
+
+    <button id="back-from-translator-main" class="text-gray-600 mb-6 flex items-center">
+        ← <span class="ml-1">Volver a Home</span>
+    </button>
+
+    <h1 class="text-3xl font-bold text-blue-700 mb-2">Traductor</h1>
+    <p class="text-gray-600 mb-6">Selecciona el modo de traducción</p>
+
+    <!-- Tarjeta Verde: Señas → Texto/Voz -->
+    <div id="to-signs-to-text" class="p-6 rounded-2xl shadow-lg bg-gradient-to-br from-green-400 to-teal-500 text-white mb-6 cursor-pointer transition transform hover:scale-[1.01]">
+        <h2 class="text-2xl font-bold mb-2">Señas → Texto/Voz</h2>
+        <p class="opacity-90">Traduce lenguaje de señas a texto o voz</p>
+        <div class="flex justify-end text-4xl mt-4">🤟💬</div>
+    </div>
+
+    <!-- Tarjeta Azul: Texto/Voz → Señas -->
+    <div id="to-text-to-signs" class="p-6 rounded-2xl shadow-lg bg-gradient-to-br from-blue-400 to-cyan-500 text-white cursor-pointer transition transform hover:scale-[1.01]">
+        <h2 class="text-2xl font-bold mb-2">Texto/Voz → Señas</h2>
+        <p class="opacity-90">Traduce texto o voz a lenguaje de señas</p>
+        <div class="flex justify-end text-4xl mt-4">💬🤟</div>
+    </div>
+</div>
+<!-- 7. PANTALLA SEÑAS → TEXTO/VOZ -->
+<div id="signs-to-text-screen" class="screen bg-gray-50 pt-8 px-6 hidden">
+
+    <button id="back-to-translator-from-signs" class="text-gray-600 mb-6 flex items-center">
+        ← <span class="ml-1">Volver</span>
+    </button>
+
+    <h1 class="text-3xl font-bold text-green-600 mb-1">Señas → Texto/Voz</h1>
+    <p class="text-gray-600 mb-6">Detectando lenguaje de señas</p>
+
+    <!-- Área donde irá la cámara -->
+    <div class="w-full h-80 bg-gray-200 rounded-2xl shadow-lg flex items-center justify-center text-gray-500 text-xl mb-6">
+        <span>Vista de la cámara / Detección LESCO</span>
+    </div>
+
+    <!-- Área del texto transcrito -->
+    <div class="p-4 bg-white rounded-xl shadow-md border-l-4 border-green-500">
+        <p class="text-sm font-medium text-gray-700">Texto transcrito:</p>
+        <p class="text-green-700 text-xl mt-2 opacity-70">La transcripción aparecerá aquí...</p>
+    </div>
+
+    <!-- Botón de iniciar detección -->
+    <button class="mt-6 w-full bg-green-600 text-white py-3 rounded-xl shadow-lg flex items-center justify-center space-x-2">
+        <span>📷 Iniciar detección</span>
+    </button>
+</div>
+<!-- 8. PANTALLA TEXTO/VOZ → SEÑAS -->
+<div id="text-to-signs-screen" class="screen bg-gray-50 pt-8 px-6 hidden">
+
+    <button id="back-to-translator-from-text" class="text-gray-600 mb-6 flex items-center">
+        ← <span class="ml-1">Volver</span>
+    </button>
+
+    <h1 class="text-3xl font-bold text-blue-600 mb-1">Texto/Voz → Señas</h1>
+    <p class="text-gray-600 mb-6">Traduce texto o voz a señas</p>
+
+    <!-- Cuadro donde irá el avatar / video -->
+    <div class="w-full h-80 bg-gray-200 rounded-2xl shadow-lg flex items-center justify-center text-gray-500 text-xl mb-6">
+        <span>Avatar / Animación LESCO</span>
+    </div>
+
+    <!-- Cuadro donde escribir o dictar -->
+    <textarea class="w-full p-4 rounded-xl shadow bg-white border border-blue-300 outline-none"
+              placeholder="Escribe aquí lo que deseas traducir a señas..."></textarea>
+
+    <!-- Botón traducir -->
+    <button class="mt-6 w-full bg-blue-600 text-white py-3 rounded-xl shadow-lg">
+        Traducir a señas 🤟
+    </button>
+
+    <!-- Botón micrófono (opcional para simular) -->
+    <button class="mt-4 w-full bg-blue-100 text-blue-700 py-3 rounded-xl shadow flex items-center justify-center space-x-2">
+        <span>🎤 Usar micrófono</span>
+    </button>
+
+</div>
+
+    <!-- 7. PANTALLA HISTORIAL -->
+    <div id="history-screen" class="screen bg-gray-50 pt-8 px-6 hidden">
+        <div class="flex items-center mb-6">
+            <button id="back-from-history" class="text-gray-600 mr-4">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            </button>
+            <span class="text-gray-600 font-medium">Volver a Home</span>
+        </div>
+        <h1 class="text-3xl font-bold text-yellow-700 mb-2">Historial</h1>
+        <p class="text-gray-600 mb-8">Tus interacciones recientes</p>
+
+        <!-- Lista de Historial (Ejemplos) -->
+        <div class="space-y-3">
+            <div class="p-4 bg-white rounded-xl shadow-md border-l-4 border-yellow-500">
+                <p class="font-semibold">Mensaje Rápido: Saludos</p>
+                <small class="text-gray-500">27 Nov, 10:30 AM - Uso</small>
+            </div>
+            <div class="p-4 bg-white rounded-xl shadow-md border-l-4 border-yellow-500">
+                <p class="font-semibold">Traductor: "Dónde está el baño"</p>
+                <small class="text-gray-500">26 Nov, 4:15 PM - Traducción</small>
+            </div>
+            <div class="p-4 bg-white rounded-xl shadow-md border-l-4 border-yellow-500">
+                <p class="font-semibold">Llamada de Emergencia: Policía</p>
+                <small class="text-gray-500">25 Nov, 8:00 PM - Emergencia</small>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 8. PANTALLA AYUDA Y TUTORIALES -->
+    <div id="help-screen" class="screen bg-gray-50 pt-8 px-6 hidden">
+        <div class="flex items-center mb-6">
+            <button id="back-from-help" class="text-gray-600 mr-4">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            </button>
+            <span class="text-gray-600 font-medium">Volver a Home</span>
+        </div>
+        <h1 class="text-3xl font-bold text-cyan-700 mb-2">Ayuda y tutoriales</h1>
+        <p class="text-gray-600 mb-8">Videos de uso y LESCO básico</p>
+
+        <!-- Videos de Tutoriales (Ejemplos) -->
+        <div class="space-y-4">
+            <div class="p-4 bg-white rounded-xl shadow-md border-l-4 border-cyan-500">
+                <p class="font-semibold">Video: Cómo usar el traductor</p>
+                <small class="text-gray-500">Duración: 2:30 min</small>
+            </div>
+            <div class="p-4 bg-white rounded-xl shadow-md border-l-4 border-cyan-500">
+                <p class="font-semibold">Video: LESCO Básico - Abecedario</p>
+                <small class="text-gray-500">Duración: 5:00 min</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- 9. PANTALLA DE PERFIL -->
+    <div id="profile-screen" class="screen bg-gray-50 pt-8 px-6 hidden">
+        <div class="flex items-center mb-6">
+            <button id="back-from-profile" class="text-gray-600 mr-4">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            </button>
+            <span class="text-gray-600 font-medium">Volver a Home</span>
+        </div>
+        <h1 class="text-3xl font-bold text-blue-700 mb-2">Perfil y Ajustes</h1>
+        <p class="text-gray-600 mb-8">Configuración de tu cuenta</p>
+
+        <!-- Detalles del Perfil -->
+        <div class="space-y-4">
+            <div class="p-4 bg-white rounded-xl shadow-md">
+                <p class="font-semibold">Nombre:</p>
+                <p class="text-blue-700">Ariana Araya Cordero</p>
+            </div>
+            <div class="p-4 bg-white rounded-xl shadow-md">
+                <p class="font-semibold">Teléfono:</p>
+                <p class="text-blue-700">8888-8888</p>
+            </div>
+            <div class="p-4 bg-white rounded-xl shadow-md">
+                <p class="font-semibold">Contacto de Emergencia:</p>
+                <p class="text-blue-700">5555-5555 (Mamá)</p>
+            </div>
+
+            <button class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 mt-8 rounded-2xl transition">Cerrar Sesión</button>
+        </div>
+    </div>
+
+
+</div>
+
+<!-- 3. Enlace al archivo JavaScript al final del body -->
+<script src="script.js"></script>
+
+</body>
+</html>
