@@ -15,14 +15,35 @@ body {
 .app-container {
     width: 100%;
     max-width: 420px; 
-    height: 90vh;
-    max-height: 850px;
-    margin: 20px auto; /* Centrado y con margen */
-    border-radius: 32px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    height: 100vh;
+    margin: 0 auto;
+    border-radius: 0;
+    box-shadow: none;
     overflow: hidden;
     position: relative;
-    background-color: white; /* Color base de las pantallas */
+    background-color: white;
+}
+
+/* Para pantallas móviles: usar toda la pantalla */
+@media (max-width: 768px) {
+    .app-container {
+        max-width: 100%;
+        height: 100vh;
+        border-radius: 0;
+        box-shadow: none;
+    }
+}
+
+/* Para tablets y escritorio: mantener el diseño tipo móvil */
+@media (min-width: 769px) {
+    .app-container {
+        max-width: 420px;
+        height: 90vh;
+        max-height: 900px;
+        margin: 20px auto;
+        border-radius: 32px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
 }
 
 /* Contenedor de cada pantalla */
@@ -38,9 +59,17 @@ body {
 }
 
 /* Estilos específicos de la pantalla de Bienvenida */
+/* Estilos específicos de la pantalla de Bienvenida (AJUSTADO) */
 #welcome-screen {
     background: linear-gradient(180deg, #1A73E8 0%, #0D47A1 100%);
     color: white;
+    
+    /* NUEVOS COMANDOS PARA CENTRAR 
+    */
+    display: flex; /* Activa Flexbox */
+    flex-direction: column; /* Apila los elementos verticalmente */
+    justify-content: center; /* CENTRA VERTICALMENTE */
+    align-items: center; /* CENTRA HORIZONTALMENTE */
 }
 
 /* Estilos específicos de la cabecera Home */
@@ -58,3 +87,17 @@ body {
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
 }
+/* NUEVA REGLA: Posiciona el texto deslizable en la parte inferior */
+.slide-instruction { 
+    position: absolute; /* Para posicionamiento libre */
+    bottom: 50px; /* Posicionamiento a 50px del borde inferior */
+    
+    /* Centrado horizontal: */
+    left: 50%; 
+    transform: translateX(-50%); /* Ajusta al 50% de su propio ancho para centrar */
+    
+    /* Otros estilos (opcional, basados en la imagen) */
+    text-align: center;
+    width: 80%; /* Para que no se salga de los bordes si tiene mucho texto */
+}
+
