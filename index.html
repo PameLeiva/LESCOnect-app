@@ -697,112 +697,121 @@
                 </button>
                 <span class="text-gray-600 font-medium">Volver a Home</span>
             </div>
+
             <h1 class="text-3xl font-bold text-yellow-700 mb-2">Historial</h1>
             <p class="text-gray-600 mb-8">Tus interacciones recientes</p>
 
-            <!-- Lista de Historial (Ejemplos) -->
-            <div class="space-y-3">
-                <div class="p-4 bg-white rounded-xl shadow-md border-l-4 border-yellow-500">
-                    <p class="font-semibold">Mensaje Rápido: Saludos</p>
-                    <small class="text-gray-500">27 Nov, 10:30 AM - Uso</small>
-                </div>
-                <div class="p-4 bg-white rounded-xl shadow-md border-l-4 border-yellow-500">
-                    <p class="font-semibold">Traductor: "Dónde está el baño"</p>
-                    <small class="text-gray-500">26 Nov, 4:15 PM - Traducción</small>
-                </div>
-                <div class="p-4 bg-white rounded-xl shadow-md border-l-4 border-yellow-500">
-                    <p class="font-semibold">Llamada de Emergencia: Policía</p>
-                    <small class="text-gray-500">25 Nov, 8:00 PM - Emergencia</small>
-                </div>
-            </div>
-
+            <!-- 🔥 AQUÍ VA EL HISTORIAL REAL -->
+            <div id="history-list" class="space-y-3"></div>
         </div>
 
-        <!-- 8. PANTALLA AYUDA Y TUTORIALES -->
-        <div id="help-screen" class="screen bg-gray-50 pt-8 px-6 hidden">
-            <div class="flex items-center mb-6">
-                <button id="back-from-help" class="text-gray-600 mr-4">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                    </svg>
-                </button>
-                <span class="text-gray-600 font-medium">Volver a Home</span>
-            </div>
-            <h1 class="text-3xl font-bold text-cyan-700 mb-2">Ayuda y tutoriales</h1>
-            <p class="text-gray-600 mb-8">Videos de uso y LESCO básico</p>
+    </div>
 
-            <!-- Videos de Tutoriales (Ejemplos) -->
-            <div class="space-y-4">
-                <div class="p-4 bg-white rounded-xl shadow-md border-l-4 border-cyan-500">
-                    <p class="font-semibold">Video: Cómo usar el traductor</p>
-                    <small class="text-gray-500">Duración: 2:30 min</small>
-                </div>
-                <div class="p-4 bg-white rounded-xl shadow-md border-l-4 border-cyan-500">
-                    <p class="font-semibold">Video: LESCO Básico - Abecedario</p>
-                    <small class="text-gray-500">Duración: 5:00 min</small>
-                </div>
+    <!-- 8. PANTALLA AYUDA Y TUTORIALES -->
+    <div id="help-screen" class="screen bg-gray-50 pt-8 px-6 hidden">
+        <div class="flex items-center mb-6">
+            <button id="back-from-help" class="text-gray-600 mr-4">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+            </button>
+            <span class="text-gray-600 font-medium">Volver a Home</span>
+        </div>
+        <h1 class="text-3xl font-bold text-cyan-700 mb-2">Ayuda y tutoriales</h1>
+        <p class="text-gray-600 mb-8">Videos de uso y LESCO básico</p>
+
+        <!-- Videos de Tutoriales (Ejemplos) -->
+        <div class="space-y-4">
+            <div class="p-4 bg-white rounded-xl shadow-md border-l-4 border-cyan-500">
+                <p class="font-semibold">Video: Cómo usar el traductor</p>
+                <small class="text-gray-500">Duración: 2:30 min</small>
+            </div>
+            <div class="p-4 bg-white rounded-xl shadow-md border-l-4 border-cyan-500">
+                <p class="font-semibold">Video: LESCO Básico - Abecedario</p>
+                <small class="text-gray-500">Duración: 5:00 min</small>
             </div>
         </div>
+    </div>
 
-        <!-- 9. PANTALLA DE PERFIL -->
-        <div id="profile-screen" class="screen bg-white p-6" style="display: none;">
+    <!-- PANTALLA EDITAR PERFIL -->
+<div id="edit-profile-screen" class="screen bg-gray-50 pt-8 px-6 hidden">
+    <div class="flex items-center mb-6">
+        <button id="back-from-edit-profile" class="text-gray-600 mr-4">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>
+        </button>
+        <span class="text-gray-600 font-medium">Volver</span>
+    </div>
 
-            <div class="flex justify-between items-center mb-6">
-                <button id="back-from-profile" class="text-blue-600 hover:text-blue-800 text-2xl font-bold">
-                    &larr; </button>
-                <h2 class="text-2xl font-extrabold text-gray-800">Mi Perfil</h2>
-                <div class="w-8"></div>
-            </div>
+    <h1 class="text-3xl font-bold text-blue-700 mb-4">Editar perfil</h1>
 
-            <div class="flex flex-col items-center">
-                <div id="profile-initials-avatar-edit"
-                    class="w-24 h-24 bg-blue-500 rounded-full flex items-center justify-center text-white text-4xl font-bold mb-4 shadow-lg">
-                    A
-                </div>
-                <p class="text-xl font-semibold text-gray-700 mb-8" id="profile-name-display-edit">Nombre de Usuario</p>
-            </div>
+    <form id="edit-profile-form" class="space-y-4">
+        <input id="edit-nombre" class="w-full p-3 border rounded-xl" placeholder="Nombre completo">
+        <input id="edit-telefono" class="w-full p-3 border rounded-xl" placeholder="Teléfono">
+        <input id="edit-email" class="w-full p-3 border rounded-xl" placeholder="Correo">
+        <input id="edit-emergencia" class="w-full p-3 border rounded-xl" placeholder="Contacto de emergencia">
 
-            <form id="edit-profile-form" class="space-y-6">
+        <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl">
+            Guardar cambios
+        </button>
+    </form>
+</div>
 
-                <div>
-                    <label for="edit-name" class="block text-sm font-medium text-gray-600">Nombre Completo</label>
-                    <input type="text" id="edit-name" name="name"
-                        class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                        required>
-                </div>
+<!-- PANTALLA TAMAÑO DE TEXTO -->
+<div id="text-size-screen" class="screen bg-gray-50 pt-8 px-6 hidden">
+    <div class="flex items-center mb-6">
+        <button id="back-from-text-size" class="text-gray-600 mr-4">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>
+        </button>
+        <span class="text-gray-600 font-medium">Volver</span>
+    </div>
 
-                <div>
-                    <label for="edit-email" class="block text-sm font-medium text-gray-600">Correo Electrónico</label>
-                    <input type="email" id="edit-email" name="email"
-                        class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                        required>
-                </div>
+    <h1 class="text-3xl font-bold text-purple-700 mb-4">Tamaño de texto</h1>
 
-                <div>
-                    <label for="edit-phone" class="block text-sm font-medium text-gray-600">Número de Teléfono</label>
-                    <input type="tel" id="edit-phone" name="phone"
-                        class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                </div>
+    <p class="text-gray-700 mb-6">Ajusta el tamaño del texto de la aplicación.</p>
 
-                <div class="pt-4 flex justify-end space-x-4">
-                    <button type="button" id="cancel-edit-button"
-                        class="px-6 py-3 border border-gray-300 text-gray-700 rounded-full font-semibold hover:bg-gray-50 transition duration-150">
-                        Cancelar
-                    </button>
-                    <button type="submit"
-                        class="px-6 py-3 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition duration-150 shadow-md">
-                        Guardar Cambios
-                    </button>
-                </div>
-            </form>
+    <div class="space-y-3">
+        <button data-size="14" class="size-btn w-full p-4 bg-white rounded-xl shadow-md">Pequeño</button>
+        <button data-size="16" class="size-btn w-full p-4 bg-white rounded-xl shadow-md">Normal</button>
+        <button data-size="20" class="size-btn w-full p-4 bg-white rounded-xl shadow-md">Grande</button>
+        <button data-size="24" class="size-btn w-full p-4 bg-white rounded-xl shadow-md">Muy grande</button>
+    </div>
+</div>
 
-            <div class="mt-10 p-4 border border-red-200 bg-red-50 rounded-xl">
-                <p class="text-sm text-red-600 text-center">Aquí se pueden añadir otras opciones de configuración.</p>
-            </div>
+<!-- PANTALLA VIBRACIÓN -->
+<div id="vibration-screen" class="screen bg-gray-50 pt-8 px-6 hidden">
+    <div class="flex items-center mb-6">
+        <button id="back-from-vibration" class="text-gray-600 mr-4">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>
+        </button>
+        <span class="text-gray-600 font-medium">Volver</span>
+    </div>
 
-        </div>
+    <h1 class="text-3xl font-bold text-yellow-700 mb-4">Vibración</h1>
+
+    <p class="text-gray-700 mb-6">Activa o desactiva la vibración al interactuar.</p>
+
+    <label class="flex items-center space-x-3">
+        <input type="checkbox" id="vibration-toggle" class="w-5 h-5">
+        <span class="text-lg">Activar vibración</span>
+    </label>
+</div>
+
+
+    <!-- 9. PANTALLA DE PERFIL -->
+    <div id="profile-screen" class="screen bg-white p-6" style="display: none;">
+
+    </div>
 
     <!-- 3. Enlace al archivo JavaScript al final del body -->
     <script src="script.js"></script>

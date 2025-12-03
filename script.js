@@ -1,5 +1,9 @@
 // Variable global para rastrear la pantalla actual
 let currentScreen = 'welcome-screen';
+let historyList = [];
+
+
+
 
 // Objeto para almacenar la información del usuario
 let userData = {
@@ -33,21 +37,21 @@ function navigateTo(targetScreenId) {
  */
 function updateUserDataDisplay() {
     const isGuest = userData.nombre === 'Invitado';
-    
+
     // Actualizar nombre en Home
     const homeName = document.getElementById('user-display-name');
     if (homeName) {
         const displayName = isGuest ? 'Invitado' : userData.nombre.split(' ')[0];
         homeName.textContent = `Hola, ${displayName}`;
     }
-    
+
     // Actualizar iniciales en Home
     const profileInitials = document.getElementById('user-initials');
     if (profileInitials) {
         const initialsSource = isGuest ? 'I' : userData.nombre;
         const parts = initialsSource.trim().split(' ');
         let initials = '';
-        if (parts.length > 0) initials += parts[0][0]; 
+        if (parts.length > 0) initials += parts[0][0];
         if (!isGuest && parts.length > 1) {
             initials += parts[parts.length - 1][0];
         }
@@ -69,7 +73,8 @@ function updateProfileScreen(isGuest) {
         <div class="flex items-center mb-6">
             <button id="back-from-profile" class="text-gray-600 mr-4">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                 </svg>
             </button>
             <span class="text-gray-600 font-medium">Volver a Home</span>
@@ -90,11 +95,15 @@ function updateProfileScreen(isGuest) {
 
         <!-- Opciones de perfil -->
         <div class="space-y-3 mb-6">
-            <button id="edit-profile-button" class="w-full p-4 bg-white rounded-xl shadow-md flex items-center justify-between hover:bg-gray-50 transition">
+
+            <!-- BOTÓN: Editar perfil -->
+            <button id="edit-profile-button"
+                class="w-full p-4 bg-white rounded-xl shadow-md flex items-center justify-between hover:bg-gray-50 transition">
                 <div class="flex items-center">
                     <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
                         <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                         </svg>
                     </div>
                     <div class="text-left">
@@ -103,11 +112,14 @@ function updateProfileScreen(isGuest) {
                     </div>
                 </div>
                 <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M9 5l7 7-7 7"></path>
                 </svg>
             </button>
 
-            <button class="w-full p-4 bg-white rounded-xl shadow-md flex items-center justify-between hover:bg-gray-50 transition">
+            <!-- BOTÓN: Tamaño de texto -->
+            <button 
+                class="size-text-btn w-full p-4 bg-white rounded-xl shadow-md flex items-center justify-between hover:bg-gray-50 transition">
                 <div class="flex items-center">
                     <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
                         <span class="text-2xl">👤</span>
@@ -118,11 +130,14 @@ function updateProfileScreen(isGuest) {
                     </div>
                 </div>
                 <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M9 5l7 7-7 7"></path>
                 </svg>
             </button>
 
-            <button class="w-full p-4 bg-white rounded-xl shadow-md flex items-center justify-between hover:bg-gray-50 transition">
+            <!-- BOTÓN: Vibración -->
+            <button 
+                class="vibration-btn w-full p-4 bg-white rounded-xl shadow-md flex items-center justify-between hover:bg-gray-50 transition">
                 <div class="flex items-center">
                     <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center mr-3">
                         <span class="text-2xl">📳</span>
@@ -133,9 +148,11 @@ function updateProfileScreen(isGuest) {
                     </div>
                 </div>
                 <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M9 5l7 7-7 7"></path>
                 </svg>
             </button>
+
         </div>
 
         <!-- Información de contacto de emergencia -->
@@ -147,9 +164,12 @@ function updateProfileScreen(isGuest) {
         ` : ''}
 
         <!-- Botón de cerrar sesión -->
-        <button id="logout-button" class="w-full ${isGuest ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600'} text-white font-bold py-4 rounded-2xl shadow-lg transition flex items-center justify-center">
+        <button id="logout-button" 
+            class="w-full ${isGuest ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600'} 
+            text-white font-bold py-4 rounded-2xl shadow-lg transition flex items-center justify-center">
             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
             </svg>
             ${isGuest ? 'Iniciar sesión / Registrarse' : 'Cerrar sesión'}
         </button>
@@ -165,7 +185,7 @@ function updateProfileScreen(isGuest) {
 function getInitials() {
     const isGuest = userData.nombre === 'Invitado';
     if (isGuest) return 'I';
-    
+
     const parts = userData.nombre.trim().split(' ');
     let initials = '';
     if (parts.length > 0) initials += parts[0][0];
@@ -199,23 +219,69 @@ function attachProfileListeners(isGuest) {
     });
 
     document.getElementById('edit-profile-button')?.addEventListener('click', () => {
-        alert('Funcionalidad de edición de perfil próximamente');
+        navigateTo('edit-profile-screen');
+    });
+
+    document.querySelector('.size-text-btn')?.addEventListener('click', () => {
+        navigateTo('text-size-screen');
+    });
+
+    document.querySelector('.vibration-btn')?.addEventListener('click', () => {
+        navigateTo('vibration-screen');
+    });
+
+}
+
+// AGREGA un elemento al historial
+function addToHistory(texto, tipo) {
+    const fecha = new Date().toLocaleString('es-CR', { hour12: false });
+
+    historyList.unshift({
+        texto,
+        tipo,
+        fecha
+    });
+
+    updateHistoryUI();
+}
+
+// ACTUALIZA la pantalla del historial
+function updateHistoryUI() {
+    const container = document.getElementById("history-list");
+    container.innerHTML = "";
+
+    if (historyList.length === 0) {
+        container.innerHTML = `
+            <p class="text-gray-500 text-center">Aún no hay historial...</p>
+        `;
+        return;
+    }
+
+    historyList.forEach(item => {
+        container.innerHTML += `
+            <div class="p-4 bg-white rounded-xl shadow-md border-l-4 border-yellow-500">
+                <p class="font-semibold">${item.tipo}: ${item.texto}</p>
+                <small class="text-gray-500">${item.fecha}</small>
+            </div>
+        `;
     });
 }
+
+
 
 /**
  * Maneja la selección de mensajes en las categorías
  */
 function setupMessageSelection() {
     document.querySelectorAll('.msg-btn').forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             // Remover selección previa
             const category = this.closest('.screen').id;
             this.closest('.space-y-3').querySelectorAll('.msg-btn').forEach(btn => {
                 btn.classList.remove('font-semibold', 'shadow');
                 btn.classList.remove('bg-red-500', 'bg-blue-600', 'bg-green-600', 'bg-yellow-500', 'bg-cyan-500');
                 btn.classList.remove('text-white');
-                
+
                 // Re-agregar clases originales
                 if (category.includes('emergencia')) {
                     btn.classList.add('bg-red-100', 'text-red-700');
@@ -254,6 +320,7 @@ function setupMessageSelection() {
             if (selectedMessageElement) {
                 selectedMessageElement.textContent = messageText;
             }
+            addToHistory(this.textContent.trim(), "Mensaje rápido");
         });
     });
 }
@@ -291,9 +358,36 @@ document.addEventListener('DOMContentLoaded', () => {
         userData.telefono = document.getElementById('telefono').value || 'N/A';
         userData.email = document.getElementById('email').value || 'N/A';
         userData.emergencia = document.getElementById('emergencia').value || 'N/A';
-        
+
         updateUserDataDisplay();
         navigateTo('home-screen');
+    });
+
+    document.getElementById('edit-profile-form')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        userData.nombre = document.getElementById('edit-nombre').value || userData.nombre;
+        userData.telefono = document.getElementById('edit-telefono').value || userData.telefono;
+        userData.email = document.getElementById('edit-email').value || userData.email;
+        userData.emergencia = document.getElementById('edit-emergencia').value || userData.emergencia;
+
+        updateUserDataDisplay();
+
+        alert("Perfil actualizado correctamente");
+        navigateTo('profile-screen');
+    });
+
+    document.querySelectorAll('.size-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const size = btn.getAttribute('data-size');
+            document.documentElement.style.fontSize = size + "px";
+        });
+    });
+
+    document.getElementById('vibration-toggle')?.addEventListener('change', (e) => {
+        if (e.target.checked && navigator.vibrate) {
+            navigator.vibrate(200);
+        }
     });
 
     // Skip signup
@@ -307,19 +401,21 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('to-quick-messages-button')?.addEventListener('click', () => {
         navigateTo('quick-messages-screen');
     });
-    
+
     document.getElementById('to-emergencies-button')?.addEventListener('click', () => {
         navigateTo('emergencies-screen');
     });
-    
+
     document.getElementById('to-translator-mode-button')?.addEventListener('click', () => {
         navigateTo('translator-screen');
     });
-    
+
     document.getElementById('to-history-button')?.addEventListener('click', () => {
+        updateHistoryUI();
         navigateTo('history-screen');
     });
-    
+
+
     document.getElementById('to-help-button')?.addEventListener('click', () => {
         navigateTo('help-screen');
     });
@@ -327,22 +423,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // PERFIL - LISTENER CLAVE
     document.getElementById('user-initials')?.addEventListener('click', () => {
         console.log('Click en perfil detectado');
+        updateProfileScreen(userData.nombre === 'Invitado');
         navigateTo('profile-screen');
     });
+
 
     // === BACK BUTTONS ===
     document.getElementById('back-from-quick-messages')?.addEventListener('click', () => {
         navigateTo('home-screen');
     });
-    
+
     document.getElementById('back-from-emergencies')?.addEventListener('click', () => {
         navigateTo('home-screen');
     });
-    
+
     document.getElementById('back-from-history')?.addEventListener('click', () => {
         navigateTo('home-screen');
     });
-    
+
     document.getElementById('back-from-help')?.addEventListener('click', () => {
         navigateTo('home-screen');
     });
@@ -351,19 +449,19 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('to-messages-emergencia')?.addEventListener('click', () => {
         navigateTo('messages-emergencia-screen');
     });
-    
+
     document.getElementById('to-messages-policia')?.addEventListener('click', () => {
         navigateTo('messages-policia-screen');
     });
-    
+
     document.getElementById('to-messages-hospital')?.addEventListener('click', () => {
         navigateTo('messages-hospital-screen');
     });
-    
+
     document.getElementById('to-messages-banco')?.addEventListener('click', () => {
         navigateTo('messages-banco-screen');
     });
-    
+
     document.getElementById('to-messages-generales')?.addEventListener('click', () => {
         navigateTo('messages-generales-screen');
     });
@@ -372,19 +470,19 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('back-from-messages-emergencia')?.addEventListener('click', () => {
         navigateTo('quick-messages-screen');
     });
-    
+
     document.getElementById('back-from-messages-policia')?.addEventListener('click', () => {
         navigateTo('quick-messages-screen');
     });
-    
+
     document.getElementById('back-from-messages-hospital')?.addEventListener('click', () => {
         navigateTo('quick-messages-screen');
     });
-    
+
     document.getElementById('back-from-messages-banco')?.addEventListener('click', () => {
         navigateTo('quick-messages-screen');
     });
-    
+
     document.getElementById('back-from-messages-generales')?.addEventListener('click', () => {
         navigateTo('quick-messages-screen');
     });
@@ -393,19 +491,31 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('to-signs-to-text')?.addEventListener('click', () => {
         navigateTo('signs-to-text-screen');
     });
-    
+
     document.getElementById('to-text-to-signs')?.addEventListener('click', () => {
         navigateTo('text-to-signs-screen');
     });
-    
+
     document.getElementById('back-to-translator-from-signs')?.addEventListener('click', () => {
         navigateTo('translator-screen');
     });
-    
+
     document.getElementById('back-to-translator-from-text')?.addEventListener('click', () => {
         navigateTo('translator-screen');
     });
-    
+
+    document.getElementById('back-from-edit-profile')?.addEventListener('click', () => {
+        navigateTo('profile-screen');
+    });
+
+    document.getElementById('back-from-text-size')?.addEventListener('click', () => {
+        navigateTo('profile-screen');
+    });
+
+    document.getElementById('back-from-vibration')?.addEventListener('click', () => {
+        navigateTo('profile-screen');
+    });
+
     document.getElementById('back-from-translator-main')?.addEventListener('click', () => {
         navigateTo('home-screen');
     });
