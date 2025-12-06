@@ -17,20 +17,31 @@ let userData = {
  * Función principal para navegar entre pantallas
  */
 function navigateTo(targetScreenId) {
+    const targetElement = document.getElementById(targetScreenId);
+
+    // Evita pantallas blancas si el ID no existe
+    if (!targetElement) {
+        console.error(`❌ ERROR: La pantalla "${targetScreenId}" no existe en el HTML.`);
+        alert(`Pantalla no encontrada: ${targetScreenId}`);
+        return;
+    }
+
+    // Oculta la pantalla actual
     const currentElement = document.getElementById(currentScreen);
     if (currentElement) {
         currentElement.style.display = 'none';
     }
 
-    const targetElement = document.getElementById(targetScreenId);
-    if (targetElement) {
-        targetElement.style.display = (targetScreenId === 'welcome-screen') ? 'flex' : 'block';
-        targetElement.scrollTo(0, 0);
-    }
+    // Muestra la pantalla objetivo
+    targetElement.style.display = (targetScreenId === 'welcome-screen') ? 'flex' : 'block';
+    targetElement.scrollTo(0, 0);
 
+    // Actualiza pantalla actual
     currentScreen = targetScreenId;
-    console.log(`Navegando a: ${currentScreen}`);
+
+    console.log(`📌 Navegando a: ${currentScreen}`);
 }
+
 
 /**
  * Actualiza la interfaz con los datos del usuario
@@ -390,6 +401,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    document.querySelectorAll('.camera-btn').forEach(cameraBtn => {
+        cameraBtn.addEventListener('click', function (e) {
+            e.stopPropagation(); // Bloquea el click del contenedor
+
+            const action = this.getAttribute('data-action');
+            const message = this.getAttribute('data-message');
+
+            if (action === 'show-sign-video') {
+                console.log(`🎥 Reproduciendo video de LESCO: ${message}`);
+                alert(`Simulación: Video de señas para "${message}"`);
+            }
+        });
+    });
+
+
     // Skip signup
     document.getElementById('skip-signup-button')?.addEventListener('click', () => {
         userData = { nombre: 'Invitado', telefono: 'N/A', email: 'N/A', emergencia: 'N/A' };
@@ -421,10 +447,93 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // PERFIL - LISTENER CLAVE
+    // DEBUG: mostrar y forzar visibilidad del profile-screen al clicar las iniciales
     document.getElementById('user-initials')?.addEventListener('click', () => {
         console.log('Click en perfil detectado');
-        updateProfileScreen(userData.nombre === 'Invitado');
-        navigateTo('profile-screen');
+
+        const ps = document.getElementById('profile-screen');
+        if (!ps) {
+            console.error('profile-screen NO existe en el DOM');
+            return;
+        }
+
+        // Log de ancestros y su display para detectar si alguno está ocultando el screen
+        let node = ps;
+        while (node) {
+            console.log('Ancestor:', node.tagName, node.id || node.className, 'computed display:',
+                window.getComputedStyle(node).display);
+            node = node.parentElement;
+        }
+
+        // Rellenar campos del perfil desde userData (asegura que no queden vacíos)
+        document.getElementById('profile-nombre').textContent = (window.userData && userData.nombre) || 'Invitado';
+        document.getElementById('profile-telefono').textContent = (window.userData && userData.telefono) || '--';
+        document.getElementById('profile-email').textContent = (window.userData && userData.email) || '--';
+        document.getElementById('profile-emergencia').textContent = (window.userData && userData.emergencia) || '--';
+
+        // Forzar que todas las screens estén ocultas y luego mostrar profile-screen
+        document.querySelectorAll('.screen').forEach(s => {
+            s.classList.add('hidden');
+            s.style.display = '';
+        });
+        ps.classList.remove('hidden');
+        ps.style.display = 'block';
+        ps.style.zIndex = '50';
+        ps.scrollTo(0, 0);
+
+        console.log('profile-screen mostrado. clases:', ps.className, 'inline display:', ps.style.display);
+    });
+
+
+    // DEBUG: comprobar y forzar apertura de perfil al clicar iniciales
+    document.addEventListener('DOMContentLoaded', () => {
+        const initials = document.getElementById('user-initials');
+        console.log('[DEBUG] user-initials existe:', !!initials, initials);
+
+        if (!initials) return;
+
+        initials.style.cursor = 'pointer';
+        initials.addEventListener('click', (e) => {
+            e.stopPropagation();
+            console.log('[DEBUG] click en user-initials recibido. target:', e.target);
+
+            const ps = document.getElementById('profile-screen');
+            if (!ps) {
+                console.error('[DEBUG] profile-screen NO existe en el DOM');
+                return;
+            }
+
+            // Imprimir ancestros y estilos computados para detectar quién lo oculta
+            let node = ps;
+            while (node) {
+                const cs = window.getComputedStyle(node);
+                console.log('[DEBUG] Ancestor:', node.tagName, node.id || node.className, {
+                    display: cs.display,
+                    visibility: cs.visibility,
+                    opacity: cs.opacity,
+                    pointerEvents: cs.pointerEvents
+                });
+                node = node.parentElement;
+            }
+
+            // Rellenar campos del perfil desde userData (seguro)
+            document.getElementById('profile-nombre') && (document.getElementById('profile-nombre').textContent = (window.userData && userData.nombre) || 'Invitado');
+            document.getElementById('profile-telefono') && (document.getElementById('profile-telefono').textContent = (window.userData && userData.telefono) || '--');
+            document.getElementById('profile-email') && (document.getElementById('profile-email').textContent = (window.userData && userData.email) || '--');
+            document.getElementById('profile-emergencia') && (document.getElementById('profile-emergencia').textContent = (window.userData && userData.emergencia) || '--');
+
+            // Ocultar todas las screens (clase hidden) y mostrar profile-screen
+            document.querySelectorAll('.screen').forEach(s => {
+                s.classList.add('hidden');
+                s.style.display = '';
+            });
+            ps.classList.remove('hidden');
+            ps.style.display = 'block';
+            ps.style.zIndex = '9999';
+            ps.scrollTo(0, 0);
+
+            console.log('[DEBUG] profile-screen forzado visible. clases:', ps.className, 'display:', ps.style.display);
+        });
     });
 
 
@@ -519,4 +628,52 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('back-from-translator-main')?.addEventListener('click', () => {
         navigateTo('home-screen');
     });
-});
+}); // fin DOMContentLoaded
+
+// Reemplazar cualquier listener anterior de 'user-initials' por este bloque seguro:
+(function attachProfileClickOnce() {
+    const initials = document.getElementById('user-initials');
+    if (!initials) return;
+    // Evitar duplicados
+    if (initials.dataset.listenerAttached === '1') return;
+    initials.dataset.listenerAttached = '1';
+    initials.style.cursor = 'pointer';
+
+    initials.addEventListener('click', (e) => {
+        e.stopPropagation();
+        console.log('[DEBUG] click en user-initials recibido.');
+
+        // Obtener elementos del perfil de forma segura
+        const profileNombre = document.getElementById('profile-nombre');
+        const profileTelefono = document.getElementById('profile-telefono');
+        const profileEmail = document.getElementById('profile-email');
+        const profileEmergencia = document.getElementById('profile-emergencia');
+        const ps = document.getElementById('profile-screen');
+
+        if (!ps) {
+            console.error('[DEBUG] profile-screen NO existe en el DOM');
+            return;
+        }
+
+        // Rellenar solo si existen los nodos en el DOM
+        if (profileNombre) profileNombre.textContent = (window.userData && userData.nombre) || 'Invitado';
+        if (profileTelefono) profileTelefono.textContent = (window.userData && userData.telefono) || '--';
+        if (profileEmail) profileEmail.textContent = (window.userData && userData.email) || '--';
+        if (profileEmergencia) profileEmergencia.textContent = (window.userData && userData.emergencia) || '--';
+
+        // Navegación: usa tu función navigateTo si existe, si no, muestra manualmente
+        if (typeof navigateTo === 'function') {
+            navigateTo('profile-screen');
+        } else {
+            // Fallback seguro
+            document.querySelectorAll('.screen').forEach(s => {
+                s.classList.add('hidden');
+                s.style.display = '';
+            });
+            ps.classList.remove('hidden');
+            ps.style.display = 'block';
+        }
+
+        console.log('[DEBUG] profile-screen mostrado (forzado/por navigateTo).');
+    });
+})();
