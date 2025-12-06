@@ -409,8 +409,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const message = this.getAttribute('data-message');
 
             if (action === 'show-sign-video') {
-                console.log(`🎥 Reproduciendo video de LESCO: ${message}`);
-                alert(`Simulación: Video de señas para "${message}"`);
+                console.log(`🎥 show-sign-video: ${message}`);
+                // Mensaje uniforme: "Videos en proceso"
+                alert(`Videos en proceso — ${message || 'Contenido próximamente'}`);
             }
         });
     });
@@ -675,5 +676,72 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         console.log('[DEBUG] profile-screen mostrado (forzado/por navigateTo).');
+    });
+})();
+
+// Manejo unificado de botones de cámara -> modal "Videos en proceso"
+(function setupSignVideoButtons() {
+    function escapeHtml(str) {
+        return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function openSignVideoModal(categoryMessage) {
+        if (document.getElementById('lesco-video-modal')) return;
+
+        const modal = document.createElement('div');
+        modal.id = 'lesco-video-modal';
+        modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4';
+        modal.innerHTML = `
+            <div class="bg-white rounded-xl w-full max-w-md p-5 relative shadow-lg">
+                <button id="lesco-video-close" class="absolute top-3 right-3 text-gray-600 px-2 py-1 rounded hover:bg-gray-100">✕</button>
+
+                <div class="flex items-center space-x-3 mb-4">
+                    <!-- Engranaje -->
+                    <svg class="w-8 h-8 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M12 15.5A3.5 3.5 0 1112 8.5a3.5 3.5 0 010 7z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09c.7 0 1.28-.39 1.51-1a1.65 1.65 0 00-.33-1.82l-.06-.06A2 2 0 016.14 3.3l.06.06c.45.45 1.06.67 1.66.5.5-.14 1.02-.21 1.54-.21H12c.52 0 1.04.07 1.54.21.6.17 1.21-.05 1.66-.5l.06-.06A2 2 0 0119.7 4.86l-.06.06c-.45.45-.67 1.06-.5 1.66.14.5.21 1.02.21 1.54V12c0 .52-.07 1.04-.21 1.54-.17.6.05 1.21.5 1.66l.06.06z"></path>
+                    </svg>
+
+                    <!-- Icono de video/play -->
+                    <svg class="w-8 h-8 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="2" y="5" width="20" height="14" rx="2" ry="2" stroke-width="1.6"></rect>
+                        <path d="M10 9l6 3-6 3V9z" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+
+                    <div>
+                        <div class="text-lg font-bold">Videos en proceso</div>
+                        <div class="text-sm text-gray-500">Contenido de LESCO próximamente</div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 rounded-md p-4 text-center text-sm text-gray-700">
+                    ${escapeHtml(categoryMessage || 'Videos en proceso')}
+                </div>
+
+                <div class="mt-4 text-right">
+                    <button id="lesco-video-ok" class="px-4 py-2 bg-blue-600 text-white rounded-lg">Entendido</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        const close = () => {
+            const m = document.getElementById('lesco-video-modal');
+            if (m) m.remove();
+        };
+        document.getElementById('lesco-video-close').addEventListener('click', close);
+        document.getElementById('lesco-video-ok').addEventListener('click', close);
+        modal.addEventListener('click', (ev) => { if (ev.target === modal) close(); });
+
+        console.log('openSignVideoModal:', categoryMessage);
+    }
+
+    // Delegación global: captura cualquier botón con data-action="show-sign-video"
+    document.addEventListener('click', (ev) => {
+        const btn = ev.target.closest && ev.target.closest('[data-action="show-sign-video"]');
+        if (!btn) return;
+        ev.preventDefault();
+        const message = btn.dataset.message ? `Videos en proceso — ${btn.dataset.message}` : 'Videos en proceso';
+        openSignVideoModal(message);
     });
 })();

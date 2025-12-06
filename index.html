@@ -846,11 +846,12 @@
             <div
                 class="flex flex-col items-center justify-center p-8 bg-gray-100 rounded-xl shadow-inner border-2 border-dashed border-gray-400 text-gray-600 h-48">
 
-                <img src="img/grua.png" alt="Grúa - Sección en Construcción"
+                <!-- Cambiado: nuevo placeholder más genérico -->
+                <img src="img/grua.png" alt="Videos en proceso"
                     class="w-16 h-16 mb-3 opacity-90 animate-pulse">
 
-                <p class="text-xl font-bold">Sección en Proceso</p>
-                <small class="text-center mt-1">¡Estamos trabajando para añadir los videos!</small>
+                <p class="text-xl font-bold">Videos en proceso</p>
+                <small class="text-center mt-1">Próximamente: videos en lenguaje de señas LESCO</small>
             </div>
         </div>
 
@@ -930,7 +931,8 @@
             data-action="show-sign-video" data-message="Vibración - Videos">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
+                </path>
             </svg>
         </button>
 
@@ -957,7 +959,8 @@
 
     <!-- 9. PANTALLA DE PERFIL -->
     <div id="profile-screen" class="screen hidden bg-white pt-8 pb-12">
-        <div class="max-w-3xl mx-auto w-full px-4 sm:px-6 lg:px-8 relative">
+        <!-- Wrapper responsivo: margen lateral en móvil, centrado en escritorio -->
+        <div class="max-w-3xl mx-4 sm:mx-auto w-full px-4 sm:px-6 lg:px-8 relative">
             <!-- Botón cámara (esquina superior derecha del wrapper) -->
             <button
                 class="camera-btn absolute top-4 right-4 p-1 rounded-full text-white hover:text-gray-200 bg-white/30 hover:bg-white/50 transition duration-150 z-10"
@@ -970,7 +973,7 @@
                 </svg>
             </button>
 
-            <!-- Header: título + avatar (responsive: avatar a la derecha) -->
+            <!-- Header: título + avatar -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center mb-6">
                 <div class="md:col-span-2">
                     <button id="back-from-profile" class="text-gray-600 mb-3 flex items-center">
@@ -1027,7 +1030,7 @@
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                            </svg>
+                        </svg>
                         </button>
                     </div>
                 </div>
@@ -1044,7 +1047,7 @@
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                            </svg>
+                        </svg>
                         </button>
                     </div>
                 </div>
