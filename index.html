@@ -8,9 +8,38 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="theme-color" content="#1A73E8">
     <title>LESCOnect</title>
-    <!-- 1. Enlace al framework de estilizado Tailwind CSS -->
+    <!-- 1. Fuentes del Design System Tierra: Lexend (Display) + Atkinson Hyperlegible (Body) + Inter (Utility) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=Lexend:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- 2. Framework de estilizado Tailwind CSS con Design Tokens Tierra -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 2. Enlace a nuestra hoja de estilos personalizada -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        tierraBg: '#FBF6EE',
+                        tierraSurface: '#FFFFFF',
+                        tierraSurface2: '#F3EADA',
+                        tierraLine: '#EAE0D0',
+                        tierraInk: '#2B241C',
+                        tierraInkDim: '#7A6E5C',
+                        tierraTerracota: '#B5551A',
+                        tierraSalvia: '#5C7A5C',
+                        tierraCoral: '#C0392B',
+                    },
+                    fontFamily: {
+                        display: ['"Lexend"', 'sans-serif'],
+                        sans: ['"Atkinson Hyperlegible"', 'Inter', 'sans-serif'],
+                        body: ['"Atkinson Hyperlegible"', 'sans-serif'],
+                        utility: ['"Inter"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- 3. Enlace a nuestra hoja de estilos personalizada -->
     <link rel="stylesheet" href="styles.css">
     <link rel="manifest" href="manifest.json">
 </head>
@@ -20,883 +49,1226 @@
     <div class="app-container">
         <div class="app-inner max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8">
 
-            <!-- 1. PANTALLA DE BIENVENIDA -->
-            <div id="welcome-screen" class="screen flex p-8">
-                <!-- Icono de cámara (simulación) -->
-                <div class="absolute top-6 right-6 text-2xl opacity-70">
-                    <!-- Icono simulado de cámara -->
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
-                        </path>
-                    </svg>
+            <!-- 1. PANTALLA DE BIENVENIDA (PALETA TIERRA) -->
+            <div id="welcome-screen" class="screen flex flex-col justify-between p-8 bg-[#FBF6EE] font-body text-[#2B241C]">
+                <!-- Botón Video LESCO Superior -->
+                <div class="flex justify-end pt-2">
+                    <button
+                        class="camera-btn p-2.5 rounded-2xl bg-white text-[#B5551A] hover:bg-[#F3EADA] border border-[#EAE0D0] shadow-sm transition"
+                        data-action="show-sign-video" data-message="Bienvenida a LESCOnect" title="Ver en señas">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                    </button>
                 </div>
 
-                <div class="flex flex-col items-center justify-center h-full w-full -mt-20">
-                    <span class="text-7xl mb-6">👋</span>
-                    <h1 class="text-5xl font-extrabold mb-1">Bienvenido</h1>
-                    <p class="text-xl opacity-90 text-center">Accesibilidad para personas sordas</p>
+                <div class="flex flex-col items-center justify-center my-auto text-center px-2">
+                    <!-- Icono Principal -->
+                    <div class="w-24 h-24 rounded-3xl bg-gradient-to-tr from-[#9C4410] to-[#B5551A] text-white flex items-center justify-center text-5xl shadow-xl shadow-[#B5551A]/20 mb-6 border-2 border-[#F3EADA] animate-pulse">
+                        🤟
+                    </div>
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-display font-bold bg-[#EBF2EB] text-[#5C7A5C] border border-[#C8DAC8] mb-3">
+                        ✦ Accesibilidad Sin Barreras
+                    </span>
+                    <h1 class="text-4xl font-display font-black text-[#2B241C] tracking-tight mb-2">LESCOnect</h1>
+                    <p class="text-base text-[#7A6E5C] font-medium max-w-xs leading-relaxed">
+                        Traducción y comunicación bidireccional en Lenguaje de Señas Costarricense.
+                    </p>
                 </div>
 
-                <!-- Indicador de Deslizar (llama a la función JS) -->
-                <div class="text-center w-full pb-6 cursor-pointer" id="to-signup-button">
-                    <p class="text-lg mb-2">Desliza para continuar</p>
-                    <!-- Icono de flecha animado -->
-                    <svg class="w-8 h-8 mx-auto animate-bounce mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18">
-                        </path>
-                    </svg>
-                    <small class="text-xs tracking-widest opacity-80">SWIPE UP</small>
+                <!-- Indicador de Deslizar / Continuar -->
+                <div class="w-full pb-4 cursor-pointer text-center" id="to-signup-button">
+                    <div class="p-4 rounded-2xl bg-white border-2 border-[#EAE0D0] hover:border-[#B5551A] shadow-sm hover:shadow-md transition group active:scale-98 flex items-center justify-between">
+                        <div class="text-left">
+                            <span class="text-xs font-bold text-[#7A6E5C] uppercase tracking-wider block">Comenzar</span>
+                            <span class="text-sm font-display font-bold text-[#2B241C] group-hover:text-[#B5551A] transition-colors">Toca o desliza para entrar</span>
+                        </div>
+                        <div class="w-10 h-10 rounded-xl bg-[#F3EADA] text-[#B5551A] group-hover:bg-[#B5551A] group-hover:text-white flex items-center justify-center font-bold text-lg transition-colors">
+                            →
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- 2. PANTALLA DE CREAR CUENTA -->
-            <div id="signup-screen" class="screen pt-10 px-6 hidden">
-                <h1 class="text-3xl font-bold text-blue-700 mb-1">Crear cuenta</h1>
-                <p class="text-gray-600 mb-6">Ingresa tus datos para continuar</p>
+            <!-- 2. PANTALLA DE CREAR CUENTA (PALETA TIERRA) -->
+            <div id="signup-screen" class="screen pt-8 px-6 pb-12 hidden bg-[#FBF6EE] font-body">
+                <div class="flex items-center mb-6">
+                    <span class="text-xs font-display font-bold text-[#7A6E5C] uppercase tracking-wider bg-[#F3EADA] px-3 py-1 rounded-full border border-[#EAE0D0]">
+                        Paso 1 de 1
+                    </span>
+                </div>
+
+                <h1 class="text-3xl font-display font-black text-[#2B241C] tracking-tight mb-1">Crear cuenta</h1>
+                <p class="text-sm text-[#7A6E5C] font-medium mb-6">Ingresa tus datos para personalizar tu experiencia</p>
 
                 <form id="signup-form" class="space-y-4">
-                    <!-- Campos de formulario... -->
-                    <div>
-                        <label for="nombre" class="text-sm font-medium text-gray-700 block mb-1">Nombre completo</label>
-                        <input type="text" id="nombre" placeholder="Tu nombre completo" required
-                            class="w-full p-3 rounded-xl bg-gray-100 border-2 border-transparent focus:border-blue-500 focus:outline-none transition">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label for="nombre" class="text-xs font-display font-bold text-[#2B241C] block mb-1">Nombre</label>
+                            <input type="text" id="nombre" placeholder="Ej: Pamela" required
+                                class="w-full p-3.5 rounded-2xl bg-white border-2 border-[#EAE0D0] focus:border-[#B5551A] text-[#2B241C] placeholder-[#7A6E5C]/50 focus:outline-none transition shadow-sm font-medium">
+                        </div>
+                        <div>
+                            <label for="apellidos" class="text-xs font-display font-bold text-[#2B241C] block mb-1">Apellidos</label>
+                            <input type="text" id="apellidos" placeholder="Ej: Leiva" required
+                                class="w-full p-3.5 rounded-2xl bg-white border-2 border-[#EAE0D0] focus:border-[#B5551A] text-[#2B241C] placeholder-[#7A6E5C]/50 focus:outline-none transition shadow-sm font-medium">
+                        </div>
                     </div>
                     <div>
-                        <label for="telefono" class="text-sm font-medium text-gray-700 block mb-1">Teléfono</label>
-                        <input type="tel" id="telefono" placeholder="Tu número de teléfono" required
-                            class="w-full p-3 rounded-xl bg-gray-100 border-2 border-transparent focus:border-blue-500 focus:outline-none transition">
+                        <label for="cedula" class="text-xs font-display font-bold text-[#2B241C] block mb-1">Cédula de identidad</label>
+                        <input type="text" id="cedula" placeholder="Ej: 1-1234-5678" required
+                            class="w-full p-3.5 rounded-2xl bg-white border-2 border-[#EAE0D0] focus:border-[#B5551A] text-[#2B241C] placeholder-[#7A6E5C]/50 focus:outline-none transition shadow-sm font-medium">
                     </div>
                     <div>
-                        <label for="email" class="text-sm font-medium text-gray-700 block mb-1">Correo electrónico</label>
-                        <input type="email" id="email" placeholder="tu.email@ejemplo.com" required
-                            class="w-full p-3 rounded-xl bg-gray-100 border-2 border-transparent focus:border-blue-500 focus:outline-none transition">
+                        <label for="telefono" class="text-xs font-display font-bold text-[#2B241C] block mb-1">Teléfono</label>
+                        <input type="tel" id="telefono" placeholder="8888-8888" required
+                            class="w-full p-3.5 rounded-2xl bg-white border-2 border-[#EAE0D0] focus:border-[#B5551A] text-[#2B241C] placeholder-[#7A6E5C]/50 focus:outline-none transition shadow-sm font-medium">
                     </div>
                     <div>
-                        <label for="fecha" class="text-sm font-medium text-gray-700 block mb-1">Fecha de nacimiento</label>
+                        <label for="fecha" class="text-xs font-display font-bold text-[#2B241C] block mb-1">Fecha de nacimiento</label>
                         <input type="date" id="fecha" required
-                            class="w-full p-3 rounded-xl bg-gray-100 border-2 border-transparent focus:border-blue-500 focus:outline-none transition">
+                            class="w-full p-3.5 rounded-2xl bg-white border-2 border-[#EAE0D0] focus:border-[#B5551A] text-[#2B241C] focus:outline-none transition shadow-sm font-medium">
                     </div>
                     <div>
-                        <label for="emergencia" class="text-sm font-medium text-gray-700 block mb-1">Contacto de
-                            emergencia</label>
-                        <input type="tel" id="emergencia" placeholder="Teléfono de contacto de emergencia"
-                            class="w-full p-3 rounded-xl bg-gray-100 border-2 border-transparent focus:border-blue-500 focus:outline-none transition">
+                        <label for="emergencia" class="text-xs font-display font-bold text-[#2B241C] block mb-1">Contacto de emergencia</label>
+                        <input type="tel" id="emergencia" placeholder="Teléfono de familiar o amigo"
+                            class="w-full p-3.5 rounded-2xl bg-white border-2 border-[#EAE0D0] focus:border-[#B5551A] text-[#2B241C] placeholder-[#7A6E5C]/50 focus:outline-none transition shadow-sm font-medium">
                     </div>
 
                     <!-- Botones de Acción -->
-                    <div class="pt-6 pb-12 space-y-3">
+                    <div class="pt-4 pb-6 space-y-3">
                         <button type="submit"
-                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-2xl shadow-lg transition duration-150 flex items-center justify-center">
-                            Crear cuenta
-                            <svg class="w-6 h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
-                                </path>
-                            </svg>
+                            class="w-full bg-[#B5551A] hover:bg-[#9C4410] text-white font-display font-extrabold py-4 rounded-2xl shadow-lg shadow-[#B5551A]/20 transition duration-150 flex items-center justify-center space-x-2 active:scale-98">
+                            <span>Crear cuenta</span>
+                            <span class="text-lg">→</span>
                         </button>
                         <button type="button" id="skip-signup-button"
-                            class="w-full bg-white text-gray-700 font-semibold py-3 rounded-2xl border border-gray-300 hover:bg-gray-50 transition duration-150 flex items-center justify-center">
-                            Omitir por el momento
-                            <svg class="w-6 h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
-                                </path>
-                            </svg>
+                            class="w-full bg-white text-[#2B241C] hover:bg-[#F3EADA] font-display font-bold py-3.5 rounded-2xl border-2 border-[#EAE0D0] transition duration-150 flex items-center justify-center space-x-2 active:scale-98">
+                            <span>Omitir por el momento</span>
                         </button>
                     </div>
                 </form>
             </div>
 
-            <!-- 3. PANTALLA PRINCIPAL (HOME) -->
-            <div id="home-screen" class="screen hidden">
-                <!-- Cabecera Home con degradado azul -->
-                <header class="home-header-bg p-6 pb-20 rounded-b-3xl shadow-md text-white">
-                    <div class="flex justify-between items-center mb-6">
-                        <div class="text-left">
-                            <h2 id="user-display-name" class="text-3xl font-bold">¡Cargando usuario...</h2>
-                            <p class="text-lg opacity-90">¿Qué necesitas hoy?</p>
-                        </div>
-                        <!-- CAMBIO CLAVE: Usamos un ID para las iniciales del usuario -->
-                        <div id="user-initials"
-                            class="w-12 h-12 bg-white text-blue-600 font-extrabold text-xl flex items-center justify-center rounded-full shadow-lg cursor-pointer">
-                            --
-                        </div>
-                    </div>
+            <!-- 3. PANTALLA PRINCIPAL (HOME) - DESIGN SYSTEM TIERRA (LESCONECTE) -->
+            <div id="home-screen" class="screen hidden bg-[#FBF6EE] pb-12 font-body">
 
-                    <!-- Banner de Lenguaje de Señas Activo -->
-                    <div
-                        class="bg-green-50 text-green-700 p-3 rounded-xl flex items-center justify-between shadow-inner cursor-pointer">
-                        <span class="text-2xl mr-3">👋</span>
-                        <span class="font-semibold flex-grow">Lenguaje de señas activo</span>
-                        <!-- Icono de video simulado -->
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
-                            </path>
-                        </svg>
+                <!-- Header Cálido y Orgánico (Paleta Tierra) -->
+                <header class="bg-white/95 px-6 pt-9 pb-5 border-b border-[#EAE0D0] shadow-sm sticky top-0 z-20">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <!-- Badge Salvia -->
+                            <div class="flex items-center space-x-2 mb-1.5">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-display font-bold bg-[#EBF2EB] text-[#5C7A5C] border border-[#C8DAC8]">
+                                    <span class="w-2 h-2 rounded-full bg-[#5C7A5C] mr-1.5 animate-pulse"></span>
+                                    LESCO Activo
+                                </span>
+                            </div>
+                            <h2 id="user-display-name" class="text-2xl font-display font-extrabold text-[#2B241C] tracking-tight">¡Hola, Pamela! 👋</h2>
+                            <p class="text-xs text-[#7A6E5C] font-medium font-body">Comunícate sin barreras</p>
+                        </div>
+                        
+                        <!-- Avatar Terracota Orgánico -->
+                        <div id="user-initials"
+                            class="w-12 h-12 rounded-2xl bg-[#B5551A] text-white font-display font-black text-lg flex items-center justify-center shadow-md shadow-[#B5551A]/25 ring-4 ring-[#F3EADA] cursor-pointer hover:scale-105 active:scale-95 transition-all duration-200">
+                            P
+                        </div>
                     </div>
                 </header>
 
-                <!-- Contenido principal con las categorías -->
-                <main class="p-6 -mt-10 grid grid-cols-2 gap-4">
-                    <!-- Card: Mensajes rápidos -->
-                    <div id="to-quick-messages-button"
-                        class="card-shadow p-4 rounded-xl bg-blue-50/70 hover:bg-blue-100 cursor-pointer h-40 flex flex-col justify-between relative">
+                <!-- Contenedor Principal (Jerarquía de Prioridades) -->
+                <main class="px-5 pt-5 space-y-4">
 
-                        <button
-                            class="camera-btn absolute top-2 right-2 p-1 rounded-full text-blue-500 hover:text-blue-700 bg-white/50 hover:bg-white/90 transition duration-150 z-10"
-                            data-action="show-sign-video" data-message="Mensajes rápidos">
+                    <!-- ======================================================= -->
+                    <!-- ⭐ PRIORIDAD 1: HERO CARD - TRADUCTOR (COLOR TERRACOTA) -->
+                    <!-- ======================================================= -->
+                    <div class="relative overflow-hidden rounded-[28px] bg-gradient-to-br from-[#9C4410] via-[#B5551A] to-[#D46B28] text-white p-6 shadow-xl shadow-[#B5551A]/25 border-2 border-[#D46B28]/40">
+                        
+                        <!-- Destello Cálido Sutil -->
+                        <div class="absolute -right-8 -bottom-8 w-44 h-44 bg-[#F3EADA]/20 rounded-full blur-3xl pointer-events-none"></div>
 
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
-                                </path>
-                            </svg>
-                        </button>
+                        <!-- Fila Superior: Badge + Botón de Video LESCO -->
+                        <div class="flex justify-between items-center mb-4 relative z-10">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-display font-bold bg-black/25 text-[#F3EADA] border border-white/20 backdrop-blur-md">
+                                <span class="mr-1.5 text-yellow-300">✦</span> Función Principal
+                            </span>
 
-                        <div>
-                            <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center mb-2 shadow-sm">
-                                <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 4v-4z">
+                            <button
+                                class="camera-btn p-2 rounded-xl text-white bg-black/20 hover:bg-black/40 backdrop-blur-md border border-white/30 transition duration-150 shadow-sm"
+                                data-action="show-sign-video" data-message="Traductor LESCO" title="Ver tutorial en señas">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                        d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
                                     </path>
                                 </svg>
-                            </div>
-                            <p class="text-lg font-semibold text-blue-900">Mensajes rápidos</p>
+                            </button>
                         </div>
-                        <span class="text-xl self-end">👋</span>
+
+                        <!-- Título e Iconografía Central -->
+                        <div class="relative z-10 flex items-center space-x-4 mb-4">
+                            <div class="w-14 h-14 rounded-2xl bg-white text-[#B5551A] flex items-center justify-center text-3xl shadow-md flex-shrink-0 font-bold border-2 border-[#EAE0D0]">
+                                🤟
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-display font-black tracking-tight text-white leading-tight">Traductor LESCO</h3>
+                                <p class="text-xs font-bold text-[#F3EADA] uppercase tracking-wider">Traducción directa</p>
+                            </div>
+                        </div>
+
+                        <!-- Botones Grandes Apilados Verticalmente (Acceso Directo Sin Intermediarios) -->
+                        <div class="space-y-3 relative z-10">
+                            <!-- Botón 1: Señas a Voz / Texto (Cámara directa) -->
+                            <button id="home-direct-signs-to-text"
+                                class="w-full p-4 rounded-2xl bg-white text-[#2B241C] hover:bg-[#F3EADA] border-2 border-white shadow-lg transition-all transform active:scale-98 flex items-center justify-between group">
+                                <div class="flex items-center space-x-3.5 text-left">
+                                    <div class="w-12 h-12 rounded-xl bg-[#F3EADA] text-[#B5551A] flex items-center justify-center text-2xl group-hover:scale-105 transition-transform">
+                                        📷
+                                    </div>
+                                    <div>
+                                        <span class="font-display font-black text-base text-[#2B241C] block leading-tight">Señas a Voz</span>
+                                        <span class="text-xs text-[#7A6E5C] font-medium">Reconocimiento con cámara LESCO</span>
+                                    </div>
+                                </div>
+                                <span class="w-8 h-8 rounded-full bg-[#F3EADA] text-[#B5551A] flex items-center justify-center font-display font-black text-sm group-hover:translate-x-0.5 transition-transform">→</span>
+                            </button>
+
+                            <!-- Botón 2: Voz / Texto a Señas (Reproductor directo) -->
+                            <button id="home-direct-text-to-signs"
+                                class="w-full p-4 rounded-2xl bg-white text-[#2B241C] hover:bg-[#F3EADA] border-2 border-white shadow-lg transition-all transform active:scale-98 flex items-center justify-between group">
+                                <div class="flex items-center space-x-3.5 text-left">
+                                    <div class="w-12 h-12 rounded-xl bg-[#EBF2EB] text-[#5C7A5C] flex items-center justify-center text-2xl group-hover:scale-105 transition-transform">
+                                        🎙️
+                                    </div>
+                                    <div>
+                                        <span class="font-display font-black text-base text-[#2B241C] block leading-tight">Voz a Señas</span>
+                                        <span class="text-xs text-[#7A6E5C] font-medium">Dictado y clips de señas</span>
+                                    </div>
+                                </div>
+                                <span class="w-8 h-8 rounded-full bg-[#EBF2EB] text-[#5C7A5C] flex items-center justify-center font-display font-black text-sm group-hover:translate-x-0.5 transition-transform">→</span>
+                            </button>
+                        </div>
                     </div>
 
-                    <!-- Card: Emergencias -->
+                    <!-- ======================================================= -->
+                    <!-- 🚨 PRIORIDAD 2: EMERGENCIAS (COLOR CORAL URGENTE)       -->
+                    <!-- ======================================================= -->
                     <div id="to-emergencies-button"
-                        class="card-shadow p-4 rounded-xl bg-red-50/70 hover:bg-red-100 cursor-pointer h-40 relative">
-
-                        <button
-                            class="camera-btn absolute top-2 right-2 p-1 rounded-full text-red-500 hover:text-red-700 bg-white/50 hover:bg-white/90 transition duration-150 z-10"
-                            data-action="show-sign-video" data-message="Emergencias">
-
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
-                                </path>
-                            </svg>
-                        </button>
-
-                        <div class="h-full flex flex-col justify-between">
+                        class="group p-4 rounded-2xl bg-gradient-to-r from-[#A93226] via-[#C0392B] to-[#A93226] text-white shadow-lg shadow-[#C0392B]/25 cursor-pointer transition-all duration-200 flex items-center justify-between active:scale-[0.99] border-2 border-[#E6B0AA]">
+                        
+                        <div class="flex items-center space-x-3.5">
+                            <div class="w-12 h-12 rounded-xl bg-white text-[#C0392B] flex items-center justify-center text-2xl shadow-md font-bold group-hover:scale-105 transition-transform border border-[#EAE0D0]">
+                                🚨
+                            </div>
                             <div>
-                                <div
-                                    class="w-10 h-10 bg-white rounded-full flex items-center justify-center mb-2 shadow-sm">
-                                    <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
-                                        </path>
-                                    </svg>
+                                <div class="flex items-center space-x-2">
+                                    <h3 class="text-lg font-display font-black leading-tight">Emergencias</h3>
+                                    <span class="px-2 py-0.5 rounded-md bg-white text-[#C0392B] text-[10px] font-display font-black tracking-wider uppercase shadow">SOS</span>
                                 </div>
-                                <p class="text-lg font-semibold text-red-900">Emergencias</p>
+                                <p class="text-xs font-medium text-[#FADBD8] mt-0.5">Policía, Ambulancia, Bomberos</p>
                             </div>
-                            <span class="text-xl self-end">🚨</span>
+                        </div>
+
+                        <div class="w-9 h-9 rounded-full bg-white text-[#C0392B] flex items-center justify-center font-display font-black text-sm shadow-md group-hover:translate-x-1 transition-transform">
+                            →
                         </div>
                     </div>
 
-                    <!-- Card: Traductor -->
-                    <div id="to-translator-mode-button"
-                        class="card-shadow p-4 rounded-xl bg-green-50/70 hover:bg-green-100 cursor-pointer h-40 relative">
+                    <!-- ======================================================= -->
+                    <!-- 💬 PRIORIDAD 3: MENSAJES RÁPIDOS (SUPERFICIE TIERRA)    -->
+                    <!-- ======================================================= -->
+                    <div class="bg-white p-5 rounded-3xl shadow-sm border-2 border-[#EAE0D0]">
+                        
+                        <div class="flex justify-between items-center mb-3.5">
+                            <div class="flex items-center space-x-2.5">
+                                <div class="w-8 h-8 rounded-xl bg-[#EBF2EB] text-[#5C7A5C] flex items-center justify-center text-lg font-bold border border-[#C8DAC8]">
+                                    💬
+                                </div>
+                                <div>
+                                    <h3 class="font-display font-bold text-[#2B241C] text-base leading-tight">Mensajes Rápidos</h3>
+                                    <p class="text-[11px] text-[#7A6E5C] font-medium font-body">Frases directas por situación</p>
+                                </div>
+                            </div>
+                            
+                            <button id="to-quick-messages-button" class="text-xs font-display font-bold text-[#B5551A] hover:text-[#9C4410] bg-[#F3EADA] hover:bg-[#EAE0D0] px-3 py-1.5 rounded-xl transition flex items-center space-x-1 border border-[#EAE0D0]">
+                                <span>Ver todos</span>
+                                <span>→</span>
+                            </button>
+                        </div>
 
-                        <button
-                            class="camera-btn absolute top-2 right-2 p-1 rounded-full text-green-500 hover:text-green-700 bg-white/50 hover:bg-white/90 transition duration-150 z-10"
-                            data-action="show-sign-video" data-message="Traductor señas-texto">
+                        <!-- 4 Categorías Bento Grid -->
+                        <div class="grid grid-cols-2 gap-2.5 font-body">
+                            <!-- Hospital -->
+                            <button id="home-to-messages-hospital" class="p-3 bg-[#FBF6EE] hover:bg-[#F3EADA] border border-[#EAE0D0] rounded-2xl flex items-center space-x-3 text-left transition group shadow-sm">
+                                <div class="w-10 h-10 rounded-xl bg-[#FDEDEC] text-[#C0392B] flex items-center justify-center text-xl flex-shrink-0 group-hover:scale-105 transition-transform border border-[#F5B7B1]">
+                                    🏥
+                                </div>
+                                <div>
+                                    <span class="text-xs font-display font-bold text-[#2B241C] block leading-tight">Hospital</span>
+                                    <span class="text-[10px] text-[#7A6E5C]">Salud y dolor</span>
+                                </div>
+                            </button>
+                            
+                            <!-- Policía -->
+                            <button id="home-to-messages-policia" class="p-3 bg-[#FBF6EE] hover:bg-[#F3EADA] border border-[#EAE0D0] rounded-2xl flex items-center space-x-3 text-left transition group shadow-sm">
+                                <div class="w-10 h-10 rounded-xl bg-[#EAF2F8] text-[#2471A3] flex items-center justify-center text-xl flex-shrink-0 group-hover:scale-105 transition-transform border border-[#AED6F1]">
+                                    👮
+                                </div>
+                                <div>
+                                    <span class="text-xs font-display font-bold text-[#2B241C] block leading-tight">Policía</span>
+                                    <span class="text-[10px] text-[#7A6E5C]">Ayuda y trámite</span>
+                                </div>
+                            </button>
 
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
-                                </path>
-                            </svg>
-                        </button>
+                            <!-- Banco -->
+                            <button id="home-to-messages-banco" class="p-3 bg-[#FBF6EE] hover:bg-[#F3EADA] border border-[#EAE0D0] rounded-2xl flex items-center space-x-3 text-left transition group shadow-sm">
+                                <div class="w-10 h-10 rounded-xl bg-[#FEF9E7] text-[#B7950B] flex items-center justify-center text-xl flex-shrink-0 group-hover:scale-105 transition-transform border border-[#F9E79F]">
+                                    🏦
+                                </div>
+                                <div>
+                                    <span class="text-xs font-display font-bold text-[#2B241C] block leading-tight">Banco</span>
+                                    <span class="text-[10px] text-[#7A6E5C]">Cuentas y pagos</span>
+                                </div>
+                            </button>
 
-                        <div class="h-full flex flex-col justify-between">
+                            <!-- General -->
+                            <button id="home-to-messages-generales" class="p-3 bg-[#FBF6EE] hover:bg-[#F3EADA] border border-[#EAE0D0] rounded-2xl flex items-center space-x-3 text-left transition group shadow-sm">
+                                <div class="w-10 h-10 rounded-xl bg-[#EBF5FB] text-[#5C7A5C] flex items-center justify-center text-xl flex-shrink-0 group-hover:scale-105 transition-transform border border-[#C8DAC8]">
+                                    🗣️
+                                </div>
+                                <div>
+                                    <span class="text-xs font-display font-bold text-[#2B241C] block leading-tight">General</span>
+                                    <span class="text-[10px] text-[#7A6E5C]">Saludos y gracias</span>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ======================================================= -->
+                    <!-- 📦 PRIORIDADES 4 & 5: HISTORIAL Y AYUDA                 -->
+                    <!-- ======================================================= -->
+                    <div class="grid grid-cols-2 gap-3 pt-1 pb-4">
+                        <!-- 4. Historial -->
+                        <div id="to-history-button"
+                            class="group p-4 bg-white border-2 border-[#EAE0D0] rounded-3xl shadow-sm hover:shadow-md cursor-pointer transition-all duration-200 flex flex-col justify-between h-36 active:scale-95">
+                            <div class="flex justify-between items-start">
+                                <div class="w-11 h-11 rounded-2xl bg-[#F3EADA] text-[#B5551A] border border-[#EAE0D0] flex items-center justify-center text-2xl group-hover:scale-105 transition-transform font-bold">
+                                    📜
+                                </div>
+                                <span class="text-[#7A6E5C] group-hover:text-[#B5551A] transition-colors font-display font-black text-lg">↗</span>
+                            </div>
                             <div>
-                                <div
-                                    class="w-10 h-10 bg-white rounded-full flex items-center justify-center mb-2 shadow-sm">
-                                    <img src="img/palm.png" alt="Icono Traductor" class="w-6 h-6">
+                                <h4 class="text-sm font-display font-bold text-[#2B241C] group-hover:text-[#B5551A] transition-colors">Historial</h4>
+                                <p class="text-[11px] text-[#7A6E5C] font-medium font-body">Tus conversaciones</p>
+                            </div>
+                        </div>
+
+                        <!-- 5. Ayuda y Tutoriales -->
+                        <div id="to-help-button"
+                            class="group p-4 bg-white border-2 border-[#EAE0D0] rounded-3xl shadow-sm hover:shadow-md cursor-pointer transition-all duration-200 flex flex-col justify-between h-36 active:scale-95">
+                            <div class="flex justify-between items-start">
+                                <div class="w-11 h-11 rounded-2xl bg-[#EBF2EB] text-[#5C7A5C] border border-[#C8DAC8] flex items-center justify-center text-2xl group-hover:scale-105 transition-transform font-bold">
+                                    💡
                                 </div>
-
-                                <p class="text-lg font-semibold text-green-900">Traductor señas-texto</p>
+                                <span class="text-[#7A6E5C] group-hover:text-[#5C7A5C] transition-colors font-display font-black text-lg">↗</span>
                             </div>
-                            <span class="text-xl self-end">🤟</span>
+                            <div>
+                                <h4 class="text-sm font-display font-bold text-[#2B241C] group-hover:text-[#5C7A5C] transition-colors">Ayuda LESCO</h4>
+                                <p class="text-[11px] text-[#7A6E5C] font-medium font-body">Videos y tutoriales</p>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Card: Historial -->
-                    <div id="to-history-button"
-                        class="card-shadow p-4 rounded-xl bg-yellow-50/70 hover:bg-yellow-100 cursor-pointer h-40 relative">
+                </main>
+            </div> <!-- cierre de #home-screen -->
 
-                        <button
-                            class="camera-btn absolute top-2 right-2 p-1 rounded-full text-yellow-500 hover:text-yellow-700 bg-white/50 hover:bg-white/90 transition duration-150 z-10"
-                            data-action="show-sign-video" data-message="Historial">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
-                            </path>
-                        </svg>
-                    </button>
-
-                    <div class="h-full flex flex-col justify-between">
-                        <div>
-                            <div
-                                class="w-10 h-10 bg-white rounded-full flex items-center justify-center mb-2 shadow-sm">
-                                <svg class="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                            </div>
-                            <p class="text-lg font-semibold text-yellow-900">Historial</p>
-                        </div>
-                        <span class="text-xl self-end">📜</span>
-                    </div>
-                </div>
-            </main>
-
-            <!-- Tarjeta de Ayuda y Tutoriales (parte inferior) -->
-            <div id="to-help-button" class="mx-6 mb-8 mt-4 p-6 rounded-3xl cursor-pointer relative"
-                style="background: linear-gradient(135deg, #74e9ff 0%, #00b3e6 100%);">
-
-                <button
-                    class="camera-btn absolute top-4 right-4 p-1 rounded-full text-white hover:text-gray-200 bg-white/30 hover:bg-white/50 transition duration-150 z-10"
-                    data-action="show-sign-video" data-message="Ayuda y tutoriales">
-
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
-                        </path>
-                    </svg>
-                </button>
-
-                <div class="flex flex-col items-center text-white text-center">
-                    <img src="img/question.png" alt="Icono Ayuda" class="w-16 h-16 mb-2">
-
-                    <h3 class="text-2xl font-bold mb-1">Ayuda y tutoriales</h3>
-                    <p class="text-base font-medium opacity-90">Videos en lenguaje de señas</p>
-                    <span class="mt-2 text-2xl">🤟</span>
-                </div>
-            </div>
-        </div> <!-- cierre correcto de #home-screen -->
-
-        <!-- 4. PANTALLA DE MENSAJES RÁPIDOS (AHORA HERMANA DEL HOME) -->
-        <div id="quick-messages-screen" class="screen bg-gray-50 pt-8 px-6 hidden">
+        <!-- 4. PANTALLA DE MENSAJES RÁPIDOS (PALETA TIERRA) -->
+        <div id="quick-messages-screen" class="screen bg-[#FBF6EE] pt-8 px-6 pb-12 hidden font-body">
             <div class="flex items-center mb-6">
-                <button id="back-from-quick-messages" class="text-gray-600 mr-4">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                <button id="back-from-quick-messages" class="w-10 h-10 rounded-2xl bg-white border border-[#EAE0D0] text-[#2B241C] hover:bg-[#F3EADA] flex items-center justify-center mr-3 shadow-sm transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
                             d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                     </svg>
                 </button>
-                <span class="text-gray-600 font-medium">Volver a Home</span>
+                <span class="text-xs font-display font-bold text-[#7A6E5C]">Volver a Home</span>
             </div>
 
-            <h1 class="text-3xl font-bold text-blue-700 mb-2">Mensajes rápidos</h1>
-            <p class="text-gray-600 mb-8">Selecciona una categoría</p>
+            <h1 class="text-3xl font-display font-black text-[#2B241C] tracking-tight mb-1">Mensajes rápidos</h1>
+            <p class="text-sm text-[#7A6E5C] font-medium mb-6">Selecciona una categoría de comunicación</p>
 
-            <!-- GRID DE CATEGORÍAS -->
-            <div class="grid grid-cols-1 gap-4">
+            <!-- GRID DE CATEGORÍAS TIERRA -->
+            <div class="grid grid-cols-1 gap-3.5">
 
-                <!-- Emergencia -->
+                <!-- Emergencia (Coral) -->
                 <div id="to-messages-emergencia"
-                    class="p-4 bg-white rounded-2xl shadow-lg cursor-pointer hover:bg-red-50 transition flex items-center justify-between border border-red-100">
-                    <div class="flex items-center">
-                        <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mr-4">
-                            <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
-                                </path>
-                            </svg>
+                    class="p-4 bg-white rounded-3xl shadow-sm hover:shadow-md cursor-pointer transition flex items-center justify-between border-2 border-[#F5B7B1] hover:bg-[#FDEDEC]/40 group active:scale-98">
+                    <div class="flex items-center space-x-3.5">
+                        <div class="w-12 h-12 bg-[#FDEDEC] rounded-2xl flex items-center justify-center text-2xl border border-[#F5B7B1] group-hover:scale-105 transition-transform">
+                            🚨
                         </div>
                         <div>
-                            <h3 class="font-bold text-lg text-red-800">Emergencia</h3>
-                            <p class="text-sm text-gray-600">Toca para ver mensajes</p>
+                            <h3 class="font-display font-bold text-base text-[#C0392B] leading-tight">Emergencia</h3>
+                            <p class="text-xs text-[#7A6E5C] font-medium">Urgencias, 911 y ayuda</p>
                         </div>
                     </div>
 
-                    <!-- inline camera button (al lado izquierdo del emoji) -->
-                    <div class="flex items-center space-x-3">
+                    <div class="flex items-center space-x-2">
                         <button
-                            class="camera-btn inline-camera-btn p-1 rounded-full text-red-500 hover:text-red-700 bg-white/50 hover:bg-white/90 transition duration-150 z-10"
-                            data-action="show-sign-video" data-message="Mensajes rápidos - Emergencia">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            class="camera-btn p-2 rounded-xl text-[#C0392B] bg-[#FDEDEC] hover:bg-[#F5B7B1] border border-[#F5B7B1] transition shadow-sm z-10"
+                            data-action="show-sign-video" data-message="Mensajes rápidos - Emergencia" title="Ver en señas">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
                                 </path>
                             </svg>
                         </button>
-                        <span class="text-xl">✌️</span>
+                        <span class="text-[#C0392B] font-display font-black text-lg">→</span>
                     </div>
                 </div>
 
                 <!-- Policía -->
                 <div id="to-messages-policia"
-                    class="p-4 bg-white rounded-2xl shadow-lg cursor-pointer hover:bg-blue-50 transition flex items-center justify-between border border-blue-100">
-
-                    <div class="flex items-center">
-
-                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
-
-                            <img src="img/shield.png" alt="Icono Policía" class="w-6 h-6">
-
+                    class="p-4 bg-white rounded-3xl shadow-sm hover:shadow-md cursor-pointer transition flex items-center justify-between border-2 border-[#AED6F1] hover:bg-[#EAF2F8]/40 group active:scale-98">
+                    <div class="flex items-center space-x-3.5">
+                        <div class="w-12 h-12 bg-[#EAF2F8] rounded-2xl flex items-center justify-center text-2xl border border-[#AED6F1] group-hover:scale-105 transition-transform">
+                            👮
                         </div>
-
                         <div>
-                            <h3 class="font-bold text-lg text-blue-800">Policía</h3>
-                            <p class="text-sm text-gray-600">Toca para ver mensajes</p>
+                            <h3 class="font-display font-bold text-base text-[#2471A3] leading-tight">Policía</h3>
+                            <p class="text-xs text-[#7A6E5C] font-medium">Asistencia y trámites</p>
                         </div>
                     </div>
 
-                    <div class="flex items-center space-x-3">
+                    <div class="flex items-center space-x-2">
                         <button
-                            class="camera-btn inline-camera-btn p-1 rounded-full text-blue-500 hover:text-blue-700 bg-white/50 hover:bg-white/90 transition duration-150 z-10"
-                            data-action="show-sign-video" data-message="Mensajes rápidos - Policía">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            class="camera-btn p-2 rounded-xl text-[#2471A3] bg-[#EAF2F8] hover:bg-[#AED6F1] border border-[#AED6F1] transition shadow-sm z-10"
+                            data-action="show-sign-video" data-message="Mensajes rápidos - Policía" title="Ver en señas">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
                                 </path>
                             </svg>
                         </button>
-                        <span class="text-xl">✌️</span>
+                        <span class="text-[#2471A3] font-display font-black text-lg">→</span>
                     </div>
                 </div>
 
-                <!-- Card: Hospital -->
+                <!-- Hospital (Salvia) -->
                 <div id="to-messages-hospital"
-                    class="p-4 bg-white rounded-2xl shadow-lg cursor-pointer hover:bg-green-50 transition flex items-center justify-between border border-green-100">
-                    <div class="flex items-center">
-                        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
-
-                            <img src="img/hospital.png" alt="Icono Hospital" class="w-6 h-6">
-
+                    class="p-4 bg-white rounded-3xl shadow-sm hover:shadow-md cursor-pointer transition flex items-center justify-between border-2 border-[#C8DAC8] hover:bg-[#EBF2EB]/40 group active:scale-98">
+                    <div class="flex items-center space-x-3.5">
+                        <div class="w-12 h-12 bg-[#EBF2EB] rounded-2xl flex items-center justify-center text-2xl border border-[#C8DAC8] group-hover:scale-105 transition-transform">
+                            🏥
                         </div>
-
                         <div>
-                            <h3 class="font-bold text-lg text-green-800">Hospital</h3>
-                            <p class="text-sm text-gray-600">Toca para ver mensajes</p>
+                            <h3 class="font-display font-bold text-base text-[#5C7A5C] leading-tight">Hospital</h3>
+                            <p class="text-xs text-[#7A6E5C] font-medium">Salud, síntomas y recetas</p>
                         </div>
                     </div>
 
-                    <div class="flex items-center space-x-3">
+                    <div class="flex items-center space-x-2">
                         <button
-                            class="camera-btn inline-camera-btn p-1 rounded-full text-green-500 hover:text-green-700 bg-white/50 hover:bg-white/90 transition duration-150 z-10"
-                            data-action="show-sign-video" data-message="Mensajes rápidos - Hospital">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            class="camera-btn p-2 rounded-xl text-[#5C7A5C] bg-[#EBF2EB] hover:bg-[#C8DAC8] border border-[#C8DAC8] transition shadow-sm z-10"
+                            data-action="show-sign-video" data-message="Mensajes rápidos - Hospital" title="Ver en señas">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
+                                </path>
                             </svg>
                         </button>
-                        <span class="text-xl">✌️</span>
+                        <span class="text-[#5C7A5C] font-display font-black text-lg">→</span>
                     </div>
                 </div>
 
-                <!-- Card: Banco -->
+                <!-- Banco -->
                 <div id="to-messages-banco"
-                    class="p-4 bg-white rounded-2xl shadow-lg cursor-pointer hover:bg-yellow-50 transition flex items-center justify-between border border-yellow-100">
-                    <div class="flex items-center">
-                        <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mr-4">
-
-                            <img src="img/growth.png" alt="Icono Banco" class="w-6 h-6">
-
+                    class="p-4 bg-white rounded-3xl shadow-sm hover:shadow-md cursor-pointer transition flex items-center justify-between border-2 border-[#F9E79F] hover:bg-[#FEF9E7]/40 group active:scale-98">
+                    <div class="flex items-center space-x-3.5">
+                        <div class="w-12 h-12 bg-[#FEF9E7] rounded-2xl flex items-center justify-center text-2xl border border-[#F9E79F] group-hover:scale-105 transition-transform">
+                            🏦
                         </div>
-
                         <div>
-                            <h3 class="font-bold text-lg text-yellow-800">Banco</h3>
-                            <p class="text-sm text-gray-600">Toca para ver mensajes</p>
+                            <h3 class="font-display font-bold text-base text-[#B7950B] leading-tight">Banco</h3>
+                            <p class="text-xs text-[#7A6E5C] font-medium">Cuentas, tarjetas y caja</p>
                         </div>
                     </div>
 
-                    <div class="flex items-center space-x-3">
+                    <div class="flex items-center space-x-2">
                         <button
-                            class="camera-btn inline-camera-btn p-1 rounded-full text-yellow-500 hover:text-yellow-700 bg-white/50 hover:bg-white/90 transition duration-150 z-10"
-                            data-action="show-sign-video" data-message="Mensajes rápidos - Banco">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            class="camera-btn p-2 rounded-xl text-[#B7950B] bg-[#FEF9E7] hover:bg-[#F9E79F] border border-[#F9E79F] transition shadow-sm z-10"
+                            data-action="show-sign-video" data-message="Mensajes rápidos - Banco" title="Ver en señas">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
+                                </path>
                             </svg>
                         </button>
-                        <span class="text-xl">✌️</span>
+                        <span class="text-[#B7950B] font-display font-black text-lg">→</span>
                     </div>
                 </div>
 
-                <!-- Card: Generales -->
+                <!-- Generales (Terracota) -->
                 <div id="to-messages-generales"
-                    class="p-4 bg-white rounded-2xl shadow-lg cursor-pointer hover:bg-cyan-50 transition flex items-center justify-between border border-cyan-100">
-                    <div class="flex items-center">
-                        <div class="w-12 h-12 bg-cyan-100 rounded-full flex items-center justify-center mr-4">
-                            <svg class="w-6 h-6 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5z">
-                                </path>
+                    class="p-4 bg-white rounded-3xl shadow-sm hover:shadow-md cursor-pointer transition flex items-center justify-between border-2 border-[#EAE0D0] hover:bg-[#F3EADA]/40 group active:scale-98">
+                    <div class="flex items-center space-x-3.5">
+                        <div class="w-12 h-12 bg-[#F3EADA] rounded-2xl flex items-center justify-center text-2xl border border-[#EAE0D0] group-hover:scale-105 transition-transform">
+                            🗣️
                         </div>
                         <div>
-                            <h3 class="font-bold text-lg text-cyan-800">Mensajes generales</h3>
-                            <p class="text-sm text-gray-600">Toca para ver mensajes</p>
+                            <h3 class="font-display font-bold text-base text-[#B5551A] leading-tight">Mensajes generales</h3>
+                            <p class="text-xs text-[#7A6E5C] font-medium">Saludos, dudas y cortesía</p>
                         </div>
                     </div>
 
-                    <div class="flex items-center space-x-3">
+                    <div class="flex items-center space-x-2">
                         <button
-                            class="camera-btn inline-camera-btn p-1 rounded-full text-cyan-500 hover:text-cyan-700 bg-white/50 hover:bg-white/90 transition duration-150 z-10"
-                            data-action="show-sign-video" data-message="Mensajes rápidos - Generales">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            class="camera-btn p-2 rounded-xl text-[#B5551A] bg-[#F3EADA] hover:bg-[#EAE0D0] border border-[#EAE0D0] transition shadow-sm z-10"
+                            data-action="show-sign-video" data-message="Mensajes rápidos - Generales" title="Ver en señas">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
                                 </path>
                             </svg>
                         </button>
-                        <span class="text-xl">✌️</span>
+                        <span class="text-[#B5551A] font-display font-black text-lg">→</span>
                     </div>
                 </div>
 
             </div>
         </div>
 
-        <!-- PANTALLAS INDIVIDUALES DE MENSAJES (AHORA HERMANAS) -->
-        <div id="messages-emergencia-screen" class="screen bg-gray-50 p-6 hidden">
+        <!-- ======================================================= -->
+        <!-- PANTALLAS INDIVIDUALES DE MENSAJES (PALETA TIERRA)      -->
+        <!-- ======================================================= -->
 
-            <button id="back-from-messages-emergencia" class="text-gray-600 mb-4 flex items-center">
-                ← <span class="ml-1">Volver</span>
+        <!-- 1. Emergencia Individual -->
+        <div id="messages-emergencia-screen" class="screen bg-[#FBF6EE] pt-8 px-6 pb-12 hidden font-body">
+            <button id="back-from-messages-emergencia" class="inline-flex items-center space-x-2 mb-4 text-xs font-display font-bold text-[#7A6E5C] bg-white px-3 py-2 rounded-xl border border-[#EAE0D0]">
+                <span>←</span><span>Volver</span>
             </button>
+            <h1 class="text-3xl font-display font-black text-[#C0392B] mb-1">Emergencia</h1>
+            <p class="text-xs text-[#7A6E5C] font-medium mb-6">Selecciona una frase de auxilio</p>
 
-            <h1 class="text-3xl font-bold text-red-600 mb-1">Emergencia</h1>
-            <p class="text-gray-600 mb-6">Selecciona un mensaje</p>
+            <div class="space-y-2.5">
+                <!-- Opción 1 -->
+                <div class="msg-card w-full p-2.5 bg-white hover:bg-[#FDEDEC] rounded-2xl border-2 border-[#EAE0D0] hover:border-[#F5B7B1] shadow-sm flex items-center justify-between transition cursor-pointer active:scale-98">
+                    <button class="msg-btn text-left flex-1 font-display font-bold text-sm text-[#2B241C] py-2 px-2">Necesito ayuda urgente</button>
+                    <button class="camera-btn p-2 rounded-xl text-[#C0392B] bg-[#FDEDEC] hover:bg-[#F5B7B1] border border-[#F5B7B1] transition shadow-sm flex-shrink-0"
+                        data-action="show-sign-video" data-message="Necesito ayuda urgente" title="Ver en señas LESCO">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                    </button>
+                </div>
 
-            <!-- Lista de mensajes -->
-            <div class="space-y-3">
-                <button class="msg-btn bg-red-500 text-white font-semibold p-3 w-full rounded-xl shadow">Necesito
-                    ayuda
-                    urgente</button>
-                <button class="msg-btn bg-red-100 text-red-700 p-3 w-full rounded-xl">Estoy en peligro</button>
-                <button class="msg-btn bg-red-100 text-red-700 p-3 w-full rounded-xl">Llamen a la
-                    ambulancia</button>
-                <button class="msg-btn bg-red-100 text-red-700 p-3 w-full rounded-xl">Necesito asistencia
-                    inmediata</button>
+                <!-- Opción 2 -->
+                <div class="msg-card w-full p-2.5 bg-white hover:bg-[#FDEDEC] rounded-2xl border-2 border-[#EAE0D0] hover:border-[#F5B7B1] shadow-sm flex items-center justify-between transition cursor-pointer active:scale-98">
+                    <button class="msg-btn text-left flex-1 font-display font-bold text-sm text-[#2B241C] py-2 px-2">Estoy en peligro</button>
+                    <button class="camera-btn p-2 rounded-xl text-[#C0392B] bg-[#FDEDEC] hover:bg-[#F5B7B1] border border-[#F5B7B1] transition shadow-sm flex-shrink-0"
+                        data-action="show-sign-video" data-message="Estoy en peligro" title="Ver en señas LESCO">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Opción 3 -->
+                <div class="msg-card w-full p-2.5 bg-white hover:bg-[#FDEDEC] rounded-2xl border-2 border-[#EAE0D0] hover:border-[#F5B7B1] shadow-sm flex items-center justify-between transition cursor-pointer active:scale-98">
+                    <button class="msg-btn text-left flex-1 font-display font-bold text-sm text-[#2B241C] py-2 px-2">Llamen a la ambulancia</button>
+                    <button class="camera-btn p-2 rounded-xl text-[#C0392B] bg-[#FDEDEC] hover:bg-[#F5B7B1] border border-[#F5B7B1] transition shadow-sm flex-shrink-0"
+                        data-action="show-sign-video" data-message="Llamen a la ambulancia" title="Ver en señas LESCO">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Opción 4 -->
+                <div class="msg-card w-full p-2.5 bg-white hover:bg-[#FDEDEC] rounded-2xl border-2 border-[#EAE0D0] hover:border-[#F5B7B1] shadow-sm flex items-center justify-between transition cursor-pointer active:scale-98">
+                    <button class="msg-btn text-left flex-1 font-display font-bold text-sm text-[#2B241C] py-2 px-2">Necesito asistencia inmediata</button>
+                    <button class="camera-btn p-2 rounded-xl text-[#C0392B] bg-[#FDEDEC] hover:bg-[#F5B7B1] border border-[#F5B7B1] transition shadow-sm flex-shrink-0"
+                        data-action="show-sign-video" data-message="Necesito asistencia inmediata" title="Ver en señas LESCO">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                    </button>
+                </div>
             </div>
 
-            <!-- Mensaje seleccionado -->
-            <div class="mt-6 bg-red-100 p-4 rounded-xl text-gray-700">
-                <p><strong>Mensaje seleccionado:</strong></p>
-                <p id="selected-message-emergencia" class="mt-1 text-red-700">Necesito ayuda urgente</p>
-            </div>
-
-            <!-- Botón enviar -->
-            <button
-                class="mt-6 w-full bg-red-500 text-white p-3 rounded-xl shadow-lg flex items-center justify-center space-x-2">
+            <button class="mt-6 w-full bg-[#C0392B] hover:bg-[#A93226] text-white font-display font-bold p-4 rounded-2xl shadow-lg flex items-center justify-center space-x-2 transition active:scale-98">
                 <span>✈️ Enviar mensaje</span>
-                <span>📷</span>
             </button>
-
-            <!-- Ver en señas -->
-            <button
-                class="mt-4 w-full bg-green-100 p-3 rounded-xl text-green-700 flex items-center justify-center space-x-2">
-                <span>🤟 Ver en señas</span>
-                <span>📷</span>
-            </button>
-
         </div>
 
-
-        <div id="messages-policia-screen" class="screen bg-gray-50 p-6 hidden">
-
-            <button id="back-from-messages-policia" class="text-gray-600 mb-4 flex items-center">
-                ← <span class="ml-1">Volver</span>
+        <!-- 2. Policía Individual -->
+        <div id="messages-policia-screen" class="screen bg-[#FBF6EE] pt-8 px-6 pb-12 hidden font-body">
+            <button id="back-from-messages-policia" class="inline-flex items-center space-x-2 mb-4 text-xs font-display font-bold text-[#7A6E5C] bg-white px-3 py-2 rounded-xl border border-[#EAE0D0]">
+                <span>←</span><span>Volver</span>
             </button>
+            <h1 class="text-3xl font-display font-black text-[#2471A3] mb-1">Policía</h1>
+            <p class="text-xs text-[#7A6E5C] font-medium mb-6">Selecciona una frase para el oficial</p>
 
-            <h1 class="text-3xl font-bold text-blue-700 mb-1">Policía</h1>
-            <p class="text-gray-600 mb-6">Selecciona un mensaje</p>
+            <div class="space-y-2.5">
+                <!-- Opción 1 -->
+                <div class="msg-card w-full p-2.5 bg-white hover:bg-[#EAF2F8] rounded-2xl border-2 border-[#EAE0D0] hover:border-[#AED6F1] shadow-sm flex items-center justify-between transition cursor-pointer active:scale-98">
+                    <button class="msg-btn text-left flex-1 font-display font-bold text-sm text-[#2B241C] py-2 px-2">Soy una persona sorda</button>
+                    <button class="camera-btn p-2 rounded-xl text-[#2471A3] bg-[#EAF2F8] hover:bg-[#AED6F1] border border-[#AED6F1] transition shadow-sm flex-shrink-0"
+                        data-action="show-sign-video" data-message="Soy una persona sorda" title="Ver en señas LESCO">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                    </button>
+                </div>
 
-            <div class="space-y-3">
-                <button class="msg-btn bg-blue-600 text-white font-semibold p-3 w-full rounded-xl shadow">Soy una
-                    persona sorda</button>
-                <button class="msg-btn bg-blue-100 text-blue-700 p-3 w-full rounded-xl">Necesito un
-                    intérprete</button>
-                <button class="msg-btn bg-blue-100 text-blue-700 p-3 w-full rounded-xl">Por favor escriba</button>
-                <button class="msg-btn bg-blue-100 text-blue-700 p-3 w-full rounded-xl">Tengo una denuncia</button>
+                <!-- Opción 2 -->
+                <div class="msg-card w-full p-2.5 bg-white hover:bg-[#EAF2F8] rounded-2xl border-2 border-[#EAE0D0] hover:border-[#AED6F1] shadow-sm flex items-center justify-between transition cursor-pointer active:scale-98">
+                    <button class="msg-btn text-left flex-1 font-display font-bold text-sm text-[#2B241C] py-2 px-2">Necesito un intérprete de LESCO</button>
+                    <button class="camera-btn p-2 rounded-xl text-[#2471A3] bg-[#EAF2F8] hover:bg-[#AED6F1] border border-[#AED6F1] transition shadow-sm flex-shrink-0"
+                        data-action="show-sign-video" data-message="Necesito un intérprete de LESCO" title="Ver en señas LESCO">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Opción 3 -->
+                <div class="msg-card w-full p-2.5 bg-white hover:bg-[#EAF2F8] rounded-2xl border-2 border-[#EAE0D0] hover:border-[#AED6F1] shadow-sm flex items-center justify-between transition cursor-pointer active:scale-98">
+                    <button class="msg-btn text-left flex-1 font-display font-bold text-sm text-[#2B241C] py-2 px-2">Por favor escriba las indicaciones</button>
+                    <button class="camera-btn p-2 rounded-xl text-[#2471A3] bg-[#EAF2F8] hover:bg-[#AED6F1] border border-[#AED6F1] transition shadow-sm flex-shrink-0"
+                        data-action="show-sign-video" data-message="Por favor escriba las indicaciones" title="Ver en señas LESCO">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Opción 4 -->
+                <div class="msg-card w-full p-2.5 bg-white hover:bg-[#EAF2F8] rounded-2xl border-2 border-[#EAE0D0] hover:border-[#AED6F1] shadow-sm flex items-center justify-between transition cursor-pointer active:scale-98">
+                    <button class="msg-btn text-left flex-1 font-display font-bold text-sm text-[#2B241C] py-2 px-2">Tengo una denuncia que realizar</button>
+                    <button class="camera-btn p-2 rounded-xl text-[#2471A3] bg-[#EAF2F8] hover:bg-[#AED6F1] border border-[#AED6F1] transition shadow-sm flex-shrink-0"
+                        data-action="show-sign-video" data-message="Tengo una denuncia que realizar" title="Ver en señas LESCO">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                    </button>
+                </div>
             </div>
 
-            <div class="mt-6 bg-blue-100 p-4 rounded-xl text-gray-700">
-                <p><strong>Mensaje seleccionado:</strong></p>
-                <p id="selected-message-policia" class="mt-1 text-blue-700">Soy una persona sorda</p>
-            </div>
-
-            <button
-                class="mt-6 w-full bg-blue-600 text-white p-3 rounded-xl shadow-lg flex items-center justify-center space-x-2">
+            <button class="mt-6 w-full bg-[#2471A3] hover:bg-[#1B4F72] text-white font-display font-bold p-4 rounded-2xl shadow-lg flex items-center justify-center space-x-2 transition active:scale-98">
                 <span>✈️ Enviar mensaje</span>
-                <span>📷</span>
             </button>
-
-            <button
-                class="mt-4 w-full bg-green-100 p-3 rounded-xl text-green-700 flex items-center justify-center space-x-2">
-                <span>🤟 Ver en señas</span>
-                <span>📷</span>
-            </button>
-
         </div>
 
-
-        <div id="messages-hospital-screen" class="screen bg-gray-50 p-6 hidden">
-
-            <button id="back-from-messages-hospital" class="text-gray-600 mb-4 flex items-center">
-                ← <span class="ml-1">Volver</span>
+        <!-- 3. Hospital Individual (Salvia) -->
+        <div id="messages-hospital-screen" class="screen bg-[#FBF6EE] pt-8 px-6 pb-12 hidden font-body">
+            <button id="back-from-messages-hospital" class="inline-flex items-center space-x-2 mb-4 text-xs font-display font-bold text-[#7A6E5C] bg-white px-3 py-2 rounded-xl border border-[#EAE0D0]">
+                <span>←</span><span>Volver</span>
             </button>
+            <h1 class="text-3xl font-display font-black text-[#5C7A5C] mb-1">Hospital</h1>
+            <p class="text-xs text-[#7A6E5C] font-medium mb-6">Selecciona una frase médica</p>
 
-            <h1 class="text-3xl font-bold text-green-700 mb-1">Hospital</h1>
-            <p class="text-gray-600 mb-6">Selecciona un mensaje</p>
+            <div class="space-y-2.5">
+                <!-- Opción 1 -->
+                <div class="msg-card w-full p-2.5 bg-white hover:bg-[#EBF2EB] rounded-2xl border-2 border-[#EAE0D0] hover:border-[#C8DAC8] shadow-sm flex items-center justify-between transition cursor-pointer active:scale-98">
+                    <button class="msg-btn text-left flex-1 font-display font-bold text-sm text-[#2B241C] py-2 px-2">Soy sordo/a, necesito intérprete</button>
+                    <button class="camera-btn p-2 rounded-xl text-[#5C7A5C] bg-[#EBF2EB] hover:bg-[#C8DAC8] border border-[#C8DAC8] transition shadow-sm flex-shrink-0"
+                        data-action="show-sign-video" data-message="Soy sordo/a, necesito intérprete" title="Ver en señas LESCO">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                    </button>
+                </div>
 
-            <div class="space-y-3">
-                <button class="msg-btn bg-green-600 text-white font-semibold p-3 w-full rounded-xl shadow">Soy
-                    sordo/a,
-                    necesito intérprete</button>
-                <button class="msg-btn bg-green-100 text-green-700 p-3 w-full rounded-xl">Necesito atención
-                    médica</button>
-                <button class="msg-btn bg-green-100 text-green-700 p-3 w-full rounded-xl">Tengo dolor</button>
-                <button class="msg-btn bg-green-100 text-green-700 p-3 w-full rounded-xl">Por favor escriba las
-                    instrucciones</button>
+                <!-- Opción 2 -->
+                <div class="msg-card w-full p-2.5 bg-white hover:bg-[#EBF2EB] rounded-2xl border-2 border-[#EAE0D0] hover:border-[#C8DAC8] shadow-sm flex items-center justify-between transition cursor-pointer active:scale-98">
+                    <button class="msg-btn text-left flex-1 font-display font-bold text-sm text-[#2B241C] py-2 px-2">Necesito atención médica</button>
+                    <button class="camera-btn p-2 rounded-xl text-[#5C7A5C] bg-[#EBF2EB] hover:bg-[#C8DAC8] border border-[#C8DAC8] transition shadow-sm flex-shrink-0"
+                        data-action="show-sign-video" data-message="Necesito atención médica" title="Ver en señas LESCO">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Opción 3 -->
+                <div class="msg-card w-full p-2.5 bg-white hover:bg-[#EBF2EB] rounded-2xl border-2 border-[#EAE0D0] hover:border-[#C8DAC8] shadow-sm flex items-center justify-between transition cursor-pointer active:scale-98">
+                    <button class="msg-btn text-left flex-1 font-display font-bold text-sm text-[#2B241C] py-2 px-2">Tengo dolor fuerte</button>
+                    <button class="camera-btn p-2 rounded-xl text-[#5C7A5C] bg-[#EBF2EB] hover:bg-[#C8DAC8] border border-[#C8DAC8] transition shadow-sm flex-shrink-0"
+                        data-action="show-sign-video" data-message="Tengo dolor fuerte" title="Ver en señas LESCO">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Opción 4 -->
+                <div class="msg-card w-full p-2.5 bg-white hover:bg-[#EBF2EB] rounded-2xl border-2 border-[#EAE0D0] hover:border-[#C8DAC8] shadow-sm flex items-center justify-between transition cursor-pointer active:scale-98">
+                    <button class="msg-btn text-left flex-1 font-display font-bold text-sm text-[#2B241C] py-2 px-2">Por favor escriba las instrucciones</button>
+                    <button class="camera-btn p-2 rounded-xl text-[#5C7A5C] bg-[#EBF2EB] hover:bg-[#C8DAC8] border border-[#C8DAC8] transition shadow-sm flex-shrink-0"
+                        data-action="show-sign-video" data-message="Por favor escriba las instrucciones" title="Ver en señas LESCO">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                    </button>
+                </div>
             </div>
 
-            <div class="mt-6 bg-green-100 p-4 rounded-xl text-gray-700">
-                <p><strong>Mensaje seleccionado:</strong></p>
-                <p id="selected-message-hospital" class="mt-1 text-green-700">Soy sordo/a, necesito intérprete</p>
-            </div>
-
-            <button
-                class="mt-6 w-full bg-green-600 text-white p-3 rounded-xl shadow-lg flex items-center justify-center space-x-2">
+            <button class="mt-6 w-full bg-[#5C7A5C] hover:bg-[#4A634A] text-white font-display font-bold p-4 rounded-2xl shadow-lg flex items-center justify-center space-x-2 transition active:scale-98">
                 <span>✈️ Enviar mensaje</span>
-                <span>📷</span>
             </button>
-
-            <button
-                class="mt-4 w-full bg-green-100 p-3 rounded-xl text-green-700 flex items-center justify-center space-x-2">
-                <span>🤟 Ver en señas</span>
-                <span>📷</span>
-            </button>
-
         </div>
 
-        <div id="messages-banco-screen" class="screen bg-gray-50 p-6 hidden">
-
-            <button id="back-from-messages-banco" class="text-gray-600 mb-4 flex items-center">
-                ← <span class="ml-1">Volver</span>
+        <!-- 4. Banco Individual -->
+        <div id="messages-banco-screen" class="screen bg-[#FBF6EE] pt-8 px-6 pb-12 hidden font-body">
+            <button id="back-from-messages-banco" class="inline-flex items-center space-x-2 mb-4 text-xs font-display font-bold text-[#7A6E5C] bg-white px-3 py-2 rounded-xl border border-[#EAE0D0]">
+                <span>←</span><span>Volver</span>
             </button>
+            <h1 class="text-3xl font-display font-black text-[#B7950B] mb-1">Banco</h1>
+            <p class="text-xs text-[#7A6E5C] font-medium mb-6">Selecciona una frase financiera</p>
 
-            <h1 class="text-3xl font-bold text-yellow-600 mb-1">Banco</h1>
-            <p class="text-gray-600 mb-6">Selecciona un mensaje</p>
+            <div class="space-y-2.5">
+                <!-- Opción 1 -->
+                <div class="msg-card w-full p-2.5 bg-white hover:bg-[#FEF9E7] rounded-2xl border-2 border-[#EAE0D0] hover:border-[#F9E79F] shadow-sm flex items-center justify-between transition cursor-pointer active:scale-98">
+                    <button class="msg-btn text-left flex-1 font-display font-bold text-sm text-[#2B241C] py-2 px-2">Soy una persona sorda</button>
+                    <button class="camera-btn p-2 rounded-xl text-[#B7950B] bg-[#FEF9E7] hover:bg-[#F9E79F] border border-[#F9E79F] transition shadow-sm flex-shrink-0"
+                        data-action="show-sign-video" data-message="Soy una persona sorda" title="Ver en señas LESCO">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                    </button>
+                </div>
 
-            <div class="space-y-3">
-                <button class="msg-btn bg-yellow-500 text-white font-semibold p-3 w-full rounded-xl shadow">Soy una
-                    persona sorda</button>
-                <button class="msg-btn bg-yellow-100 text-yellow-700 p-3 w-full rounded-xl">Necesito hacer un
-                    trámite</button>
-                <button class="msg-btn bg-yellow-100 text-yellow-700 p-3 w-full rounded-xl">Por favor
-                    escriba</button>
-                <button class="msg-btn bg-yellow-100 text-yellow-700 p-3 w-full rounded-xl">Necesito ayuda con mi
-                    cuenta</button>
+                <!-- Opción 2 -->
+                <div class="msg-card w-full p-2.5 bg-white hover:bg-[#FEF9E7] rounded-2xl border-2 border-[#EAE0D0] hover:border-[#F9E79F] shadow-sm flex items-center justify-between transition cursor-pointer active:scale-98">
+                    <button class="msg-btn text-left flex-1 font-display font-bold text-sm text-[#2B241C] py-2 px-2">Necesito hacer un trámite en ventanilla</button>
+                    <button class="camera-btn p-2 rounded-xl text-[#B7950B] bg-[#FEF9E7] hover:bg-[#F9E79F] border border-[#F9E79F] transition shadow-sm flex-shrink-0"
+                        data-action="show-sign-video" data-message="Necesito hacer un trámite en ventanilla" title="Ver en señas LESCO">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Opción 3 -->
+                <div class="msg-card w-full p-2.5 bg-white hover:bg-[#FEF9E7] rounded-2xl border-2 border-[#EAE0D0] hover:border-[#F9E79F] shadow-sm flex items-center justify-between transition cursor-pointer active:scale-98">
+                    <button class="msg-btn text-left flex-1 font-display font-bold text-sm text-[#2B241C] py-2 px-2">Por favor escriba los montos y pasos</button>
+                    <button class="camera-btn p-2 rounded-xl text-[#B7950B] bg-[#FEF9E7] hover:bg-[#F9E79F] border border-[#F9E79F] transition shadow-sm flex-shrink-0"
+                        data-action="show-sign-video" data-message="Por favor escriba los montos y pasos" title="Ver en señas LESCO">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Opción 4 -->
+                <div class="msg-card w-full p-2.5 bg-white hover:bg-[#FEF9E7] rounded-2xl border-2 border-[#EAE0D0] hover:border-[#F9E79F] shadow-sm flex items-center justify-between transition cursor-pointer active:scale-98">
+                    <button class="msg-btn text-left flex-1 font-display font-bold text-sm text-[#2B241C] py-2 px-2">Necesito ayuda con mi cuenta bancaria</button>
+                    <button class="camera-btn p-2 rounded-xl text-[#B7950B] bg-[#FEF9E7] hover:bg-[#F9E79F] border border-[#F9E79F] transition shadow-sm flex-shrink-0"
+                        data-action="show-sign-video" data-message="Necesito ayuda con mi cuenta bancaria" title="Ver en señas LESCO">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                    </button>
+                </div>
             </div>
 
-            <div class="mt-6 bg-yellow-100 p-4 rounded-xl text-gray-700">
-                <p><strong>Mensaje seleccionado:</strong></p>
-                <p id="selected-message-banco" class="mt-1 text-yellow-700">Soy una persona sorda</p>
-            </div>
-
-            <button
-                class="mt-6 w-full bg-yellow-500 text-white p-3 rounded-xl shadow-lg flex items-center justify-center space-x-2">
+            <button class="mt-6 w-full bg-[#B7950B] hover:bg-[#9A7D0A] text-white font-display font-bold p-4 rounded-2xl shadow-lg flex items-center justify-center space-x-2 transition active:scale-98">
                 <span>✈️ Enviar mensaje</span>
-                <span>📷</span>
             </button>
-
-            <button
-                class="mt-4 w-full bg-green-100 p-3 rounded-xl text-green-700 flex items-center justify-center space-x-2">
-                <span>🤟 Ver en señas</span>
-                <span>📷</span>
-            </button>
-
         </div>
 
-
-        <div id="messages-generales-screen" class="screen bg-gray-50 p-6 hidden">
-
-            <button id="back-from-messages-generales" class="text-gray-600 mb-4 flex items-center">
-                ← <span class="ml-1">Volver</span>
+        <!-- 5. Generales Individual (Terracota) -->
+        <div id="messages-generales-screen" class="screen bg-[#FBF6EE] pt-8 px-6 pb-12 hidden font-body">
+            <button id="back-from-messages-generales" class="inline-flex items-center space-x-2 mb-4 text-xs font-display font-bold text-[#7A6E5C] bg-white px-3 py-2 rounded-xl border border-[#EAE0D0]">
+                <span>←</span><span>Volver</span>
             </button>
+            <h1 class="text-3xl font-display font-black text-[#B5551A] mb-1">Mensajes generales</h1>
+            <p class="text-xs text-[#7A6E5C] font-medium mb-6">Selecciona una frase de comunicación cotidiana</p>
 
-            <h1 class="text-3xl font-bold text-cyan-600 mb-1">Mensajes generales</h1>
-            <p class="text-gray-600 mb-6">Selecciona un mensaje</p>
+            <div class="space-y-2.5">
+                <!-- Opción 1 -->
+                <div class="msg-card w-full p-2.5 bg-white hover:bg-[#F3EADA] rounded-2xl border-2 border-[#EAE0D0] hover:border-[#B5551A] shadow-sm flex items-center justify-between transition cursor-pointer active:scale-98">
+                    <button class="msg-btn text-left flex-1 font-display font-bold text-sm text-[#2B241C] py-2 px-2">Hola, soy sordo/a</button>
+                    <button class="camera-btn p-2 rounded-xl text-[#B5551A] bg-[#F3EADA] hover:bg-[#EAE0D0] border border-[#EAE0D0] transition shadow-sm flex-shrink-0"
+                        data-action="show-sign-video" data-message="Hola, soy sordo/a" title="Ver en señas LESCO">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                    </button>
+                </div>
 
-            <div class="space-y-3">
-                <button class="msg-btn bg-cyan-500 text-white font-semibold p-3 w-full rounded-xl shadow">Hola, soy
-                    sordo/a</button>
-                <button class="msg-btn bg-cyan-100 text-cyan-700 p-3 w-full rounded-xl">¿Puede escribir por
-                    favor?</button>
-                <button class="msg-btn bg-cyan-100 text-cyan-700 p-3 w-full rounded-xl">Gracias</button>
-                <button class="msg-btn bg-cyan-100 text-cyan-700 p-3 w-full rounded-xl">¿Me puede ayudar?</button>
+                <!-- Opción 2 -->
+                <div class="msg-card w-full p-2.5 bg-white hover:bg-[#F3EADA] rounded-2xl border-2 border-[#EAE0D0] hover:border-[#B5551A] shadow-sm flex items-center justify-between transition cursor-pointer active:scale-98">
+                    <button class="msg-btn text-left flex-1 font-display font-bold text-sm text-[#2B241C] py-2 px-2">¿Puede escribir por favor?</button>
+                    <button class="camera-btn p-2 rounded-xl text-[#B5551A] bg-[#F3EADA] hover:bg-[#EAE0D0] border border-[#EAE0D0] transition shadow-sm flex-shrink-0"
+                        data-action="show-sign-video" data-message="¿Puede escribir por favor?" title="Ver en señas LESCO">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Opción 3 -->
+                <div class="msg-card w-full p-2.5 bg-white hover:bg-[#F3EADA] rounded-2xl border-2 border-[#EAE0D0] hover:border-[#B5551A] shadow-sm flex items-center justify-between transition cursor-pointer active:scale-98">
+                    <button class="msg-btn text-left flex-1 font-display font-bold text-sm text-[#2B241C] py-2 px-2">Muchas gracias por su paciencia</button>
+                    <button class="camera-btn p-2 rounded-xl text-[#B5551A] bg-[#F3EADA] hover:bg-[#EAE0D0] border border-[#EAE0D0] transition shadow-sm flex-shrink-0"
+                        data-action="show-sign-video" data-message="Muchas gracias por su paciencia" title="Ver en señas LESCO">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Opción 4 -->
+                <div class="msg-card w-full p-2.5 bg-white hover:bg-[#F3EADA] rounded-2xl border-2 border-[#EAE0D0] hover:border-[#B5551A] shadow-sm flex items-center justify-between transition cursor-pointer active:scale-98">
+                    <button class="msg-btn text-left flex-1 font-display font-bold text-sm text-[#2B241C] py-2 px-2">¿Me puede ayudar con una duda?</button>
+                    <button class="camera-btn p-2 rounded-xl text-[#B5551A] bg-[#F3EADA] hover:bg-[#EAE0D0] border border-[#EAE0D0] transition shadow-sm flex-shrink-0"
+                        data-action="show-sign-video" data-message="¿Me puede ayudar con una duda?" title="Ver en señas LESCO">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                    </button>
+                </div>
             </div>
 
-            <div class="mt-6 bg-cyan-100 p-4 rounded-xl text-gray-700">
-                <p><strong>Mensaje seleccionado:</strong></p>
-                <p id="selected-message-generales" class="mt-1 text-cyan-700">Hola, soy sordo/a</p>
-            </div>
-
-            <button
-                class="mt-6 w-full bg-cyan-500 text-white p-3 rounded-xl shadow-lg flex items-center justify-center space-x-2">
+            <button class="mt-6 w-full bg-[#B5551A] hover:bg-[#9C4410] text-white font-display font-bold p-4 rounded-2xl shadow-lg flex items-center justify-center space-x-2 transition active:scale-98">
                 <span>✈️ Enviar mensaje</span>
-                <span>📷</span>
             </button>
-
-            <button
-                class="mt-4 w-full bg-green-100 p-3 rounded-xl text-green-700 flex items-center justify-center space-x-2">
-                <span>🤟 Ver en señas</span>
-                <span>📷</span>
-            </button>
-
         </div>
     </div>
 
 
 
-    <!-- 5. PANTALLA DE EMERGENCIAS -->
-    <div id="emergencies-screen" class="screen bg-gray-50 pt-8 px-6 hidden">
+    <!-- ======================================================= -->
+    <!-- 5. PANTALLA DE EMERGENCIAS (PALETA TIERRA - CORAL URGENTE) -->
+    <!-- ======================================================= -->
+    <div id="emergencies-screen" class="screen bg-[#FBF6EE] pt-8 px-6 pb-12 hidden font-body">
         <div class="flex items-center mb-6">
-            <button id="back-from-emergencies" class="text-gray-600 mr-4">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M10 19l-7-7m0 0l7-7m-7 7h18">
-                    </path>
+            <button id="back-from-emergencies" class="w-10 h-10 rounded-2xl bg-white border border-[#EAE0D0] text-[#2B241C] hover:bg-[#F3EADA] flex items-center justify-center mr-3 shadow-sm transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                 </svg>
             </button>
-            <span class="text-gray-600 font-medium">Volver a Home</span>
+            <span class="text-xs font-display font-bold text-[#7A6E5C]">Volver a Home</span>
         </div>
-        <h1 class="text-3xl font-bold text-red-700 mb-2">Emergencias</h1>
-        <p class="text-gray-600 mb-8">Elige tu emergencia para conectarte rápidamente</p>
 
-        <!-- GRID de Botones de Emergencia -->
-        <div class="grid grid-cols-2 gap-4">
+        <div class="flex items-center space-x-2 mb-1">
+            <span class="px-2.5 py-0.5 rounded-full bg-[#FDEDEC] text-[#C0392B] border border-[#F5B7B1] text-[11px] font-display font-black tracking-wider uppercase">
+                Atención Inmediata
+            </span>
+        </div>
+        <h1 class="text-3xl font-display font-black text-[#C0392B] tracking-tight mb-1">Emergencias</h1>
+        <p class="text-sm text-[#7A6E5C] font-medium mb-6">Elige el servicio de auxilio o tus contactos de emergencia</p>
+
+        <!-- GRID de Botones de Emergencia Tierra (Sin 911) -->
+        <div class="grid grid-cols-3 gap-2.5 font-display mb-6">
             <!-- Botón 1: Policía -->
-            <div
-                class="p-4 bg-white rounded-xl shadow-lg cursor-pointer h-40 flex flex-col justify-center items-center text-center bg-red-100 hover:bg-red-200 transition">
-                <span class="text-4xl mb-2">👮‍♀️</span>
-                <p class="font-bold text-red-800">Policía</p>
-                <small class="text-xs text-red-600">(911)</small>
+            <div class="p-3.5 bg-white rounded-3xl border-2 border-[#EAE0D0] hover:border-[#AED6F1] shadow-sm hover:shadow-md cursor-pointer flex flex-col justify-between items-center text-center transition group active:scale-95 h-36">
+                <div class="w-12 h-12 rounded-2xl bg-[#EAF2F8] border border-[#AED6F1] flex items-center justify-center text-2xl group-hover:scale-105 transition-transform">
+                    👮‍♀️
+                </div>
+                <div>
+                    <p class="font-black text-xs text-[#2B241C]">Policía</p>
+                    <span class="inline-block mt-0.5 px-1.5 py-0.5 rounded bg-[#EAF2F8] text-[#2471A3] font-bold text-[9px]">Oficial</span>
+                </div>
             </div>
+
             <!-- Botón 2: Ambulancia / Cruz Roja -->
-            <div
-                class="p-4 bg-white rounded-xl shadow-lg cursor-pointer h-40 flex flex-col justify-center items-center text-center bg-red-100 hover:bg-red-200 transition">
-                <span class="text-4xl mb-2">🚑</span>
-                <p class="font-bold text-red-800">Ambulancia</p>
-                <small class="text-xs text-red-600">(911)</small>
+            <div class="p-3.5 bg-white rounded-3xl border-2 border-[#EAE0D0] hover:border-[#F5B7B1] shadow-sm hover:shadow-md cursor-pointer flex flex-col justify-between items-center text-center transition group active:scale-95 h-36">
+                <div class="w-12 h-12 rounded-2xl bg-[#FDEDEC] border border-[#F5B7B1] flex items-center justify-center text-2xl group-hover:scale-105 transition-transform">
+                    🚑
+                </div>
+                <div>
+                    <p class="font-black text-xs text-[#C0392B]">Ambulancia</p>
+                    <span class="inline-block mt-0.5 px-1.5 py-0.5 rounded bg-[#FDEDEC] text-[#C0392B] font-bold text-[9px]">Cruz Roja</span>
+                </div>
             </div>
+
             <!-- Botón 3: Bomberos -->
-            <div
-                class="p-4 bg-white rounded-xl shadow-lg cursor-pointer h-40 flex flex-col justify-center items-center text-center bg-red-100 hover:bg-red-200 transition">
-                <span class="text-4xl mb-2">🚒</span>
-                <p class="font-bold text-red-800">Bomberos</p>
-                <small class="text-xs text-red-600">(911)</small>
+            <div class="p-3.5 bg-white rounded-3xl border-2 border-[#EAE0D0] hover:border-[#FDBA74] shadow-sm hover:shadow-md cursor-pointer flex flex-col justify-between items-center text-center transition group active:scale-95 h-36">
+                <div class="w-12 h-12 rounded-2xl bg-[#FFF7ED] border border-[#FDBA74] flex items-center justify-center text-2xl group-hover:scale-105 transition-transform">
+                    🚒
+                </div>
+                <div>
+                    <p class="font-black text-xs text-[#9A3412]">Bomberos</p>
+                    <span class="inline-block mt-0.5 px-1.5 py-0.5 rounded bg-[#FFF7ED] text-[#9A3412] font-bold text-[9px]">Rescate</span>
+                </div>
             </div>
-            <!-- Botón 4: Contacto de Emergencia Personal -->
-            <div
-                class="p-4 bg-white rounded-xl shadow-lg cursor-pointer h-40 flex flex-col justify-center items-center text-center bg-red-100 hover:bg-red-200 transition">
-                <span class="text-4xl mb-2">👤</span>
-                <p class="font-bold text-red-800">Contacto Personal</p>
-                <small class="text-xs text-red-600">Mamá/Papá/Amigo</small>
+        </div>
+
+        <!-- ======================================================= -->
+        <!-- BOTÓN DE ACCESO A CONTACTOS SOS (PANTALLA SEPARADA)    -->
+        <!-- ======================================================= -->
+        <div id="to-sos-contacts-screen-btn"
+            class="w-full p-4 bg-white hover:bg-[#F3EADA] rounded-3xl border-2 border-[#EAE0D0] hover:border-[#B5551A] shadow-sm flex items-center justify-between transition cursor-pointer active:scale-98">
+            <div class="flex items-center space-x-3.5">
+                <div class="w-12 h-12 rounded-2xl bg-[#F3EADA] text-[#B5551A] flex items-center justify-center text-2xl font-bold border border-[#EAE0D0]">
+                    👤
+                </div>
+                <div class="text-left font-body">
+                    <h3 class="font-display font-black text-base text-[#2B241C]">Contactos SOS</h3>
+                    <p id="sos-summary-count" class="text-xs text-[#7A6E5C] font-medium">1 de 5 contactos registrados</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <span class="w-9 h-9 rounded-2xl bg-[#F3EADA] text-[#B5551A] flex items-center justify-center font-display font-black text-base shadow-sm">→</span>
             </div>
         </div>
     </div>
 
-    <!-- 6. PANTALLA DE TRADUCTOR (Selector de modos) -->
-    <div id="translator-screen" class="screen bg-gray-50 pt-8 px-6 hidden">
+    <!-- ======================================================= -->
+    <!-- 5.1 PANTALLA SEPARADA DE CONTACTOS SOS DE EMERGENCIA    -->
+    <!-- ======================================================= -->
+    <div id="sos-contacts-screen" class="screen bg-[#FBF6EE] pt-8 px-6 pb-12 hidden font-body">
+        <div class="flex items-center justify-between mb-6">
+            <button id="back-from-sos-contacts" class="w-10 h-10 rounded-2xl bg-white border border-[#EAE0D0] text-[#2B241C] hover:bg-[#F3EADA] flex items-center justify-center shadow-sm transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+            </button>
+            <span class="text-xs font-display font-bold text-[#7A6E5C]">Volver a Emergencias</span>
+            <!-- Botón de video LESCO de ayuda para contactos SOS -->
+            <button class="camera-btn p-2 rounded-xl text-[#B5551A] bg-[#F3EADA] hover:bg-[#EAE0D0] border border-[#EAE0D0] transition shadow-sm"
+                data-action="show-sign-video" data-message="Contactos de Emergencia SOS" title="Ver en señas">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                </svg>
+            </button>
+        </div>
 
-        <button id="back-from-translator-main" class="text-gray-600 mb-6 flex items-center">
-            ← <span class="ml-1">Volver a Home</span>
-        </button>
+        <div class="flex items-center space-x-2 mb-1">
+            <span class="px-2.5 py-0.5 rounded-full bg-[#FDEDEC] text-[#C0392B] border border-[#F5B7B1] text-[11px] font-display font-black tracking-wider uppercase">
+                Red de Auxilio
+            </span>
+        </div>
+        <h1 class="text-3xl font-display font-black text-[#2B241C] tracking-tight mb-1">Contactos SOS</h1>
+        <p class="text-sm text-[#7A6E5C] font-medium mb-6">Mínimo 1 y máximo 5 contactos de auxilio rápido</p>
 
-        <h1 class="text-3xl font-bold text-blue-700 mb-2">Traductor</h1>
-        <p class="text-gray-600 mb-6">Selecciona el modo de traducción</p>
+        <!-- Contenedor del Módulo SOS con Lista y Formulario en el Centro -->
+        <div class="bg-white rounded-3xl p-5 border-2 border-[#EAE0D0] shadow-sm">
+            <div class="flex justify-between items-center mb-4 pb-3 border-b border-[#EAE0D0]">
+                <div>
+                    <p id="sos-count-label" class="font-display font-black text-sm text-[#2B241C]">1 de 5 contactos registrados</p>
+                    <p class="text-[11px] text-[#7A6E5C]">Toca llamar para discado inmediato</p>
+                </div>
+                <button id="add-sos-contact-btn"
+                    class="px-3.5 py-2 rounded-xl bg-[#B5551A] hover:bg-[#9C4410] text-white flex items-center space-x-1.5 font-display font-bold text-xs shadow-md transition active:scale-95">
+                    <span>+</span><span>Agregar</span>
+                </button>
+            </div>
 
-        <!-- Tarjeta Verde: Señas → Texto/Voz -->
+            <!-- Formulario Desplegable para Agregar Contacto -->
+            <div id="add-sos-form-container" class="hidden mb-4 p-4 bg-[#FBF6EE] rounded-2xl border border-[#EAE0D0]">
+                <p class="font-display font-bold text-xs text-[#B5551A] mb-2">Nuevo Contacto de Emergencia</p>
+                <div class="space-y-2 mb-3">
+                    <input type="text" id="new-sos-name" placeholder="Nombre completo (Ej: Mamá / Dra. Salas)"
+                        class="w-full p-2.5 bg-white border border-[#EAE0D0] rounded-xl text-xs font-medium focus:outline-none focus:border-[#B5551A]">
+                    <input type="tel" id="new-sos-phone" placeholder="Número de teléfono (Ej: 8888-8888)"
+                        class="w-full p-2.5 bg-white border border-[#EAE0D0] rounded-xl text-xs font-medium focus:outline-none focus:border-[#B5551A]">
+                    <input type="text" id="new-sos-relation" placeholder="Parentesco (Ej: Familiar / Amigo / Médico)"
+                        class="w-full p-2.5 bg-white border border-[#EAE0D0] rounded-xl text-xs font-medium focus:outline-none focus:border-[#B5551A]">
+                </div>
+                <div class="flex space-x-2">
+                    <button id="save-new-sos-btn"
+                        class="flex-1 py-2.5 bg-[#B5551A] hover:bg-[#9C4410] text-white font-display font-bold text-xs rounded-xl transition shadow-sm">
+                        Guardar contacto
+                    </button>
+                    <button id="cancel-new-sos-btn"
+                        class="px-4 py-2.5 bg-white border border-[#EAE0D0] text-[#7A6E5C] font-display font-bold text-xs rounded-xl hover:bg-[#EAE0D0] transition">
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Lista Dinámica de Contactos SOS en el Centro -->
+            <div id="sos-contacts-list" class="space-y-2.5">
+                <!-- Se inyecta dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================= -->
+    <!-- 6. PANTALLA DE TRADUCTOR (SELECTOR DE MODOS TIERRA)     -->
+    <!-- ======================================================= -->
+    <div id="translator-screen" class="screen bg-[#FBF6EE] pt-8 px-6 pb-12 hidden font-body">
+        <div class="flex items-center mb-6">
+            <button id="back-from-translator-main" class="w-10 h-10 rounded-2xl bg-white border border-[#EAE0D0] text-[#2B241C] hover:bg-[#F3EADA] flex items-center justify-center mr-3 shadow-sm transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+            </button>
+            <span class="text-xs font-display font-bold text-[#7A6E5C]">Volver a Home</span>
+        </div>
+
+        <h1 class="text-3xl font-display font-black text-[#2B241C] tracking-tight mb-1">Traductor LESCO</h1>
+        <p class="text-sm text-[#7A6E5C] font-medium mb-6">Selecciona la dirección de comunicación</p>
+
+        <!-- Tarjeta Terracota: Señas → Texto/Voz -->
         <div id="to-signs-to-text"
-            class="p-6 rounded-2xl shadow-lg bg-gradient-to-br from-green-400 to-teal-500 text-white mb-6 cursor-pointer transition transform hover:scale-[1.01]">
-            <h2 class="text-2xl font-bold mb-2">Señas → Texto/Voz</h2>
-            <p class="opacity-90">Traduce lenguaje de señas a texto o voz</p>
-            <div class="flex justify-end text-4xl mt-4">🤟💬</div>
-        </div>
-
-        <!-- Tarjeta Azul: Texto/Voz → Señas -->
-        <div id="to-text-to-signs"
-            class="p-6 rounded-2xl shadow-lg bg-gradient-to-br from-blue-400 to-cyan-500 text-white cursor-pointer transition transform hover:scale-[1.01]">
-            <h2 class="text-2xl font-bold mb-2">Texto/Voz → Señas</h2>
-            <p class="opacity-90">Traduce texto o voz a lenguaje de señas</p>
-            <div class="flex justify-end text-4xl mt-4">💬🤟</div>
-        </div>
-    </div>
-    <!-- 7. PANTALLA SEÑAS → TEXTO/VOZ -->
-    <div id="signs-to-text-screen" class="screen bg-gray-50 pt-8 px-6 hidden">
-
-        <button id="back-to-translator-from-signs" class="text-gray-600 mb-6 flex items-center">
-            ← <span class="ml-1">Volver</span>
-        </button>
-
-        <h1 class="text-3xl font-bold text-green-600 mb-1">Señas → Texto/Voz</h1>
-        <p class="text-gray-600 mb-6">Detectando lenguaje de señas</p>
-
-        <!-- Área donde irá la cámara -->
-        <div
-            class="w-full h-80 bg-gray-200 rounded-2xl shadow-lg flex items-center justify-center text-gray-500 text-xl mb-6">
-            <span>Vista de la cámara / Detección LESCO</span>
-        </div>
-
-        <!-- Área del texto transcrito -->
-        <div class="p-4 bg-white rounded-xl shadow-md border-l-4 border-green-500">
-            <p class="text-sm font-medium text-gray-700">Texto transcrito:</p>
-            <p class="text-green-700 text-xl mt-2 opacity-70">La transcripción aparecerá aquí...</p>
-        </div>
-
-        <!-- Botón de iniciar detección -->
-        <button
-            class="mt-6 w-full bg-green-600 text-white py-3 rounded-xl shadow-lg flex items-center justify-center space-x-2">
-            <span>📷 Iniciar detección</span>
-        </button>
-    </div>
-    <!-- 8. PANTALLA TEXTO/VOZ → SEÑAS -->
-    <div id="text-to-signs-screen" class="screen bg-gray-50 pt-8 px-6 hidden">
-
-        <button id="back-to-translator-from-text" class="text-gray-600 mb-6 flex items-center">
-            ← <span class="ml-1">Volver</span>
-        </button>
-
-        <h1 class="text-3xl font-bold text-blue-600 mb-1">Texto/Voz → Señas</h1>
-        <p class="text-gray-600 mb-6">Traduce texto o voz a señas</p>
-
-        <!-- Cuadro donde irá el avatar / video -->
-        <div
-            class="w-full h-80 bg-gray-200 rounded-2xl shadow-lg flex items-center justify-center text-gray-500 text-xl mb-6">
-            <span>Avatar / Animación LESCO</span>
-        </div>
-
-        <!-- Cuadro donde escribir o dictar -->
-        <textarea class="w-full p-4 rounded-xl shadow bg-white border border-blue-300 outline-none"
-            placeholder="Escribe aquí lo que deseas traducir a señas..."></textarea>
-
-        <!-- Botón traducir -->
-        <button class="mt-6 w-full bg-blue-600 text-white py-3 rounded-xl shadow-lg">
-            Traducir a señas 🤟
-        </button>
-
-        <!-- Botón micrófono (opcional para simular) -->
-        <button
-            class="mt-4 w-full bg-blue-100 text-blue-700 py-3 rounded-xl shadow flex items-center justify-center space-x-2">
-            <span>🎤 Usar micrófono</span>
-        </button>
-
-    </div>
-
-    <!-- 7. PANTALLA HISTORIAL -->
-    <div id="history-screen" class="screen bg-gray-50 pt-8 px-6 hidden">
-        <div class="flex items-center mb-6">
-            <button id="back-from-history" class="text-gray-600 mr-4">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                </svg>
-            </button>
-            <span class="text-gray-600 font-medium">Volver a Home</span>
-        </div>
-
-        <h1 class="text-3xl font-bold text-yellow-700 mb-2">Historial</h1>
-        <p class="text-gray-600 mb-8">Tus interacciones recientes</p>
-
-        <!-- 🔥 AQUÍ VA EL HISTORIAL REAL -->
-        <div id="history-list" class="space-y-3"></div>
-    </div>
-
-    <!-- 8. PANTALLA AYUDA Y TUTORIALES -->
-    <div id="help-screen" class="screen bg-gray-50 pt-8 px-6 hidden">
-        <div class="flex items-center mb-6">
-            <button id="back-from-help" class="text-gray-600 mr-4">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                </svg>
-            </button>
-            <span class="text-gray-600 font-medium">Volver a Home</span>
-        </div>
-        <h1 class="text-3xl font-bold text-cyan-700 mb-2">Ayuda y tutoriales</h1>
-        <p class="text-gray-600 mb-8">Videos de uso y LESCO básico</p>
-
-        <!-- Videos de Tutoriales (Ejemplos) -->
-        <div class="space-y-4">
-            <div
-                class="flex flex-col items-center justify-center p-8 bg-gray-100 rounded-xl shadow-inner border-2 border-dashed border-gray-400 text-gray-600 h-48">
-
-                <!-- Cambiado: nuevo placeholder más genérico -->
-                <img src="img/grua.png" alt="Videos en proceso"
-                    class="w-16 h-16 mb-3 opacity-90 animate-pulse">
-
-                <p class="text-xl font-bold">Videos en proceso</p>
-                <small class="text-center mt-1">Próximamente: videos en lenguaje de señas LESCO</small>
+            class="p-6 rounded-3xl shadow-xl shadow-[#B5551A]/20 bg-gradient-to-br from-[#9C4410] via-[#B5551A] to-[#D46B28] text-white mb-4 cursor-pointer transition transform hover:scale-[1.01] active:scale-98 border-2 border-[#D46B28]/40">
+            <div class="flex justify-between items-start mb-3">
+                <span class="px-3 py-1 rounded-full bg-black/25 text-[#F3EADA] text-xs font-display font-bold border border-white/20">
+                    📷 Modo Cámara
+                </span>
+                <span class="text-3xl">🤟💬</span>
+            </div>
+            <h2 class="text-2xl font-display font-black mb-1">Señas → Texto / Voz</h2>
+            <p class="text-xs text-[#F3EADA] font-medium leading-relaxed">
+                Apunta con la cámara para reconocer dactilología y señas en tiempo real.
+            </p>
+            <div class="mt-4 flex items-center text-xs font-display font-black text-white">
+                <span>Abrir detector</span>
+                <span class="ml-2">→</span>
             </div>
         </div>
 
-    </div> <!-- <-- AÑADIDO: cierre correcto de #help-screen -->
+        <!-- Tarjeta Salvia: Texto/Voz → Señas -->
+        <div id="to-text-to-signs"
+            class="p-6 rounded-3xl shadow-xl shadow-[#5C7A5C]/20 bg-gradient-to-br from-[#4A634A] via-[#5C7A5C] to-[#739673] text-white cursor-pointer transition transform hover:scale-[1.01] active:scale-98 border-2 border-[#739673]/40">
+            <div class="flex justify-between items-start mb-3">
+                <span class="px-3 py-1 rounded-full bg-black/25 text-[#EBF2EB] text-xs font-display font-bold border border-white/20">
+                    🎙️ Modo Voz y Teclado
+                </span>
+                <span class="text-3xl">💬🤟</span>
+            </div>
+            <h2 class="text-2xl font-display font-black mb-1">Texto / Voz → Señas</h2>
+            <p class="text-xs text-[#EBF2EB] font-medium leading-relaxed">
+                Habla o escribe para visualizar la traducción en video de señas LESCO.
+            </p>
+            <div class="mt-4 flex items-center text-xs font-display font-black text-white">
+                <span>Abrir reproductor</span>
+                <span class="ml-2">→</span>
+            </div>
+        </div>
+    </div>
 
-    <!-- PANTALLA EDITAR PERFIL -->
-    <div id="edit-profile-screen" class="screen relative bg-gray-50 pt-8 px-6 hidden">
-        <button class="camera-btn absolute top-4 right-4 p-1 rounded-full text-blue-600 hover:text-blue-800 bg-white/50 hover:bg-white/90 transition duration-150 z-10"
-            data-action="show-sign-video" data-message="Editar perfil - Videos">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
-                </path>
-            </svg>
-        </button>
-
+    <!-- ======================================================= -->
+    <!-- 7. PANTALLA SEÑAS → TEXTO/VOZ (DETECCIÓN CÁMARA TIERRA) -->
+    <!-- ======================================================= -->
+    <div id="signs-to-text-screen" class="screen bg-[#FBF6EE] pt-8 px-6 pb-12 hidden font-body">
         <div class="flex items-center mb-6">
-            <button id="back-from-edit-profile" class="text-gray-600 mr-4">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            <button id="back-to-translator-from-signs" class="w-10 h-10 rounded-2xl bg-white border border-[#EAE0D0] text-[#2B241C] hover:bg-[#F3EADA] flex items-center justify-center mr-3 shadow-sm transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
                         d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-            </svg>
+                </svg>
             </button>
-            <span class="text-gray-600 font-medium">Volver</span>
+            <span class="text-xs font-display font-bold text-[#7A6E5C]">Volver</span>
         </div>
 
-        <h1 class="text-3xl font-bold text-blue-700 mb-4">Editar perfil</h1>
+        <h1 class="text-3xl font-display font-black text-[#B5551A] tracking-tight mb-1">Señas → Texto / Voz</h1>
+        <p class="text-sm text-[#7A6E5C] font-medium mb-6">Detección y reconocimiento de señas</p>
 
-        <form id="edit-profile-form" class="space-y-4">
-            <input id="edit-nombre" class="w-full p-3 border rounded-xl" placeholder="Nombre completo">
-            <input id="edit-telefono" class="w-full p-3 border rounded-xl" placeholder="Teléfono">
-            <input id="edit-email" class="w-full p-3 border rounded-xl" placeholder="Correo">
-            <input id="edit-emergencia" class="w-full p-3 border rounded-xl" placeholder="Contacto de emergencia">
+        <!-- Viewport de la cámara -->
+        <div class="w-full h-72 bg-[#2B241C] rounded-3xl shadow-lg border-2 border-[#EAE0D0] flex flex-col items-center justify-center text-white text-center p-6 mb-5 relative overflow-hidden">
+            <div class="w-16 h-16 rounded-2xl bg-white/10 text-white flex items-center justify-center text-3xl mb-3 border border-white/20">
+                📷
+            </div>
+            <p class="font-display font-bold text-base text-white">Vista de Cámara LESCO</p>
+            <p class="text-xs text-[#EAE0D0]/80 mt-1 max-w-xs">Coloca tu mano dentro del encuadre para detectar dactilología</p>
+            <span class="absolute top-4 right-4 px-2.5 py-1 rounded-full bg-[#5C7A5C] text-white text-[10px] font-display font-bold">
+                MediaPipe Listo
+            </span>
+        </div>
 
-            <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl">
+        <!-- Área de transcripción -->
+        <div class="p-5 bg-white rounded-3xl shadow-sm border-2 border-[#EAE0D0] border-l-8 border-l-[#B5551A]">
+            <p class="text-xs font-display font-bold text-[#7A6E5C] uppercase tracking-wider">Texto transcrito:</p>
+            <p class="text-xl font-display font-black text-[#2B241C] mt-2">La transcripción aparecerá aquí...</p>
+        </div>
+
+        <!-- Botón de acción -->
+        <button class="mt-5 w-full bg-[#B5551A] hover:bg-[#9C4410] text-white font-display font-bold py-4 rounded-2xl shadow-lg shadow-[#B5551A]/20 flex items-center justify-center space-x-2 transition active:scale-98">
+            <span>📷 Iniciar detección con cámara</span>
+        </button>
+    </div>
+
+    <!-- ======================================================= -->
+    <!-- 8. PANTALLA TEXTO/VOZ → SEÑAS (REPRODUCTOR LESCO TIERRA)-->
+    <!-- ======================================================= -->
+    <div id="text-to-signs-screen" class="screen bg-[#FBF6EE] pt-8 px-6 pb-12 hidden font-body">
+        <div class="flex items-center mb-6">
+            <button id="back-to-translator-from-text" class="w-10 h-10 rounded-2xl bg-white border border-[#EAE0D0] text-[#2B241C] hover:bg-[#F3EADA] flex items-center justify-center mr-3 shadow-sm transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+            </button>
+            <span class="text-xs font-display font-bold text-[#7A6E5C]">Volver</span>
+        </div>
+
+        <h1 class="text-3xl font-display font-black text-[#5C7A5C] tracking-tight mb-1">Texto / Voz → Señas</h1>
+        <p class="text-sm text-[#7A6E5C] font-medium mb-6">Traduce texto o voz a videos en señas</p>
+
+        <!-- Cuadro del reproductor LESCO -->
+        <div class="w-full h-72 bg-[#2B241C] rounded-3xl shadow-lg border-2 border-[#EAE0D0] flex flex-col items-center justify-center text-white text-center p-6 mb-5 relative overflow-hidden">
+            <div class="w-16 h-16 rounded-2xl bg-white/10 text-white flex items-center justify-center text-3xl mb-3 border border-white/20">
+                🤟
+            </div>
+            <p class="font-display font-bold text-base text-white">Reproductor de Señas LESCO</p>
+            <p class="text-xs text-[#EAE0D0]/80 mt-1 max-w-xs">Los clips secuenciales de señas se reproducirán aquí</p>
+        </div>
+
+        <!-- Entrada de texto -->
+        <textarea class="w-full p-4 rounded-2xl bg-white border-2 border-[#EAE0D0] focus:border-[#5C7A5C] text-[#2B241C] placeholder-[#7A6E5C]/60 focus:outline-none transition shadow-sm font-medium text-sm resize-none h-28"
+            placeholder="Escribe aquí lo que deseas traducir a señas LESCO..."></textarea>
+
+        <!-- Botones de traducción -->
+        <div class="pt-3 space-y-2.5">
+            <button class="w-full bg-[#5C7A5C] hover:bg-[#4A634A] text-white font-display font-bold py-4 rounded-2xl shadow-lg shadow-[#5C7A5C]/20 transition active:scale-98 flex items-center justify-center space-x-2">
+                <span>Traducir a señas</span>
+                <span class="text-lg">🤟</span>
+            </button>
+            <button class="w-full bg-white hover:bg-[#F3EADA] text-[#2B241C] font-display font-bold py-3.5 rounded-2xl border-2 border-[#EAE0D0] transition active:scale-98 flex items-center justify-center space-x-2">
+                <span>🎤 Usar dictado por voz</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ======================================================= -->
+    <!-- 9. PANTALLA HISTORIAL (PALETA TIERRA)                   -->
+    <!-- ======================================================= -->
+    <div id="history-screen" class="screen bg-[#FBF6EE] pt-8 px-6 pb-12 hidden font-body">
+        <div class="flex items-center mb-6">
+            <button id="back-from-history" class="w-10 h-10 rounded-2xl bg-white border border-[#EAE0D0] text-[#2B241C] hover:bg-[#F3EADA] flex items-center justify-center mr-3 shadow-sm transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+            </button>
+            <span class="text-xs font-display font-bold text-[#7A6E5C]">Volver a Home</span>
+        </div>
+
+        <h1 class="text-3xl font-display font-black text-[#2B241C] tracking-tight mb-1">Historial</h1>
+        <p class="text-sm text-[#7A6E5C] font-medium mb-6">Tus conversaciones y traducciones recientes</p>
+
+        <!-- Contenedor del historial -->
+        <div id="history-list" class="space-y-3">
+            <div class="p-4 bg-white rounded-2xl border-2 border-[#EAE0D0] shadow-sm flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-[#F3EADA] text-[#B5551A] flex items-center justify-center font-bold text-lg">
+                        📜
+                    </div>
+                    <div>
+                        <p class="font-display font-bold text-sm text-[#2B241C]">Necesito ayuda urgente</p>
+                        <p class="text-[11px] text-[#7A6E5C]">Emergencia • Hoy</p>
+                    </div>
+                </div>
+                <span class="text-xs font-display font-bold text-[#B5551A]">Ver</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================= -->
+    <!-- 10. PANTALLA AYUDA Y TUTORIALES (PALETA TIERRA)         -->
+    <!-- ======================================================= -->
+    <div id="help-screen" class="screen bg-[#FBF6EE] pt-8 px-6 pb-12 hidden font-body">
+        <div class="flex items-center mb-6">
+            <button id="back-from-help" class="w-10 h-10 rounded-2xl bg-white border border-[#EAE0D0] text-[#2B241C] hover:bg-[#F3EADA] flex items-center justify-center mr-3 shadow-sm transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+            </button>
+            <span class="text-xs font-display font-bold text-[#7A6E5C]">Volver a Home</span>
+        </div>
+
+        <h1 class="text-3xl font-display font-black text-[#2B241C] tracking-tight mb-1">Ayuda LESCO</h1>
+        <p class="text-sm text-[#7A6E5C] font-medium mb-6">Aprende señas básicas y cómo usar la app</p>
+
+        <div class="space-y-4">
+            <div class="flex flex-col items-center justify-center p-8 bg-white rounded-3xl shadow-sm border-2 border-[#EAE0D0] text-center">
+                <div class="w-16 h-16 rounded-2xl bg-[#EBF2EB] text-[#5C7A5C] flex items-center justify-center text-3xl mb-3 border border-[#C8DAC8]">
+                    💡
+                </div>
+                <p class="text-xl font-display font-black text-[#2B241C]">Videos en preparación</p>
+                <p class="text-xs text-[#7A6E5C] font-medium mt-1 max-w-xs">
+                    Estamos integrando tutoriales oficiales del abecedario y señas cotidianas en colaboración con instructores de LESCO.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======================================================= -->
+    <!-- 11. PANTALLA EDITAR PERFIL (PALETA TIERRA)             -->
+    <!-- ======================================================= -->
+    <div id="edit-profile-screen" class="screen relative bg-[#FBF6EE] pt-8 px-6 pb-12 hidden font-body">
+        <div class="flex items-center mb-6">
+            <button id="back-from-edit-profile" class="w-10 h-10 rounded-2xl bg-white border border-[#EAE0D0] text-[#2B241C] hover:bg-[#F3EADA] flex items-center justify-center mr-3 shadow-sm transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+            </button>
+            <span class="text-xs font-display font-bold text-[#7A6E5C]">Volver al perfil</span>
+        </div>
+
+        <h1 class="text-3xl font-display font-black text-[#2B241C] tracking-tight mb-1">Editar perfil</h1>
+        <p class="text-sm text-[#7A6E5C] font-medium mb-6">Actualiza tus datos de contacto</p>
+
+        <form id="edit-profile-form" class="space-y-3.5">
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="text-xs font-display font-bold text-[#2B241C] block mb-1">Nombre</label>
+                    <input id="edit-nombre" class="w-full p-3.5 rounded-2xl bg-white border-2 border-[#EAE0D0] focus:border-[#B5551A] text-[#2B241C] font-medium focus:outline-none transition shadow-sm" placeholder="Nombre">
+                </div>
+                <div>
+                    <label class="text-xs font-display font-bold text-[#2B241C] block mb-1">Apellidos</label>
+                    <input id="edit-apellidos" class="w-full p-3.5 rounded-2xl bg-white border-2 border-[#EAE0D0] focus:border-[#B5551A] text-[#2B241C] font-medium focus:outline-none transition shadow-sm" placeholder="Apellidos">
+                </div>
+            </div>
+            <div>
+                <label class="text-xs font-display font-bold text-[#2B241C] block mb-1">Cédula de identidad</label>
+                <input id="edit-cedula" class="w-full p-3.5 rounded-2xl bg-white border-2 border-[#EAE0D0] focus:border-[#B5551A] text-[#2B241C] font-medium focus:outline-none transition shadow-sm" placeholder="Cédula">
+            </div>
+            <div>
+                <label class="text-xs font-display font-bold text-[#2B241C] block mb-1">Teléfono</label>
+                <input id="edit-telefono" class="w-full p-3.5 rounded-2xl bg-white border-2 border-[#EAE0D0] focus:border-[#B5551A] text-[#2B241C] font-medium focus:outline-none transition shadow-sm" placeholder="Teléfono">
+            </div>
+            <div>
+                <label class="text-xs font-display font-bold text-[#2B241C] block mb-1">Contacto de emergencia</label>
+                <input id="edit-emergencia" class="w-full p-3.5 rounded-2xl bg-white border-2 border-[#EAE0D0] focus:border-[#B5551A] text-[#2B241C] font-medium focus:outline-none transition shadow-sm" placeholder="Contacto de emergencia">
+            </div>
+
+            <button type="submit" class="mt-4 w-full bg-[#B5551A] hover:bg-[#9C4410] text-white font-display font-bold py-4 rounded-2xl shadow-lg shadow-[#B5551A]/20 transition active:scale-98">
                 Guardar cambios
             </button>
         </form>
     </div>
 
-    <!-- PANTALLA TAMAÑO DE TEXTO -->
-    <div id="text-size-screen" class="screen relative bg-gray-50 pt-8 px-6 hidden">
-        <button class="camera-btn absolute top-4 right-4 p-1 rounded-full text-purple-600 hover:text-purple-800 bg-white/50 hover:bg-white/90 transition duration-150 z-10"
-            data-action="show-sign-video" data-message="Tamaño de texto - Videos">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <!-- ======================================================= -->
+    <!-- 12. PANTALLA TAMAÑO DE TEXTO (PALETA TIERRA)           -->
+    <!-- ======================================================= -->
+    <div id="text-size-screen" class="screen relative bg-[#FBF6EE] pt-8 px-6 pb-12 hidden font-body">
+        <button class="camera-btn absolute top-4 right-4 p-2 rounded-xl text-[#5C7A5C] bg-[#EBF2EB] hover:bg-[#C8DAC8] border border-[#C8DAC8] transition shadow-sm z-10"
+            data-action="show-sign-video" data-message="Ajustes de Tamaño de Texto" title="Ver en señas">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
                 </path>
@@ -904,32 +1276,34 @@
         </button>
 
         <div class="flex items-center mb-6">
-            <button id="back-from-text-size" class="text-gray-600 mr-4">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            <button id="back-from-text-size" class="w-10 h-10 rounded-2xl bg-white border border-[#EAE0D0] text-[#2B241C] hover:bg-[#F3EADA] flex items-center justify-center mr-3 shadow-sm transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
                         d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                 </svg>
             </button>
-            <span class="text-gray-600 font-medium">Volver</span>
+            <span class="text-xs font-display font-bold text-[#7A6E5C]">Volver al perfil</span>
         </div>
 
-        <h1 class="text-3xl font-bold text-purple-700 mb-4">Tamaño de texto</h1>
+        <h1 class="text-3xl font-display font-black text-[#2B241C] tracking-tight mb-1">Tamaño de texto</h1>
+        <p class="text-sm text-[#7A6E5C] font-medium mb-6">Ajusta la legibilidad según tu preferencia visual</p>
 
-        <p class="text-gray-700 mb-6">Ajusta el tamaño del texto de la aplicación.</p>
-
-        <div class="space-y-3">
-            <button data-size="14" class="size-btn w-full p-4 bg-white rounded-xl shadow-md">Pequeño</button>
-            <button data-size="16" class="size-btn w-full p-4 bg-white rounded-xl shadow-md">Normal</button>
-            <button data-size="20" class="size-btn w-full p-4 bg-white rounded-xl shadow-md">Grande</button>
-            <button data-size="24" class="size-btn w-full p-4 bg-white rounded-xl shadow-md">Muy grande</button>
+        <div class="space-y-3 font-display">
+            <button data-size="14" class="size-btn w-full p-4 bg-white hover:bg-[#F3EADA] text-[#2B241C] rounded-2xl border-2 border-[#EAE0D0] shadow-sm text-left transition font-medium active:scale-98">Pequeño (14px)</button>
+            <button data-size="16" class="size-btn w-full p-4 bg-white hover:bg-[#F3EADA] text-[#2B241C] rounded-2xl border-2 border-[#B5551A] shadow-sm text-left transition font-bold active:scale-98">Normal (16px) • Recomendado</button>
+            <button data-size="20" class="size-btn w-full p-4 bg-white hover:bg-[#F3EADA] text-[#2B241C] rounded-2xl border-2 border-[#EAE0D0] shadow-sm text-left transition font-bold active:scale-98">Grande (20px)</button>
+            <button data-size="24" class="size-btn w-full p-4 bg-white hover:bg-[#F3EADA] text-[#2B241C] rounded-2xl border-2 border-[#EAE0D0] shadow-sm text-left transition font-black active:scale-98">Muy grande (24px)</button>
         </div>
     </div>
 
-    <!-- PANTALLA VIBRACIÓN -->
-    <div id="vibration-screen" class="screen relative bg-gray-50 pt-8 px-6 hidden">
-        <button class="camera-btn absolute top-4 right-4 p-1 rounded-full text-yellow-600 hover:text-yellow-800 bg-white/50 hover:bg-white/90 transition duration-150 z-10"
-            data-action="show-sign-video" data-message="Vibración - Videos">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <!-- ======================================================= -->
+    <!-- 13. PANTALLA VIBRACIÓN (PALETA TIERRA)                 -->
+    <!-- ======================================================= -->
+    <div id="vibration-screen" class="screen relative bg-[#FBF6EE] pt-8 px-6 pb-12 hidden font-body">
+        <!-- BOTÓN DE VIDEO EN LA PARTE SUPERIOR DERECHA -->
+        <button class="camera-btn absolute top-4 right-4 p-2 rounded-xl text-[#B7950B] bg-[#FEF9E7] hover:bg-[#F9E79F] border border-[#F9E79F] transition shadow-sm z-10"
+            data-action="show-sign-video" data-message="Ajustes de Vibración" title="Ver en señas">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
                 </path>
@@ -937,121 +1311,140 @@
         </button>
 
         <div class="flex items-center mb-6">
-            <button id="back-from-vibration" class="text-gray-600 mr-4">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            <button id="back-from-vibration" class="w-10 h-10 rounded-2xl bg-white border border-[#EAE0D0] text-[#2B241C] hover:bg-[#F3EADA] flex items-center justify-center mr-3 shadow-sm transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
                         d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                 </svg>
             </button>
-            <span class="text-gray-600 font-medium">Volver</span>
+            <span class="text-xs font-display font-bold text-[#7A6E5C]">Volver al perfil</span>
         </div>
 
-        <h1 class="text-3xl font-bold text-yellow-700 mb-4">Vibración</h1>
+        <h1 class="text-3xl font-display font-black text-[#2B241C] tracking-tight mb-1">Vibración</h1>
+        <p class="text-sm text-[#7A6E5C] font-medium mb-6">Configuración de retroalimentación háptica</p>
 
-        <p class="text-gray-700 mb-6">Activa o desactiva la vibración al interactuar.</p>
-
-        <label class="flex items-center space-x-3">
-            <input type="checkbox" id="vibration-toggle" class="w-5 h-5">
-            <span class="text-lg">Activar vibración</span>
-        </label>
+        <div class="p-5 bg-white rounded-3xl border-2 border-[#EAE0D0] shadow-sm">
+            <label class="flex items-center justify-between cursor-pointer">
+                <div>
+                    <span class="font-display font-bold text-base text-[#2B241C] block">Activar vibración táctil</span>
+                    <span class="text-xs text-[#7A6E5C]">Vibrar al tocar botones y al recibir mensajes</span>
+                </div>
+                <input type="checkbox" id="vibration-toggle" class="w-6 h-6 accent-[#B5551A]">
+            </label>
+        </div>
     </div>
 
-
-    <!-- 9. PANTALLA DE PERFIL -->
-    <div id="profile-screen" class="screen hidden bg-white pt-8 pb-12">
-        <!-- Wrapper responsivo: margen lateral en móvil, centrado en escritorio -->
-        <div class="max-w-3xl mx-4 sm:mx-auto w-full px-4 sm:px-6 lg:px-8 relative">
-            <!-- Botón cámara (esquina superior derecha del wrapper) -->
-            <button
-                class="camera-btn absolute top-4 right-4 p-1 rounded-full text-white hover:text-gray-200 bg-white/30 hover:bg-white/50 transition duration-150 z-10"
-                data-action="show-sign-video" data-message="Perfil - Videos">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg">
+    <!-- ======================================================= -->
+    <!-- 14. PANTALLA DE PERFIL (PALETA TIERRA)                  -->
+    <!-- ======================================================= -->
+    <div id="profile-screen" class="screen hidden bg-[#FBF6EE] pt-8 pb-12 font-body">
+        <div class="max-w-3xl mx-auto w-full px-6 relative">
+            
+            <!-- Botón de video en la esquina superior derecha del perfil -->
+            <button class="camera-btn absolute top-4 right-4 p-2 rounded-xl text-[#B5551A] bg-[#F3EADA] hover:bg-[#EAE0D0] border border-[#EAE0D0] transition shadow-sm z-10"
+                data-action="show-sign-video" data-message="Perfil de Usuario" title="Ver en señas">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
                     </path>
                 </svg>
             </button>
 
-            <!-- Header: título + avatar -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center mb-6">
-                <div class="md:col-span-2">
-                    <button id="back-from-profile" class="text-gray-600 mb-3 flex items-center">
-                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                        </svg>
-                        Volver a Home
-                    </button>
-
-                    <h1 class="text-3xl sm:text-4xl font-extrabold text-blue-700 mb-1">Perfil</h1>
-                    <p class="text-gray-600">Configuración de tu cuenta</p>
-                </div>
-
-                <div class="flex justify-start md:justify-end mt-4 md:mt-0">
-                    <div class="flex flex-col items-center">
-                        <div id="profile-avatar" class="w-24 h-24 bg-blue-500 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg">
-                            <span id="profile-initials">I</span>
-                        </div>
-                        <p id="profile-display-name" class="mt-3 font-semibold text-lg">Invitado</p>
-                        <p id="profile-display-sub" class="text-sm text-gray-500">N/A</p>
-                    </div>
-                </div>
+            <div class="flex items-center mb-6">
+                <button id="back-from-profile" class="w-10 h-10 rounded-2xl bg-white border border-[#EAE0D0] text-[#2B241C] hover:bg-[#F3EADA] flex items-center justify-center mr-3 shadow-sm transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                </button>
+                <span class="text-xs font-display font-bold text-[#7A6E5C]">Volver a Home</span>
             </div>
 
-            <!-- Opciones: filas con botón principal y cámara -->
-            <div class="space-y-4">
-                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl shadow-sm">
-                    <div>
-                        <p class="font-semibold">Editar perfil</p>
-                        <p class="text-sm text-gray-500">Actualizar tu información personal</p>
+            <!-- Avatar y datos principales -->
+            <div class="flex flex-col items-center mb-8 text-center">
+                <div id="profile-avatar" class="w-24 h-24 rounded-3xl bg-[#B5551A] text-white flex items-center justify-center text-3xl font-display font-black shadow-lg shadow-[#B5551A]/25 ring-4 ring-[#F3EADA] mb-3">
+                    <span id="profile-initials">P</span>
+                </div>
+                <h2 id="profile-display-name" class="text-2xl font-display font-black text-[#2B241C]">Pamela Leiva</h2>
+                <p id="profile-display-sub" class="text-xs font-medium text-[#7A6E5C]">Cédula: 1-1234-5678</p>
+            </div>
+
+            <!-- Opciones del perfil con botón de video a la derecha de cada una -->
+            <div class="space-y-3 mb-6 font-display">
+                <!-- 1. Editar perfil -->
+                <div class="w-full p-4 bg-white hover:bg-[#F3EADA] rounded-2xl border-2 border-[#EAE0D0] shadow-sm flex items-center justify-between transition">
+                    <div id="edit-profile-button" class="flex items-center space-x-3.5 flex-1 cursor-pointer">
+                        <div class="w-10 h-10 rounded-xl bg-[#F3EADA] text-[#B5551A] flex items-center justify-center text-lg font-bold">
+                            ✏️
+                        </div>
+                        <div class="text-left font-body">
+                            <p class="font-display font-bold text-sm text-[#2B241C]">Editar perfil</p>
+                            <p class="text-xs text-[#7A6E5C]">Actualizar nombre, cédula y teléfonos</p>
+                        </div>
                     </div>
-                    <div class="flex items-center space-x-3">
-                        <button id="edit-profile-button" class="px-4 py-2 bg-blue-600 text-white rounded-lg">Abrir</button>
-                        <button class="camera-btn p-2 rounded-full text-white hover:text-gray-200 bg-white/30 hover:bg-white/50 transition duration-150"
-                            data-action="show-sign-video" data-message="Editar perfil - Videos">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="flex items-center space-x-2">
+                        <button class="camera-btn p-2 rounded-xl text-[#B5551A] bg-[#F3EADA] hover:bg-[#EAE0D0] border border-[#EAE0D0] transition shadow-sm"
+                            data-action="show-sign-video" data-message="Editar perfil - Videos" title="Ver en señas">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
                             </svg>
                         </button>
+                        <span class="text-[#7A6E5C] font-bold">→</span>
                     </div>
                 </div>
 
-                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl shadow-sm">
-                    <div>
-                        <p class="font-semibold">Tamaño de texto</p>
-                        <p class="text-sm text-gray-500">Ajusta la legibilidad de la app</p>
+                <!-- 2. Tamaño de texto -->
+                <div class="w-full p-4 bg-white hover:bg-[#F3EADA] rounded-2xl border-2 border-[#EAE0D0] shadow-sm flex items-center justify-between transition">
+                    <div id="open-text-size-from-profile" class="size-text-btn flex items-center space-x-3.5 flex-1 cursor-pointer">
+                        <div class="w-10 h-10 rounded-xl bg-[#EBF2EB] text-[#5C7A5C] flex items-center justify-center text-lg font-bold">
+                            🔤
+                        </div>
+                        <div class="text-left font-body">
+                            <p class="font-display font-bold text-sm text-[#2B241C]">Tamaño de texto</p>
+                            <p class="text-xs text-[#7A6E5C]">Ajustar tamaño de letra</p>
+                        </div>
                     </div>
-                    <div class="flex items-center space-x-3">
-                        <button id="open-text-size-from-profile" class="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg">Abrir</button>
-                        <button class="camera-btn p-2 rounded-full text-white hover:text-gray-200 bg-white/30 hover:bg-white/50 transition duration-150"
-                            data-action="show-sign-video" data-message="Tamaño de texto - Videos">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="flex items-center space-x-2">
+                        <button class="camera-btn p-2 rounded-xl text-[#5C7A5C] bg-[#EBF2EB] hover:bg-[#C8DAC8] border border-[#C8DAC8] transition shadow-sm"
+                            data-action="show-sign-video" data-message="Tamaño de texto - Videos" title="Ver en señas">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                        </svg>
+                            </svg>
                         </button>
+                        <span class="text-[#7A6E5C] font-bold">→</span>
                     </div>
                 </div>
 
-                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl shadow-sm">
-                    <div>
-                        <p class="font-semibold">Vibración</p>
-                        <p class="text-sm text-gray-500">Configurar alertas táctiles</p>
+                <!-- 3. Vibración -->
+                <div class="w-full p-4 bg-white hover:bg-[#F3EADA] rounded-2xl border-2 border-[#EAE0D0] shadow-sm flex items-center justify-between transition">
+                    <div id="open-vibration-from-profile" class="vibration-btn flex items-center space-x-3.5 flex-1 cursor-pointer">
+                        <div class="w-10 h-10 rounded-xl bg-[#FEF9E7] text-[#B7950B] flex items-center justify-center text-lg font-bold">
+                            📳
+                        </div>
+                        <div class="text-left font-body">
+                            <p class="font-display font-bold text-sm text-[#2B241C]">Vibración</p>
+                            <p class="text-xs text-[#7A6E5C]">Alertas táctiles</p>
+                        </div>
                     </div>
-                    <div class="flex items-center space-x-3">
-                        <button id="open-vibration-from-profile" class="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg">Abrir</button>
-                        <button class="camera-btn p-2 rounded-full text-white hover:text-gray-200 bg-white/30 hover:bg-white/50 transition duration-150"
-                            data-action="show-sign-video" data-message="Vibración - Videos">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="flex items-center space-x-2">
+                        <button class="camera-btn p-2 rounded-xl text-[#B7950B] bg-[#FEF9E7] hover:bg-[#F9E79F] border border-[#F9E79F] transition shadow-sm"
+                            data-action="show-sign-video" data-message="Vibración - Videos" title="Ver en señas">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                        </svg>
+                            </svg>
                         </button>
+                        <span class="text-[#7A6E5C] font-bold">→</span>
                     </div>
                 </div>
             </div>
+
+            <!-- Botón de Cerrar Sesión -->
+            <button id="logout-button" class="w-full bg-white hover:bg-[#FDEDEC] text-[#C0392B] border-2 border-[#F5B7B1] font-display font-bold py-4 rounded-2xl shadow-sm transition flex items-center justify-center space-x-2 active:scale-98">
+                <span>Cerrar sesión</span>
+            </button>
         </div>
     </div>
 

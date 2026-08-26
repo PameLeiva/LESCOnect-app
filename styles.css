@@ -1,14 +1,17 @@
-/* Estilos personalizados */
+/* Estilos personalizados - Paleta Tierra LesConecte */
 
 /* Fondo del cuerpo */
 body {
-    font-family: 'Inter', sans-serif;
-    background-color: #f0f4f8; 
+    font-family: 'Atkinson Hyperlegible', 'Lexend', Inter, -apple-system, sans-serif;
+    background-color: #F3EADA; 
+    color: #2B241C;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* Contenedor principal para simular el dispositivo móvil */
@@ -21,7 +24,7 @@ body {
     box-shadow: none;
     overflow: hidden;
     position: relative;
-    background-color: white;
+    background-color: #FBF6EE;
 }
 
 /* Para pantallas móviles: usar toda la pantalla */
