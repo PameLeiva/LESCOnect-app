@@ -373,73 +373,266 @@ function updateHistoryUI() {
 
 
 /**
- * Maneja la selección de mensajes en las categorías con soporte para botón de video LESCO
+ * Reproducción de voz en español para comunicación con oyentes (Text-to-Speech)
+ */
+function speakText(text) {
+    if (!text) return;
+    if (!('speechSynthesis' in window)) {
+        alert("Tu navegador no soporta síntesis de voz.");
+        return;
+    }
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'es-CR'; // Español (Costa Rica / LATAM)
+    utterance.rate = 0.92;    // Velocidad clara y comprensible
+    utterance.pitch = 1.0;
+    window.speechSynthesis.speak(utterance);
+}
+
+let currentVentanillaText = '';
+let currentLescoPhrase = '';
+let currentLescoGloss = '';
+
+/**
+ * Abre el Modal de Pantalla Gigante para mostrar al funcionario en ventanilla
+ */
+function openVentanillaModal(text, category = 'banco') {
+    const modal = document.getElementById('ventanilla-modal');
+    const modalText = document.getElementById('ventanilla-modal-text');
+    if (!modal || !modalText) return;
+
+    currentVentanillaText = text || '';
+    modalText.textContent = `"${currentVentanillaText}"`;
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+
+    addToHistory(currentVentanillaText, "Ventanilla Presencial");
+}
+
+/**
+ * Cierra el Modal de Pantalla Gigante
+ */
+function closeVentanillaModal() {
+    const modal = document.getElementById('ventanilla-modal');
+    if (!modal) return;
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+    }
+}
+
+/**
+ * Abre el Modal Reproductor de Video en LESCO (Lengua Materna)
+ */
+function openLescoVideoModal(phrase, gloss) {
+    const modal = document.getElementById('lesco-video-player-modal');
+    const phraseTitle = document.getElementById('lesco-video-phrase-title');
+    const glossEl = document.getElementById('lesco-video-gloss');
+    const statusEl = document.getElementById('lesco-player-status');
+
+    if (!modal) return;
+
+    currentLescoPhrase = phrase || '';
+    currentLescoGloss = gloss || 'SEÑAS LESCO';
+
+    if (phraseTitle) phraseTitle.textContent = `"${currentLescoPhrase}"`;
+    if (glossEl) glossEl.textContent = currentLescoGloss;
+    if (statusEl) statusEl.textContent = "Reproduciendo seña en LESCO...";
+
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
+
+/**
+ * Cierra el Modal de Video en LESCO
+ */
+function closeLescoVideoModal() {
+    const modal = document.getElementById('lesco-video-player-modal');
+    if (!modal) return;
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
+
+/**
+ * Configura los eventos de frases, tarjetas de ventanilla y reproducción por voz
  */
 function setupMessageSelection() {
-    document.querySelectorAll('.msg-card').forEach(card => {
-        card.addEventListener('click', function (e) {
-            // Si el click fue específicamente en el botón de video, no procesar la selección
-            if (e.target.closest('.camera-btn')) return;
+    // Botones destacados para ver el video en señas LESCO primero
+    document.querySelectorAll('.open-lesco-video-btn').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            const phrase = this.getAttribute('data-phrase') || '';
+            const gloss = this.getAttribute('data-gloss') || 'LESCO';
+            openLescoVideoModal(phrase, gloss);
+        });
+    });
 
-            const screen = this.closest('.screen');
-            if (!screen) return;
-            const category = screen.id;
+    // Botones para mostrar en grande directamente
+    document.querySelectorAll('.show-in-modal-btn').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            const text = this.getAttribute('data-text') || '';
+            openVentanillaModal(text);
+        });
+    });
 
-            let activeCardBg = 'bg-[#B5551A] text-white border-[#B5551A]';
-            let activeCameraBg = 'text-white bg-white/20 hover:bg-white/30 border-white/40';
-
-            let inactiveHover = 'hover:bg-[#F3EADA]';
-            let inactiveBorder = 'hover:border-[#B5551A]';
-            let inactiveCameraBg = 'text-[#B5551A] bg-[#F3EADA] hover:bg-[#EAE0D0] border-[#EAE0D0]';
-
-            if (category.includes('emergencia')) {
-                activeCardBg = 'bg-[#C0392B] text-white border-[#C0392B]';
-                inactiveHover = 'hover:bg-[#FDEDEC]';
-                inactiveBorder = 'hover:border-[#F5B7B1]';
-                inactiveCameraBg = 'text-[#C0392B] bg-[#FDEDEC] hover:bg-[#F5B7B1] border-[#F5B7B1]';
-            } else if (category.includes('policia')) {
-                activeCardBg = 'bg-[#2471A3] text-white border-[#2471A3]';
-                inactiveHover = 'hover:bg-[#EAF2F8]';
-                inactiveBorder = 'hover:border-[#AED6F1]';
-                inactiveCameraBg = 'text-[#2471A3] bg-[#EAF2F8] hover:bg-[#AED6F1] border-[#AED6F1]';
-            } else if (category.includes('hospital')) {
-                activeCardBg = 'bg-[#5C7A5C] text-white border-[#5C7A5C]';
-                inactiveHover = 'hover:bg-[#EBF2EB]';
-                inactiveBorder = 'hover:border-[#C8DAC8]';
-                inactiveCameraBg = 'text-[#5C7A5C] bg-[#EBF2EB] hover:bg-[#C8DAC8] border-[#C8DAC8]';
-            } else if (category.includes('banco')) {
-                activeCardBg = 'bg-[#B7950B] text-white border-[#B7950B]';
-                inactiveHover = 'hover:bg-[#FEF9E7]';
-                inactiveBorder = 'hover:border-[#F9E79F]';
-                inactiveCameraBg = 'text-[#B7950B] bg-[#FEF9E7] hover:bg-[#F9E79F] border-[#F9E79F]';
-            }
-
-            // Resetear todas las opciones en esta pantalla
-            screen.querySelectorAll('.msg-card').forEach(otherCard => {
-                otherCard.className = `msg-card w-full p-2.5 bg-white ${inactiveHover} rounded-2xl border-2 border-[#EAE0D0] ${inactiveBorder} shadow-sm flex items-center justify-between transition cursor-pointer active:scale-98`;
-                const textBtn = otherCard.querySelector('.msg-btn');
-                if (textBtn) {
-                    textBtn.className = 'msg-btn text-left flex-1 font-display font-bold text-sm text-[#2B241C] py-2 px-2';
-                }
-                const cam = otherCard.querySelector('.camera-btn');
-                if (cam) {
-                    cam.className = `camera-btn p-2 rounded-xl ${inactiveCameraBg} border transition shadow-sm flex-shrink-0`;
-                }
-            });
-
-            // Activar la opción seleccionada
-            this.className = `msg-card w-full p-2.5 ${activeCardBg} rounded-2xl border-2 shadow-md flex items-center justify-between transition cursor-pointer active:scale-98`;
-            const activeTextBtn = this.querySelector('.msg-btn');
-            if (activeTextBtn) {
-                activeTextBtn.className = 'msg-btn text-left flex-1 font-display font-bold text-sm text-white py-2 px-2';
-                addToHistory(activeTextBtn.textContent.trim(), "Mensaje rápido");
-            }
-            const activeCam = this.querySelector('.camera-btn');
-            if (activeCam) {
-                activeCam.className = `camera-btn p-2 rounded-xl ${activeCameraBg} border transition shadow-sm flex-shrink-0`;
+    // Botones de reproducción de voz (TTS)
+    document.querySelectorAll('.speak-tts-btn').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            const text = this.getAttribute('data-text') || '';
+            if (text) {
+                speakText(text);
+                addToHistory(text, "Voz reproducida");
             }
         });
     });
+
+    // Botones de escape directo al traductor
+    document.querySelectorAll('.go-to-speech-to-sign-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            navigateTo('text-to-signs-screen');
+        });
+    });
+
+    document.querySelectorAll('.go-to-sign-to-speech-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            navigateTo('signs-to-text-screen');
+        });
+    });
+
+    // Botones dentro del modal de ventanilla
+    document.getElementById('ventanilla-modal-speak-btn')?.addEventListener('click', () => {
+        if (currentVentanillaText) {
+            speakText(currentVentanillaText);
+        }
+    });
+
+    document.getElementById('ventanilla-modal-video-btn')?.addEventListener('click', () => {
+        closeVentanillaModal();
+        openLescoVideoModal(currentVentanillaText, "LESCO");
+    });
+
+    document.getElementById('close-ventanilla-modal-btn')?.addEventListener('click', closeVentanillaModal);
+    document.getElementById('close-ventanilla-modal-btn-2')?.addEventListener('click', closeVentanillaModal);
+
+    // Botones dentro del modal de Video LESCO
+    document.getElementById('close-lesco-video-btn')?.addEventListener('click', closeLescoVideoModal);
+    document.getElementById('close-lesco-video-btn-2')?.addEventListener('click', closeLescoVideoModal);
+
+    document.getElementById('lesco-video-to-ventanilla-btn')?.addEventListener('click', () => {
+        closeLescoVideoModal();
+        openVentanillaModal(currentLescoPhrase);
+    });
+
+    document.getElementById('lesco-video-speak-btn')?.addEventListener('click', () => {
+        if (currentLescoPhrase) {
+            speakText(currentLescoPhrase);
+            addToHistory(currentLescoPhrase, "Voz reproducida");
+        }
+    });
+
+    document.getElementById('replay-lesco-video-btn')?.addEventListener('click', () => {
+        const statusEl = document.getElementById('lesco-player-status');
+        if (statusEl) {
+            statusEl.textContent = "Reiniciando clip en LESCO...";
+            setTimeout(() => {
+                statusEl.textContent = "Reproduciendo seña en LESCO...";
+            }, 600);
+        }
+    });
+
+    // Configurar Despacho 9-1-1
+    setupDispatchCategories();
+}
+
+/**
+ * Abre y simula el despacho de emergencia hacia el 9-1-1
+ */
+function trigger911Dispatch(incident, agency, code) {
+    const modal = document.getElementById('dispatch-911-modal');
+    const loadingState = document.getElementById('dispatch-loading-state');
+    const successState = document.getElementById('dispatch-success-state');
+    const incidentEl = document.getElementById('dispatch-modal-incident');
+    const agencyEl = document.getElementById('dispatch-modal-agency');
+    const userEl = document.getElementById('dispatch-modal-user');
+    const ticketCodeEl = document.getElementById('dispatch-ticket-code');
+
+    if (!modal) return;
+
+    if (incidentEl) incidentEl.textContent = incident || 'Emergencia General';
+    if (agencyEl) agencyEl.textContent = agency || 'Sistema 9-1-1';
+    if (userEl) userEl.textContent = `${userData.nombre} ${userData.apellidos || ''} (Cédula: ${userData.cedula})`;
+    
+    const randomTicket = `#CR-911-${Math.floor(10000 + Math.random() * 90000)}`;
+    if (ticketCodeEl) ticketCodeEl.textContent = `Incidente Oficial: ${randomTicket}`;
+
+    // Mostrar estado de transmisión
+    loadingState?.classList.remove('hidden');
+    successState?.classList.add('hidden');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+
+    if (navigator.vibrate) {
+        navigator.vibrate([200, 100, 200, 100, 400]);
+    }
+
+    // Simular recepción del 9-1-1 a los 1.2 segundos
+    setTimeout(() => {
+        loadingState?.classList.add('hidden');
+        successState?.classList.remove('hidden');
+        addToHistory(`🚨 Reporte 9-1-1 [${incident} - ${randomTicket}]`, "Despacho 9-1-1");
+    }, 1200);
+}
+
+/**
+ * Cierra el modal de despacho 9-1-1
+ */
+function close911DispatchModal() {
+    const modal = document.getElementById('dispatch-911-modal');
+    if (!modal) return;
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
+
+/**
+ * Configura las categorías de incidentes y botones de despacho 9-1-1
+ */
+function setupDispatchCategories() {
+    document.querySelectorAll('.dispatch-cat-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const targetId = this.getAttribute('data-target');
+
+            // Reset de estilo en botones de categorías
+            document.querySelectorAll('.dispatch-cat-btn').forEach(b => {
+                b.className = 'dispatch-cat-btn px-4 py-2.5 rounded-2xl text-xs font-display font-bold whitespace-nowrap bg-white text-[#7A6E5C] border border-[#EAE0D0] hover:bg-[#F3EADA] transition flex items-center space-x-1.5';
+            });
+            this.className = 'dispatch-cat-btn px-4 py-2.5 rounded-2xl text-xs font-display font-bold whitespace-nowrap bg-[#C0392B] text-white shadow-sm transition flex items-center space-x-1.5';
+
+            // Ocultar otros paneles y mostrar el seleccionado
+            document.querySelectorAll('.dispatch-category-content').forEach(c => {
+                c.classList.add('hidden');
+            });
+            const targetContent = document.getElementById(targetId);
+            if (targetContent) {
+                targetContent.classList.remove('hidden');
+            }
+        });
+    });
+
+    document.querySelectorAll('.trigger-dispatch-911-btn').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            const incident = this.getAttribute('data-incident');
+            const agency = this.getAttribute('data-agency');
+            const code = this.getAttribute('data-code');
+            trigger911Dispatch(incident, agency, code);
+        });
+    });
+
+    document.getElementById('close-dispatch-modal-btn')?.addEventListener('click', close911DispatchModal);
+    document.getElementById('ack-dispatch-modal-btn')?.addEventListener('click', close911DispatchModal);
 }
 
 /**
@@ -683,25 +876,127 @@ document.addEventListener('DOMContentLoaded', () => {
         navigateTo('messages-generales-screen');
     });
 
-    // Back de categorías
+    // Back de categorías a lista general
     document.getElementById('back-from-messages-emergencia')?.addEventListener('click', () => {
         navigateTo('quick-messages-screen');
     });
-
     document.getElementById('back-from-messages-policia')?.addEventListener('click', () => {
         navigateTo('quick-messages-screen');
     });
-
     document.getElementById('back-from-messages-hospital')?.addEventListener('click', () => {
         navigateTo('quick-messages-screen');
     });
-
     document.getElementById('back-from-messages-banco')?.addEventListener('click', () => {
         navigateTo('quick-messages-screen');
     });
-
     document.getElementById('back-from-messages-generales')?.addEventListener('click', () => {
         navigateTo('quick-messages-screen');
+    });
+
+    // === NAVEGACIÓN A PANTALLAS DEDICADAS POR SITUACIÓN ===
+    // Emergencias
+    document.getElementById('to-emergencia-tramite-auxilio')?.addEventListener('click', () => {
+        navigateTo('emergencia-tramite-auxilio-screen');
+    });
+    document.getElementById('to-emergencia-tramite-salud')?.addEventListener('click', () => {
+        navigateTo('emergencia-tramite-salud-screen');
+    });
+    document.getElementById('to-emergencia-tramite-rescate')?.addEventListener('click', () => {
+        navigateTo('emergencia-tramite-rescate-screen');
+    });
+
+    document.getElementById('back-from-emergencia-auxilio')?.addEventListener('click', () => {
+        navigateTo('messages-emergencia-screen');
+    });
+    document.getElementById('back-from-emergencia-salud')?.addEventListener('click', () => {
+        navigateTo('messages-emergencia-screen');
+    });
+    document.getElementById('back-from-emergencia-rescate')?.addEventListener('click', () => {
+        navigateTo('messages-emergencia-screen');
+    });
+
+    // Policía
+    document.getElementById('to-policia-tramite-identificacion')?.addEventListener('click', () => {
+        navigateTo('policia-tramite-identificacion-screen');
+    });
+    document.getElementById('to-policia-tramite-denuncias')?.addEventListener('click', () => {
+        navigateTo('policia-tramite-denuncias-screen');
+    });
+    document.getElementById('to-policia-tramite-ubicacion')?.addEventListener('click', () => {
+        navigateTo('policia-tramite-ubicacion-screen');
+    });
+
+    document.getElementById('back-from-policia-identificacion')?.addEventListener('click', () => {
+        navigateTo('messages-policia-screen');
+    });
+    document.getElementById('back-from-policia-denuncias')?.addEventListener('click', () => {
+        navigateTo('messages-policia-screen');
+    });
+    document.getElementById('back-from-policia-ubicacion')?.addEventListener('click', () => {
+        navigateTo('messages-policia-screen');
+    });
+
+    // Hospital
+    document.getElementById('to-hospital-tramite-admision')?.addEventListener('click', () => {
+        navigateTo('hospital-tramite-admision-screen');
+    });
+    document.getElementById('to-hospital-tramite-farmacia')?.addEventListener('click', () => {
+        navigateTo('hospital-tramite-farmacia-screen');
+    });
+    document.getElementById('to-hospital-tramite-sintomas')?.addEventListener('click', () => {
+        navigateTo('hospital-tramite-sintomas-screen');
+    });
+
+    document.getElementById('back-from-hospital-admision')?.addEventListener('click', () => {
+        navigateTo('messages-hospital-screen');
+    });
+    document.getElementById('back-from-hospital-farmacia')?.addEventListener('click', () => {
+        navigateTo('messages-hospital-screen');
+    });
+    document.getElementById('back-from-hospital-sintomas')?.addEventListener('click', () => {
+        navigateTo('messages-hospital-screen');
+    });
+
+    // Banco
+    document.getElementById('to-banco-tramite-cuentas')?.addEventListener('click', () => {
+        navigateTo('banco-tramite-cuentas-screen');
+    });
+    document.getElementById('to-banco-tramite-caja')?.addEventListener('click', () => {
+        navigateTo('banco-tramite-caja-screen');
+    });
+    document.getElementById('to-banco-tramite-firmas')?.addEventListener('click', () => {
+        navigateTo('banco-tramite-firmas-screen');
+    });
+
+    document.getElementById('back-from-banco-cuentas')?.addEventListener('click', () => {
+        navigateTo('messages-banco-screen');
+    });
+    document.getElementById('back-from-banco-caja')?.addEventListener('click', () => {
+        navigateTo('messages-banco-screen');
+    });
+    document.getElementById('back-from-banco-firmas')?.addEventListener('click', () => {
+        navigateTo('messages-banco-screen');
+    });
+
+    // Generales
+    document.getElementById('to-generales-tramite-saludos')?.addEventListener('click', () => {
+        navigateTo('generales-tramite-saludos-screen');
+    });
+    document.getElementById('to-generales-tramite-escrita')?.addEventListener('click', () => {
+        navigateTo('generales-tramite-escrita-screen');
+    });
+    document.getElementById('to-generales-tramite-preguntas')?.addEventListener('click', () => {
+        navigateTo('generales-tramite-preguntas-screen');
+    });
+
+    document.getElementById('back-from-generales-saludos')?.addEventListener('click', () => {
+        navigateTo('messages-generales-screen');
+    });
+    document.getElementById('back-from-generales-escrita')?.addEventListener('click', () => {
+        navigateTo('messages-generales-screen');
+    });
+    document.getElementById('back-from-generales-preguntas')?.addEventListener('click', () => {
+        navigateTo('messages-generales-screen');
     });
 
     // === TRADUCTOR ===
